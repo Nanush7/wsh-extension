@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "WCA Staff Helper",
+  "description": "Helper extension to link and reference WCA Regulations and Guidelines, WCA IDs and other documents.",
+  "version": "1.0",
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "img/logo.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.worldcubeassociation.org/*",
+        "https://mail.google.com/*"
+    ],
+      "js": ["scripts/content.js"]
+    }
+  ],
+  "host_permissions": [
+    "https://www.worldcubeassociation.org/*",
+    "https://mail.google.com/*"
+  ]
+}
