@@ -1,71 +1,83 @@
+// Main buttons.
 const status_text = document.getElementById('status-text');
 const config_btn = document.getElementById('config-btn');
 const config_div = document.getElementById('config-container');
+const wca_url = "https://www.worldcubeassociation.org/";
+const gmail_url = "https://mail.google.com/";
+
+// Config options.
+const options = {
+  enabled: document.getElementById('conf-enabled'),
+  display_detected: document.getElementById('conf-display-detected')
+};
 
 function displayConfig() {
   if (config_div.style.display === 'none') {
     config_div.style.display = 'block';
+    chrome.storage.local.set({display_config: true});
   } else {
     config_div.style.display = 'none';
+    chrome.storage.local.set({display_config: false});
   }
 }
 
-function changeStatus(tabInfo) {
-  chrome.tabs.get(tabInfo.tabId, function(tab) {
-    if (tab.url.includes("https://mail.google.com")) {
-      status_text.innerHTML = "Gmail";
-    } else if (tab.url.includes("https://www.worldcubeassociation.org")) {
-      status_text.innerHTML = "WCA";
-    } else {
+function changeStatus() {
+  chrome.tabs.query({ 
+    active: true,
+    currentWindow: true,
+    url: [wca_url + '*', gmail_url + '*']
+  })
+  .then((tabs) => {
+    if (tabs.length === 0) {
       status_text.innerHTML = "Idling";
+      return;
     }
+    if (tabs[0].url.includes(gmail_url)) {
+      status_text.innerHTML = "Gmail";
+    } else if (tabs[0].url.includes(wca_url)) {
+      status_text.innerHTML = "WCA";
+    }
+  })
+  .catch((error) => {
+    status_text.innerHTML = "Error";
+    console.log(error);
   });
 }
 
+// Popup setup.
+changeStatus();
 config_btn.onclick = displayConfig;
-document.addEventListener(function(tabId, changeInfo, tab) {
-  if (changeInfo.url) {
-    changeStatus({ tabId: tabId });
+
+chrome.storage.local.get(['display_config']).then((result) => {
+  if (result !== undefined && result.display_config) {
+    config_div.style.display = 'block';
   }
 });
 
-/*
-// Get references to the checkboxes
-const checkbox1 = document.getElementById('checkbox1');
-const checkbox2 = document.getElementById('checkbox2');
-const checkbox3 = document.getElementById('checkbox3');
-
-// Add event handlers for the checkboxes
-checkbox1.addEventListener('change', function() {
-  // Handle checkbox1 change event
-  if (checkbox1.checked) {
-    // Checkbox1 is checked
-    console.log('Checkbox 1 is checked');
+// Add event handlers for the checkboxes.
+for (let [key, value] of Object.entries(options)) {
+  if (value === undefined) {
+    console.log("Could not find the option: " + key);
   } else {
-    // Checkbox1 is unchecked
-    console.log('Checkbox 1 is unchecked');
+    // Set saved status for the option.
+    chrome.storage.local.get([key]).then((result) => {
+      console.log(key);
+      console.log(result[key]);
+      if (result[key] !== undefined) {
+        value.checked = result[key];
+      }
+    });
   }
-});
 
-checkbox2.addEventListener('change', function() {
-  // Handle checkbox2 change event
-  if (checkbox2.checked) {
-    // Checkbox2 is checked
-    console.log('Checkbox 2 is checked');
-  } else {
-    // Checkbox2 is unchecked
-    console.log('Checkbox 2 is unchecked');
-  }
-});
-
-checkbox3.addEventListener('change', function() {
-  // Handle checkbox3 change event
-  if (checkbox3.checked) {
-    // Checkbox3 is checked
-    console.log('Checkbox 3 is checked');
-  } else {
-    // Checkbox3 is unchecked
-    console.log('Checkbox 3 is unchecked');
-  }
-});
-*/
+  // Add event listener to the checkbox.
+  value.addEventListener('change', function() {
+    chrome.storage.local.set({[key]: value.checked})
+    .then(() => {
+      console.log("Option saved.");
+    })
+    .catch(() => {
+      console.log("Could not save the option.");
+      value.checked = !value.checked;
+    });
+  });
+}

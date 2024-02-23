@@ -19,5 +19,15 @@
   "host_permissions": [
     "https://www.worldcubeassociation.org/*",
     "https://mail.google.com/*"
-  ]
+  ],
+  "permissions": [
+    "storage"
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Period"
+      }
+    }
+  }
 }

@@ -18,6 +18,12 @@ body {
     margin: -10px;
 }
 
+#version {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    align-self: end;
+}
+
 #buttons {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
@@ -33,11 +39,7 @@ body {
     }
 }
 
-.p-icon img {
+.p-icon {
     width: 28px;
     height: 28px;
-}
-
-.p-icon:hover {
-    background-color: white;
 }
