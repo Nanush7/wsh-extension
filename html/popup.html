@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="popup.css" />
+        <link rel="stylesheet" href="../css/popup.css" />
         <!--<script src="popup.js"></script>-->
     </head>
-    <body>
+
+    <hr class="color-line">
         <div id="main-container">
             <div id="header">
                 <h2>WCA Staff Helper</h2>
-                <h3 id="status-text">Idling</h3>
+                <h3 id="status-text"></h3>
             </div>
 
             <p id="version">Version: 1.0</p>
             <div id="buttons">
-                <img class="p-icon" id="list-btn" src="../img/file-text-outline.png" />
-                <img class="p-icon" id="config-btn" src="../img/settings-2-outline.png" />
-                <a href="https://duckduckgo.com/" target="_blank"><img class="p-icon" id="source" src="../img/github-outline.png" /></a>
+                <button class="p-icon" id="info-btn"><img src="../img/file-text-outline.png" /></button>
+                <button class="p-icon" id="config-btn"><img src="../img/settings-2-outline.png" /></button>
+                <a href="https://github.com/Nanush7/wca-regs-extension" target="_blank"><button class="p-icon" id="source"><img src="../img/github-outline.png" /></button></a>
             </div>
         </div>
-        <div id="config-container">
+        <div id="config-container" style="display: none;">
             <h3>Settings</h3>
             <input type="checkbox" id="conf-enabled" />
             <label for="conf-enabled">Enable</label><br>
             <input type="checkbox" id="conf-display-detected" />
             <label for="conf-display-detected">Display detected element</label><br>
         </div>
+        <hr class="color-line">
         <script src="../scripts/popup.js"></script>
     </body>
 </html>

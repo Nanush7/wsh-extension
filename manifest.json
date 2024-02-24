@@ -4,30 +4,42 @@
   "description": "Helper extension to link and reference WCA Regulations and Guidelines, WCA IDs and other documents.",
   "version": "1.0",
   "action": {
-    "default_popup": "popup/popup.html",
+    "default_popup": "html/popup.html",
     "default_icon": "img/logo.png"
   },
   "content_scripts": [
     {
       "matches": [
         "https://www.worldcubeassociation.org/*",
+        "https://forum.worldcubeassociation.org/*",
         "https://mail.google.com/*"
     ],
       "js": ["scripts/content.js"]
     }
   ],
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
   "host_permissions": [
     "https://www.worldcubeassociation.org/*",
+    "https://forum.worldcubeassociation.org/*",
     "https://mail.google.com/*"
   ],
   "permissions": [
     "storage"
   ],
   "commands": {
-    "_execute_action": {
+    "keep-replace": {
       "suggested_key": {
         "default": "Ctrl+Shift+Period"
-      }
+      },
+      "description": "Keep the selected text and add the link."
+    },
+    "long-replace": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Comma"
+      },
+      "description": "Replace the selected text with the long name of the document and the link."
     }
   }
 }
