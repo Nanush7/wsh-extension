@@ -1,6 +1,7 @@
 body {
     width: fit-content;
     height: fit-content;
+    font-family: 'DejaVu Sans', 'Open Sans', sans-serif;
 }
 
 #main-container {
@@ -35,6 +36,15 @@ body {
     padding: 10px;
     & h3 {
         text-align: center;
+    }
+}
+
+#regulations-container {
+    width: 480px;
+    font-size: 16px;
+    line-height: 1.5;
+    & a {
+        color: #e64503;
     }
 }
 

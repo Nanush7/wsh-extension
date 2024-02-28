@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="../css/popup.css" />
-        <!--<script src="popup.js"></script>-->
     </head>
 
     <hr class="color-line">
@@ -23,10 +23,12 @@
             <h3>Settings</h3>
             <input type="checkbox" id="conf-enabled" />
             <label for="conf-enabled">Enable</label><br>
-            <input type="checkbox" id="conf-display-detected" />
-            <label for="conf-display-detected">Display detected element</label><br>
+        </div>
+        <div id="regulations-container" style="display: none;">
+            <p id="regulations-text"></p>
         </div>
         <hr class="color-line">
+        <script src="../scripts/purify.min.js"></script>
         <script src="../scripts/popup.js"></script>
     </body>
 </html>
