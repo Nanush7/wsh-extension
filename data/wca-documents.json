@@ -1,0 +1,22 @@
+[
+    {
+        "short_name": "WCRP",
+        "long_name": "WCA Competition Requirements Policy",
+        "url": "https://documents.worldcubeassociation.org/documents/policies/external/Competition%20Requirements.pdf"
+    },
+    {
+        "short_name": "CoE",
+        "long_name": "Code of Ethics",
+        "url": "https://documents.worldcubeassociation.org/documents/Code%20of%20Ethics.pdf"
+    },
+    {
+        "short_name": "CoC",
+        "long_name": "Code of Conduct",
+        "url": "https://documents.worldcubeassociation.org/documents/Code%20of%20Conduct.pdf"
+    },
+    {
+        "short_name": "WSAP",
+        "long_name": "WCA Scramble Accountability Policy",
+        "url": "https://documents.worldcubeassociation.org/documents/policies/external/Scramble%20Accountability.pdf"
+    }
+]
