@@ -1,18 +1,22 @@
-const WCA_MAIN_URL = "https://www.worldcubeassociation.org/";
-const WCA_FORUM_URL = "https://forum.worldcubeassociation.org/";
-const GMAIL_URL = "https://mail.google.com/";
-const VALID_URLS = [WCA_MAIN_URL, WCA_FORUM_URL, GMAIL_URL].map(url => url + '*');
-const COMMANDS = ["short-replace", "long-replace", "stop-error"];
+const SITES = {
+    wca_main: "https://www.worldcubeassociation.org/",
+    wca_forum: "https://forum.worldcubeassociation.org/",
+    gmail: "https://mail.google.com/"
+}
+const VALID_URLS = Object.values(SITES).map(url => url + '*');
+const COMMANDS = ["short-replace", "long-replace", "stop-error", "enable", "disable"];
 const REGULATIONS_JSON = "data/wca-regulations.json";
 const DOCUMENTS_JSON = "data/wca-documents.json";
 const DEFAULT_OPTIONS_JSON = "data/default-options.json";
 
 
-function sendToContentScript(command) {
+function sendToContentScript(command, all=false) {
     if (COMMANDS.includes(command)) {
-        (async () => {
-            const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true, url: VALID_URLS});
-            if (tab !== undefined) {
+        return (async () => {
+            let tabs;
+            if (all) tabs = await chrome.tabs.query({url: VALID_URLS});
+            else tabs = await chrome.tabs.query({active: true, lastFocusedWindow: true, url: VALID_URLS});
+            for (let tab of tabs) {
                 await chrome.tabs.sendMessage(tab.id, {command: command, url: tab.url})
                 .catch((error) => {
                     console.error("Could not send message to content script: " + error);
@@ -20,6 +24,16 @@ function sendToContentScript(command) {
             }
         })();
     }
+}
+
+function injectWSHEvent(tab_id) {
+    // Inject the WSHReplaceEvent listener into the WCA page.
+    chrome.scripting.executeScript({target: {tabId: tab_id}, world: "MAIN", files: ["scripts/wsh-event-injection.js"]})
+    .catch((error) => {
+        console.error("Could not inject WSHReplaceEvent: " + error);
+        return false;
+    });
+    return true;
 }
 
 async function fetchDocuments() {
@@ -43,7 +57,7 @@ async function fetchDocuments() {
         documents = await documentsResponse.json();
     } catch (error) {
         console.error("Could not get data: " + error);
-        sendMessage("stop-error");
+        sendToContentScript("stop-error", true);
         return;
     }
 
@@ -55,13 +69,11 @@ async function fetchDocuments() {
         });
     } catch (error) {
         console.error("Could not save data to storage: " + error);
-        sendMessage("stop-error");
+        sendToContentScript("stop-error", true);
     }
 }
 
-chrome.commands.onCommand.addListener((command) => {
-    sendToContentScript(command);
-});
+// --- Set listeners up --- //
 
 chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason === "chrome_update") return;
@@ -83,7 +95,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     })
     .catch(error => {
         console.error("Could not fetch default options: " + error);
-        sendMessage("stop-error");
+        sendToContentScript("stop-error", true);
     });
 
     fetchDocuments();
@@ -99,6 +111,31 @@ chrome.runtime.onStartup.addListener(() => {
     .catch(() => {
         fetchDocuments();
     });
+});
+
+chrome.commands.onCommand.addListener((command) => {
+    sendToContentScript(command);
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (sender.id === chrome.runtime.id && message.command === "inject-wsh-event") {
+        let status;
+        if (injectWSHEvent(sender.tab.id)) {
+            status = 0;
+        } else {
+            status = 1;
+        }
+        sendResponse({status: status});
+    }
+});
+
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === "local") {
+        if (changes.enabled !== undefined) {
+            const command = changes.enabled.newValue ? "enable" : "disable";
+            sendToContentScript(command, true);
+        }
+    }
 });
 
 // TODO: Inyectar content script después de activar la extensión.

@@ -6,8 +6,8 @@ body {
 
 #main-container {
     display: grid;
-    grid-template-columns: 100px 150px;
-    grid-template-rows: 50px 50px;
+    grid-template-columns: 150px 150px;
+    grid-template-rows: 50px 80px;
     grid-gap: 24px;
     padding: 10px;
 }
@@ -23,6 +23,7 @@ body {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
     align-self: end;
+    line-height: 1.5;
 }
 
 #buttons {

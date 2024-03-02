@@ -1,34 +1,39 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/popup.css" />
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/popup.css" />
+</head>
+<body>
+<hr class="color-line">
+<div id="main-container">
+    <div id="header">
+        <h2>WCA Staff Helper</h2>
+        <h3 id="status-text"></h3>
+    </div>
+    <div id="version">
+        <b>Regulations:</b><br>
+        <span id="regulations-version"></span>
+    </div>
+    <div id="buttons">
+        <button class="p-icon" id="info-btn"><img src="../img/document.svg" alt="Info" /></button>
+        <button class="p-icon" id="config-btn"><img src="../img/settings.svg" alt="Settings" /></button>
+        <a href="https://github.com/Nanush7/wsh-extension" target="_blank" rel="noreferrer"><button class="p-icon" id="source"><img
+                    src="../img/code.svg" alt="Source Code" /></button></a>
+    </div>
+</div>
+<div id="config-container" style="display: none;">
+    <h3>Settings</h3>
+    <input type="checkbox" id="conf-enabled" />
+    <label for="conf-enabled">Enable</label><br>
+    <p><b>Version: </b><span id="extension-version"></span></p>
+</div>
+<div id="regulations-container" style="display: none;">
+    <p id="regulations-text"></p>
+</div>
+<hr class="color-line">
 
-    <hr class="color-line">
-        <div id="main-container">
-            <div id="header">
-                <h2>WCA Staff Helper</h2>
-                <h3 id="status-text"></h3>
-            </div>
-
-            <p id="version">Version: 1.0</p>
-            <div id="buttons">
-                <button class="p-icon" id="info-btn"><img src="../img/file-text-outline.png" /></button>
-                <button class="p-icon" id="config-btn"><img src="../img/settings-2-outline.png" /></button>
-                <a href="https://github.com/Nanush7/wca-regs-extension" target="_blank"><button class="p-icon" id="source"><img src="../img/github-outline.png" /></button></a>
-            </div>
-        </div>
-        <div id="config-container" style="display: none;">
-            <h3>Settings</h3>
-            <input type="checkbox" id="conf-enabled" />
-            <label for="conf-enabled">Enable</label><br>
-        </div>
-        <div id="regulations-container" style="display: none;">
-            <p id="regulations-text"></p>
-        </div>
-        <hr class="color-line">
-        <script src="../scripts/purify.min.js"></script>
-        <script src="../scripts/popup.js"></script>
-    </body>
+<script src="../scripts/purify.min.js"></script>
+<script src="../scripts/popup.js"></script>
+</body>
 </html>

@@ -1,12 +1,16 @@
-// const EXTENSION_ID = "babeegohnjmbkcnheaikbpehoeelimen";
-const WCA_MAIN_URL = "https://www.worldcubeassociation.org/";
-const WCA_FORUM_URL = "https://forum.worldcubeassociation.org/";
-const GMAIL_URL = "https://mail.google.com/";
-const VALID_URLS = [WCA_MAIN_URL, WCA_FORUM_URL, GMAIL_URL].map(url => url + '*');
+const VERSION = "1.0-alpha.1";
+const SITES = {
+    wca_main: "https://www.worldcubeassociation.org/",
+    wca_forum: "https://forum.worldcubeassociation.org/",
+    gmail: "https://mail.google.com/"
+}
+const VALID_URLS = Object.values(SITES).map(url => url + '*');
 const COMMANDS = ["display-regulation"];
 
 const main_div = document.getElementById('main-container');
 const status_text = document.getElementById('status-text');
+const extension_version_p = document.getElementById('extension-version');
+const regulations_version_p = document.getElementById('regulations-version');
 const info_btn = document.getElementById('info-btn');
 const config_btn = document.getElementById('config-btn');
 const config_div = document.getElementById('config-container');
@@ -43,32 +47,41 @@ function displayConfig() {
     }
 }
 
-function changeStatus() {
+function setPopupInfo() {
     chrome.tabs.query({
         active: true,
         currentWindow: true,
         url: VALID_URLS
     })
-        .then((tabs) => {
-            if (tabs.length === 0) {
-                status_text.innerHTML = "Unknown site";
-                return;
-            }
-            const url = tabs[0].url;
-            if (url.includes(GMAIL_URL)) {
-                status_text.innerHTML = "Gmail";
-            } else if (url.includes(WCA_MAIN_URL) || url.includes(WCA_FORUM_URL)) {
-                status_text.innerHTML = "WCA";
-            }
-        })
-        .catch((error) => {
-            status_text.innerHTML = "Error";
-            console.error("Could not read tab URL: " + error);
-        });
+    .then((tabs) => {
+        if (tabs.length === 0) {
+            status_text.textContent = "Unknown site";
+            return;
+        }
+        const url = tabs[0].url;
+        if (url.includes(SITES.gmail)) {
+            status_text.textContent = "Gmail";
+        } else if (url.includes(SITES.wca_main) || url.includes(SITES.wca_forum)) {
+            status_text.textContent = "WCA";
+        }
+    })
+    .catch((error) => {
+        status_text.textContent = "Error";
+        console.error("Could not read tab URL: " + error);
+    });
+
+    // Set information about versions.
+    extension_version_p.textContent = VERSION;
+    chrome.storage.local.get(["regulations_version"]).then((result) => {
+        if (result !== undefined && result.regulations_version !== undefined) {
+            const v = result.regulations_version.split("#");
+            regulations_version_p.textContent = `${v[0]} (${v[1]})`;
+        }
+    });
 }
 
 function popupSetup() {
-    changeStatus();
+    setPopupInfo();
     config_btn.onclick = displayConfig;
 
     chrome.storage.local.get(["display_config"]).then((result) => {
@@ -95,7 +108,6 @@ function popupSetup() {
             });
         }
 
-        // Add event listener to the checkbox.
         value.addEventListener("change", function () {
             chrome.storage.local.set({ [key]: value.checked })
                 .catch(() => {
@@ -115,12 +127,15 @@ function displayRegulation(data) {
     main_div.style.display = 'none';
     config_div.style.display = 'none';
     regulations_div.style.display = 'block';
+
     const guideline_label = data.regulation_label === undefined ? "" : `<b>${data.regulation_label}</b>`;
     const unsafe_HTML = `<a href="${data.regulation_url}">${data.regulation_id}</a>) ${guideline_label} ${data.regulation_content}`;
     regulations_text.innerHTML = DOMPurify.sanitize(unsafe_HTML, {ALLOWED_TAGS: ['a', 'b']});
     // Add target="_blank" to all links.
+    // Also add rel="noreferrer" for security reasons.
     regulations_text.querySelectorAll('a').forEach(link => {
         link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noreferrer');
     });
 }
 

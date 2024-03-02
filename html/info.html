@@ -7,17 +7,55 @@
 </head>
 <body>
     <div class="letter">
-        <hr class="color-line">
+        <div class="image-container">
+            <hr class="color-line">
+            <img src="../img/toolbar-icon.png" alt="Extension icon.">
+            <hr class="color-line">
+        </div>
         <p>Hi,</p>
 
-        <p>Here you have some instructions to use this extension:</p>
+        <p>Thank you for using the WCA Staff Helper extension. Here you have some instructions to use it:</p>
 
-        <ul>
-            <li>Step 1: Install the extension by visiting the Chrome Web Store.</li>
-            <li>Step 2: Once installed, click on the extension icon in your browser toolbar.</li>
-            <li>Step 3: Navigate to the WCA website and log in to your staff account.</li>
-            <li>Step 4: Enjoy the enhanced features and tools provided by WCA Staff Helper!</li>
-        </ul>
+        <table>
+            <tr>
+                <th>Shortcut</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>Ctrl+Shift+Space</td>
+                <td>Link the selection with the long version of the item (i.e. WSAP => WCA Scramble Accountability Policy).</td>
+            </tr>
+            <tr>
+                <td>Ctrl+Shift+Comma</td>
+                <td>Link the selection with the short version of the item (i.e. wsap => WSAP).</td>
+            </tr>
+            <tr>
+                <td>Ctrl+Shift+Period</td>
+                <td>Opens the extension's popup. If you have selected a regulation or a guideline, it will be displayed in the popup (this also works if you click on the extension's icon in the toolbar).</td>
+            </tr>
+        </table>
+
+        <br><p>You can change the key combinations by navigating to chrome://extensions/shortcuts (be careful to avoid conflicts with other extensions).</p>
+
+        <p>Here you have the list of the stuff you can link (the "Text" column represents the text you need to select; case <b>insensitive</b>):</p>
+
+        <!-- Rows defined in scripts/info.js -->
+        <table id="documents">
+            <tr>
+                <th>Item</th>
+                <th>Text</th>
+            </tr>
+        </table>
+
+        <p>For anything related to development, please visit the source code repository <a href="https://github.com/Nanush7/wsh-extension" target="_blank" rel="noreferrer">here</a>.</p>
+        <p>Kind regards,<br>
+            Gennaro.</p>
+
+        <!-- License footer -->
+        <footer>
+            <p>Copyright (C) 2024 Nanush7. The WCA Staff Helper extension is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.txt" target="_blank" rel="noreferrer">GPLv3 License</a>.</p>
+        </footer>
     </div>
+    <script src="../scripts/info.js"></script>
 </body>
 </html>
