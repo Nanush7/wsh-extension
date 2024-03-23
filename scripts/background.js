@@ -73,6 +73,17 @@ async function fetchDocuments() {
     }
 }
 
+async function getOptionsFromStorage(options) {
+    /* Returns undefined on exception. */
+    try {
+        return await chrome.storage.local.get(options);
+    }
+    catch (error) {
+        console.error("Could not read option from storage: " + error);
+    }
+    return undefined;
+}
+
 // --- Set listeners up --- //
 
 chrome.runtime.onInstalled.addListener((details) => {
@@ -102,30 +113,31 @@ chrome.runtime.onInstalled.addListener((details) => {
 });
 
 chrome.runtime.onStartup.addListener(() => {
-    chrome.storage.local.get(["regulations", "documents"])
-    .then((result) => {
-        if (result.regulations === undefined || result.documents === undefined) {
-            fetchDocuments();
-        }
-    })
-    .catch(() => {
+    const result = getOptionsFromStorage(["regulations", "documents"]);
+    if (result === undefined || result.regulations === undefined || result.documents === undefined) {
         fetchDocuments();
-    });
+    }
 });
 
 chrome.commands.onCommand.addListener((command) => {
     sendToContentScript(command);
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (sender.id === chrome.runtime.id && message.command === "inject-wsh-event") {
-        let status;
-        if (injectWSHEvent(sender.tab.id)) {
-            status = 0;
-        } else {
-            status = 1;
-        }
-        sendResponse({status: status});
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+    if (sender.id !== chrome.runtime.id) return;
+    switch (message.command) {
+        case "inject-wsh-event":
+            let status;
+            if (injectWSHEvent(sender.tab.id)) {
+                status = 0;
+            } else {
+                status = 1;
+            }
+            sendResponse({status: status});
+            break;
+        default:
+            // Ignore.
+            break;
     }
 });
 
@@ -137,14 +149,3 @@ chrome.storage.onChanged.addListener((changes, area) => {
         }
     }
 });
-
-// TODO: Inyectar content script después de activar la extensión.
-/*
-// background.js
-chrome.action.onClicked.addListener((tab) => {
-  chrome.scripting.executeScript({
-    target: {tabId: tab.id},
-    files: ['content.js']
-  });
-});
-*/

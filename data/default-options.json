@@ -1,4 +1,4 @@
 {
     "enabled": true,
-    "display_detected_element": false
+    "catch_links": false
 }

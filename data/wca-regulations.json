@@ -1,6 +1,6 @@
 [
   {
-    "version": "2024-01-01#1"
+    "version": "2024-01-01#2"
   },
   {
     "class": "regulation",
@@ -23,7 +23,7 @@
   {
     "class": "regulation",
     "id": "1c1",
-    "content_html": "The WCA Delegate must ensure that the competition follows the <a href=\"https://www.worldcubeassociation.org/documents/policies/external/Scramble%20Accountability.pdf\">WCA Scramble Accountability Policy</a>.",
+    "content_html": "The WCA Delegate must ensure that the competition follows the <a href=\"https://documents.worldcubeassociation.org/documents/policies/external/Scramble%20Accountability.pdf\">WCA Scramble Accountability Policy</a>.",
     "url": "/regulations/#1c1"
   },
   {
@@ -311,7 +311,7 @@
   {
     "class": "regulation",
     "id": "2j3",
-    "content_html": "Specific completed attempts may be disqualified under the circumstances described in <a href=\"https://www.worldcubeassociation.org/regulations/#2k\">Regulation 2k</a>, only if the relevant incident ocurred during the attempt.",
+    "content_html": "Specific completed attempts may be disqualified under the circumstances described in <a href=\"https://www.worldcubeassociation.org/regulations/#2k\">Regulation 2k</a>, only if the relevant incident occurred during the attempt.",
     "url": "/regulations/#2j3"
   },
   {
@@ -533,7 +533,7 @@
   {
     "class": "regulation",
     "id": "3h4a",
-    "content_html": "Customs &quot;inserts&quot; (the same shape and size as the traditional paper inserts) are permitted, at the discretion of the WCA Delegate. The inserts must have a clear indication of 12 o'clock that matches the original inserts.",
+    "content_html": "Custom &quot;inserts&quot; (the same shape and size as the traditional paper inserts) are permitted, at the discretion of the WCA Delegate. The inserts must have a clear indication of 12 o'clock that matches the original inserts.",
     "url": "/regulations/#3h4a"
   },
   {
@@ -799,6 +799,12 @@
     "id": "4g1b",
     "content_html": "For the 5x5x5 Cube, the scrambler should correct the puzzle state. If correcting the puzzle state would cause a severe detriment to the schedule, it is not necessary to correct it, at the discretion of the WCA Delegate.",
     "url": "/regulations/#4g1b"
+  },
+  {
+    "class": "regulation",
+    "id": "4g2",
+    "content_html": "For Multi-Blind Solving, after scrambling all the cubes, the scrambler must verify there are no duplicate scrambles.",
+    "url": "/regulations/#4g2"
   },
   {
     "class": "regulation",
@@ -3092,13 +3098,6 @@
     "content_html": "If the WCA Delegate generates any additional scramble sequences during the competition, the scramble sequences must be saved.",
     "url": "/regulations/guidelines.html#4f++",
     "guideline_label": "REMINDER"
-  },
-  {
-    "class": "regulation",
-    "id": "4g+",
-    "content_html": "For Multi-Blind Solving, after scrambling all the cubes, the scrambler must verify there are no duplicate scrambles.",
-    "url": "/regulations/guidelines.html#4g+",
-    "guideline_label": "RECOMMENDATION"
   },
   {
     "class": "regulation",

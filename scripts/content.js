@@ -1,4 +1,5 @@
 const WCA_MAIN_URL = "https://www.worldcubeassociation.org/";
+const WCA_REGULATION_HASHED_URL = "https://www.worldcubeassociation.org/regulations/#";
 const WCA_FORUM_URL = "https://forum.worldcubeassociation.org/";
 const GMAIL_URL = "https://mail.google.com/";
 const PERSON_RELATIVE_URL = "persons/";
@@ -13,22 +14,27 @@ console.log = function (message) {
     consoleLog("[WCA Staff Helper] " + message);
 }
 
-async function fetchDocuments() {
-    // Get regulations from storage.
-    if (regulations !== null && documents !== null) return true;
+async function getOptionsFromStorage(options) {
+    /* Returns undefined on exception. */
     try {
-        const result = await chrome.storage.local.get(["regulations", "documents"]);
-        if (result.regulations !== undefined && result.documents !== undefined) {
-            regulations = await result.regulations;
-            documents = await result.documents;
-        } else {
-            alert("Regulations and document data not found. Try restaring your browser.");
-            stop_error = true;
-            return false;
-        }
+        return await chrome.storage.local.get(options);
     }
     catch (error) {
-        alert("Could not get regulations and documents data from storage: " + error + ". Try restaring your browser.");
+        console.error("Could not read option from storage: " + error);
+    }
+    return undefined;
+}
+
+async function fetchDocuments() {
+    /* Gets regulations and documents from storage. */
+    if (regulations !== null && documents !== null) return true;
+
+    const result = await getOptionsFromStorage(["regulations", "documents"]);
+    if (result !== undefined && result.regulations !== undefined && result.documents !== undefined) {
+        regulations = result.regulations;
+        documents = result.documents;
+    } else {
+        alert("Regulations and document data not found. Try restaring your browser.");
         stop_error = true;
         return false;
     }
@@ -189,6 +195,11 @@ function getRegulationMessage() {
 
 // --- Setup and message handling --- //
 
+async function sendCommand(command) {
+    /* Send command and get response */
+    return await chrome.runtime.sendMessage({command: command});
+}
+
 let regulations = null;
 let documents = null;
 let stop_error = false;
@@ -198,9 +209,8 @@ let enabled;
 chrome.runtime.onMessage.addListener(
     async function (message, sender, sendResponse) {
         // Check if the message came from the extension itself.
-        if (sender.id !== chrome.runtime.id || stop_error) {
-            return;
-        }
+        if (sender.id !== chrome.runtime.id || stop_error) return;
+
         switch (message.command) {
             case "display-regulation":
                 if (enabled) {
@@ -233,7 +243,7 @@ chrome.runtime.onMessage.addListener(
 
 async function setUpWCAMain() {
     if (document.getElementsByClassName("EasyMDEContainer").length === 0) return;
-    const response = await chrome.runtime.sendMessage({command: "inject-wsh-event"});
+    const response = await sendCommand("inject-wsh-event");
     if (response && response.status !== 0) {
         console.error("Could not inject WSHReplaceEvent");
         stop_error = true;
@@ -242,18 +252,28 @@ async function setUpWCAMain() {
 
 async function setUp() {
     // Check if the extension is enabled.
-    await chrome.storage.local.get(["enabled"]).then((result) => {
-        if (result !== undefined) {
-            enabled = result.enabled;
-        } else {
-            enabled = true;
-            chrome.storage.local.set({enabled: true});
-        }
-    }).catch((error) => {
-        console.error("Could not get enabled status from storage: " + error);
-        // We leave it disabled just in case.
+    const result = await getOptionsFromStorage(["enabled"]);
+    if (result !== undefined && result.enabled !== undefined) {
+        enabled = result.enabled;
+    } else {
         enabled = false;
-    });
+        chrome.storage.local.set({enabled: false});
+    }
+
+    const a_elements = document.getElementsByTagName("a");
+    for (let a of a_elements) {
+        if (a.href.startsWith(WCA_REGULATION_HASHED_URL)) {
+            a.addEventListener("click", async (click_event) => {
+                if (!enabled) return;
+
+                const result = await getOptionsFromStorage(["catch_links"]);
+                if (result !== undefined && result.catch_links === true) {
+                    // TODO.
+                    click_event.preventDefault();
+                }
+            });
+        }
+    }
 
     // Per-site setup.
     if (enabled && window.location.href.startsWith(WCA_MAIN_URL)) {

@@ -16,7 +16,8 @@ const config_btn = document.getElementById('config-btn');
 const config_div = document.getElementById('config-container');
 
 const options = {
-    enabled: document.getElementById('conf-enabled')
+    enabled: document.getElementById('conf-enabled'),
+    catch_links: document.getElementById('conf-catch-links')
 };
 
 // --- Utils --- //
@@ -140,8 +141,6 @@ function displayRegulation(data) {
 }
 
 // --- Run the setup --- //
-// TODO: Mostrar versión del reglamento.
-
 
 sendToContentScript("display-regulation").then((response) => {
     if (response !== undefined && response.message.status === 0) {
