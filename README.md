@@ -20,7 +20,7 @@ This extension works on the following sites (and it does **not** have access to 
 ### Features
 
 You can do the following with keyboard shortcuts (see the instructions below):
-* Display the wording of a regulation or guideline in the extension popup.
+* Display the wording of a regulation or guideline in a popup.
 * Link WCA Regulations and Guidelines.
 * Link WCA Documents.
 * Link Incident Logs.
@@ -32,6 +32,8 @@ I am not a JavaScript developer and definitely not a frontend developer in gener
 
 You are more than welcome to propose changes to make the code better, but refrain from making any harsh comments if you ended up with vomit all over your computer, I did what I could to warn you.
 
+Joking aside, if you want to improve anything, including HTML and CSS, please let me know. At some point I will move to TypeScript.
+
 ### Privacy
 
 This extension works locally/offline and does not transmit any kind of data over the Internet. This may change if a new feature needs to perform web requests (in such case, this section of the README will be updated).
@@ -40,8 +42,11 @@ This extension works locally/offline and does not transmit any kind of data over
 
 ## Supported Web Browsers
 
-![Static Badge](https://img.shields.io/badge/browser-Chromium-blue?style=for-the-badge&logo=google-chrome)
-![Static Badge](https://img.shields.io/badge/browser-Brave-orange?style=for-the-badge&logo=brave)
+![Static Badge](https://img.shields.io/badge/Google%20Chrome-Yes-blue?style=for-the-badge&logo=google-chrome)
+![Static Badge](https://img.shields.io/badge/Brave-Yes-orange?style=for-the-badge&logo=brave)
+
+![Static Badge](https://img.shields.io/badge/Safari-No-blue?style=for-the-badge&logo=safari)
+![Static Badge](https://img.shields.io/badge/Firefox-No-orange?style=for-the-badge&logo=firefox&label=Firefox)
 
 ## Chromium Based Browsers (Chrome, Brave, etc.)
 

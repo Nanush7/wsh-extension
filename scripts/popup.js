@@ -1,12 +1,17 @@
-const VERSION = "1.0-alpha.1";
+const VERSION = "1.0";
+
+// --- URLs --- //
 const SITES = {
     wca_main: "https://www.worldcubeassociation.org/",
     wca_forum: "https://forum.worldcubeassociation.org/",
     gmail: "https://mail.google.com/"
 }
 const VALID_URLS = Object.values(SITES).map(url => url + '*');
+
+// --- Allowed commands --- //
 const COMMANDS = ["display-regulation"];
 
+// --- DOM elements --- //
 const main_div = document.getElementById('main-container');
 const status_text = document.getElementById('status-text');
 const extension_version_p = document.getElementById('extension-version');
@@ -14,7 +19,8 @@ const regulations_version_p = document.getElementById('regulations-version');
 const info_btn = document.getElementById('info-btn');
 const config_btn = document.getElementById('config-btn');
 const config_div = document.getElementById('config-container');
-
+const regulations_div = document.getElementById('regulations-container');
+const regulations_text = document.getElementById('regulations-text');
 const options = {
     enabled: document.getElementById('conf-enabled'),
     catch_links: document.getElementById('conf-catch-links')
@@ -121,9 +127,6 @@ function popupSetup() {
 
 // --- Display regulation --- //
 function displayRegulation(data) {
-    const regulations_div = document.getElementById('regulations-container');
-    const regulations_text = document.getElementById('regulations-text');
-
     // Hide the main and config divs and show the regulation div.
     main_div.style.display = 'none';
     config_div.style.display = 'none';

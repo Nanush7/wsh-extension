@@ -1,13 +1,63 @@
+// --- Constants --- //
+
+// -- URLs -- //
 const WCA_MAIN_URL = "https://www.worldcubeassociation.org/";
-const WCA_REGULATION_HASHED_URL = "https://www.worldcubeassociation.org/regulations/#";
+const WCAREGS_URL = "https://wcaregs.netlify.app/";
 const WCA_FORUM_URL = "https://forum.worldcubeassociation.org/";
 const GMAIL_URL = "https://mail.google.com/";
+const GOOLE_SAFE_REDIRECT_URL = "https://www.google.com/url?q=";
+const REGULATIONS_RELATIVE_URL = "regulations/";
 const PERSON_RELATIVE_URL = "persons/";
 const INCIDENT_LOG_RELATIVE_URL = "incidents/";
+
+// -- Internal commands -- //
 const COMMANDS = ["short-replace", "long-replace", "stop-error"];
-const REGULATION_REGEX = /\b(([1-9][0-9]?[a-z]([1-9][0-9]?[a-z]?)?)|([a-z][1-9][0-9]?([a-z]([1-9][0-9]?)?)?))\b\+{0,10}/i;
+
+// -- Regex -- //
+const REGULATION_REGEX = /(([1-9][0-9]?[a-z]([1-9][0-9]?[a-z]?)?)|([a-z][1-9][0-9]?([a-z]([1-9][0-9]?)?)?))\b\+{0,10}/i;
 const PERSON_REGEX = /\b[1-9]\d{3}[a-z]{4}\d{2}\b/i
 const INCIDENT_LOG_REGEX = /\bil#[1-9]\d{0,5}\b/i
+
+// -- Styles -- //
+const BOX_NODE_STYLE = `
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    z-index: 1000;
+    padding: 20px;
+    font-family: 'DejaVu Sans', 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: black;
+    background-color: white;
+    border: 4px solid;
+    border-color: #3d9c46 #e7762a #304a96 #e02826;
+    box-shadow: 0 0 20px;
+    overflow: auto;
+    overflow-wrap: break-word;
+    max-height: 25%;
+    max-width: 50%;
+`;
+
+// --- Global variables --- //
+let regulations = null;
+let documents = null;
+let stop_error = false;
+let setup_done = false;
+let regulation_box = {
+    div_node: null,
+    p_node: null,
+    pin_node: null,
+    active: false,
+    timer: null,
+    pinned: false
+
+};
+let enabled;
+let link_catching_enabled;
+
+// --- Utils --- //
 
 const consoleLog = console.log
 console.log = function (message) {
@@ -20,7 +70,7 @@ async function getOptionsFromStorage(options) {
         return await chrome.storage.local.get(options);
     }
     catch (error) {
-        console.error("Could not read option from storage: " + error);
+        console.error(`Could not read option/s [${options}] from storage. ${error}`);
     }
     return undefined;
 }
@@ -147,8 +197,7 @@ function replace(mode, url) {
 
     const selected_range = selected_text.getRangeAt(0);
     const selected_string = selected_text.toString().trim().toLowerCase();
-    let link_text;
-    let link_url;
+    let link_text, link_url;
 
     for (func of [getWCADocument, getRegulationOrGuideline, getPerson, getIncidentLog]) {
         [link_text, link_url] = func(selected_string, mode);
@@ -193,18 +242,66 @@ function getRegulationMessage() {
     return message;
 }
 
-// --- Setup and message handling --- //
+async function displayRegulationBox(original_url) {
+    /* Display the regulation in a box/popup. */
+    // First we get the regulation data.
 
-async function sendCommand(command) {
-    /* Send command and get response */
-    return await chrome.runtime.sendMessage({command: command});
+    // We need to deal with Google's safe redirect urls:
+    let url = original_url;
+    if (original_url.startsWith(GOOLE_SAFE_REDIRECT_URL)) {
+        // The Google safe redirect url feature changes "#" to "%23" and "+" to "%2B",
+        // which breaks the regex.
+        url = original_url.split("%23")[1].replaceAll("%2B", "+");
+    }
+    
+    let div_node = regulation_box.div_node;
+    let p_node = regulation_box.p_node;
+    let unsafe_HTML;
+
+    const reg_num = url.match(REGULATION_REGEX);
+    let regulation = undefined;
+    if (reg_num !== undefined && reg_num !== null) {
+        regulation = regulations[reg_num[0].toLowerCase()];
+    }
+    
+    if (regulation !== undefined) {
+        const guideline_label = regulation.guideline_label === undefined ? "" : `<b>${regulation.guideline_label}</b>`;
+        unsafe_HTML = `<a id="reg-num" href="${WCA_MAIN_URL}${regulation.url.substring(1)}">${regulation.id}</a>) ${guideline_label} ${regulation.content_html}`;
+    } else {
+        // If the regulation is not found, display the original link.
+        unsafe_HTML = `Something went wrong. If you want to open the link, disable the link catching option (safer, requires tab reload) or follow the original link (be careful!): <a href="${original_url}">${original_url}</a>`;
+    }
+
+    // Now we display the regulation.
+    p_node.innerHTML = DOMPurify.sanitize(unsafe_HTML, {ALLOWED_TAGS: ['a', 'b']});
+    div_node.querySelectorAll('a').forEach(link => {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noreferrer');
+        link.style.color = "#e64503";
+    });
+
+    // Clear the timer if already active.
+    if (regulation_box.active && !regulation_box.pinned) {
+        clearTimeout(regulation_box.timer);
+    }
+    div_node.style.display = "block";
+    regulation_box.active = true;
+    // If the box is pinned, we don't set a timer to close it.
+    if (!regulation_box.pinned) {
+        regulation_box.timer = setTimeout(() => {
+            div_node.style.display = "none";
+            regulation_box.active = false;
+            regulation_box.timer = null;
+        }, 15000);
+    }
 }
 
-let regulations = null;
-let documents = null;
-let stop_error = false;
-let setup_done = false;
-let enabled;
+// --- Setup and message handling --- //
+
+async function sendCommand(command, params={}) {
+    /* Send command and get response */
+    return await chrome.runtime.sendMessage({command: command, params: params});
+}
 
 chrome.runtime.onMessage.addListener(
     async function (message, sender, sendResponse) {
@@ -223,8 +320,8 @@ chrome.runtime.onMessage.addListener(
                 break;
             case "enable":
                 enabled = true;
-                if (!setup_done && window.location.href.startsWith(WCA_MAIN_URL)) {
-                    await setUpWCAMain();
+                if (!setup_done) {
+                    await lazySetUp();
                     setup_done = true;
                 }
                 break;
@@ -250,34 +347,109 @@ async function setUpWCAMain() {
     }
 }
 
+async function setUpLinkCatching() {
+    // Create the box node.
+    let box_node = document.createElement("div");
+    box_node.style.cssText = BOX_NODE_STYLE;
+
+    // Create the node that will display the regulation.
+    let p_node = document.createElement("p");
+    box_node.appendChild(p_node);
+
+    // Create the close button.
+    let x_node = document.createElement("span");
+    let x_img = document.createElement("img");
+    const close_icon = await sendCommand("get-internal-url", {path: "img/close.svg"});
+    x_img.src = close_icon.url;
+    x_img.alt = "Close";
+    x_img.style.cssText = "width: 28px; height: 28px; cursor: pointer;";
+    x_node.appendChild(x_img);
+    x_node.addEventListener("click", () => {
+        box_node.style.display = "none";
+        regulation_box.active = false;
+        clearTimeout(regulation_box.timer);
+        regulation_box.timer = null;
+        regulation_box.pinned = false;
+        regulation_box.pin_node.style.display = "inline-block";
+    });
+    box_node.appendChild(x_node);
+
+    // Create the pin button.
+    let pin_node = document.createElement("span");
+    let pin_img = document.createElement("img");
+    const pin_icon = await sendCommand("get-internal-url", {path: "img/pin.svg"});
+    pin_img.src = pin_icon.url;
+    pin_img.alt = "Pin";
+    pin_img.style.cssText = "width: 28px; height: 28px; cursor: pointer;";
+    pin_node.appendChild(pin_img);
+    pin_node.style.display = "inline-block";
+    pin_node.addEventListener("click", () => {
+        clearTimeout(regulation_box.timer);
+        regulation_box.timer = null;
+        regulation_box.pinned = true;
+        pin_node.style.display = "none";
+    });
+    box_node.appendChild(pin_node);
+
+    regulation_box.div_node = box_node;
+    regulation_box.p_node = p_node;
+    regulation_box.pin_node = pin_node;
+    document.body.appendChild(box_node);
+
+    // Catch links to regulations.
+    document.addEventListener("click", async (click_event) => {
+        const clicked_element = click_event.target;
+        const wl = window.location.href;
+
+        // We want to open the link normally if:
+        // - The extension is disabled.
+        // - There was an error.
+        // - The link catching option is disabled.
+        // - The clicked element is not a link.
+        // - We are already in the regulations/wcaregs page.
+        // - The clicked element is the regulation number in the box.
+        // - The link does not point to the regulations/wcaregs page (covered in the next).
+        if (!enabled || stop_error || !link_catching_enabled || clicked_element.tagName !== 'A' ||
+        wl.startsWith(WCA_MAIN_URL + REGULATIONS_RELATIVE_URL) || wl.startsWith(WCAREGS_URL) ||
+        (regulation_box.div_node.contains(clicked_element) && clicked_element.id === "reg-num")) {
+            return;
+        }
+
+        if (clicked_element.href.includes(WCA_MAIN_URL + REGULATIONS_RELATIVE_URL) || clicked_element.href.includes(WCAREGS_URL)) {
+            // Do not follow the link.
+            click_event.preventDefault();
+            displayRegulationBox(clicked_element.href);
+        }
+    });
+}
+
+async function lazySetUp() {
+    await fetchDocuments();
+    if (window.location.href.startsWith(WCA_MAIN_URL)) {
+        setUpWCAMain();
+    }
+    setUpLinkCatching();
+}
+
 async function setUp() {
     // Check if the extension is enabled.
-    const result = await getOptionsFromStorage(["enabled"]);
-    if (result !== undefined && result.enabled !== undefined) {
+    enabled = false;
+    link_catching_enabled = false;
+    const result = await getOptionsFromStorage(["enabled", "catch_links"]);
+    if (result === undefined) {
+        chrome.storage.local.set({enabled: false, catch_links: false});
+        return;
+    }
+    if (result.enabled !== undefined) {
         enabled = result.enabled;
-    } else {
-        enabled = false;
-        chrome.storage.local.set({enabled: false});
+    }
+    if (result.catch_links !== undefined) {
+        link_catching_enabled = result.catch_links;
     }
 
-    const a_elements = document.getElementsByTagName("a");
-    for (let a of a_elements) {
-        if (a.href.startsWith(WCA_REGULATION_HASHED_URL)) {
-            a.addEventListener("click", async (click_event) => {
-                if (!enabled) return;
-
-                const result = await getOptionsFromStorage(["catch_links"]);
-                if (result !== undefined && result.catch_links === true) {
-                    // TODO.
-                    click_event.preventDefault();
-                }
-            });
-        }
-    }
-
-    // Per-site setup.
-    if (enabled && window.location.href.startsWith(WCA_MAIN_URL)) {
-        await setUpWCAMain();
+    // Lazy setup.
+    if (enabled) {
+        await lazySetUp();
         setup_done = true;
     }
 }

@@ -14,7 +14,7 @@
         "https://forum.worldcubeassociation.org/*",
         "https://mail.google.com/*"
     ],
-      "js": ["scripts/content.js"]
+      "js": ["scripts/purify.min.js", "scripts/content.js"]
     }
   ],
   "background": {
@@ -28,6 +28,19 @@
   "permissions": [
     "storage",
     "scripting"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "img/close.svg",
+        "img/pin.svg"
+      ],
+      "matches": [
+        "https://www.worldcubeassociation.org/*",
+        "https://forum.worldcubeassociation.org/*",
+        "https://mail.google.com/*"
+      ]
+    }
   ],
   "commands": {
     "short-replace": {

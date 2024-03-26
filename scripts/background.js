@@ -79,7 +79,7 @@ async function getOptionsFromStorage(options) {
         return await chrome.storage.local.get(options);
     }
     catch (error) {
-        console.error("Could not read option from storage: " + error);
+        console.error(`Could not read option/s [${options}] from storage. ${error}`);
     }
     return undefined;
 }
@@ -135,6 +135,10 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
             }
             sendResponse({status: status});
             break;
+        case "get-internal-url":
+            let url = undefined;
+            if (message.params !== undefined) url = chrome.runtime.getURL(message.params.path);
+            sendResponse({url: url});
         default:
             // Ignore.
             break;
