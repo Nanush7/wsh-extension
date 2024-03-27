@@ -35,7 +35,11 @@ function sendToContentScript(command) {
             if (tab !== undefined) {
                 return await chrome.tabs.sendMessage(tab.id, {command: command, url: tab.url})
                 .catch((error) => {
-                    console.error("Could not send message to content script: " + error);
+                    if (error.message !== undefined && error.message.includes("Receiving end does not exist")) {
+                        console.warn("Content script not found, try reloading the page.");
+                    } else {
+                        console.error("Could not send message to content script: " + error);
+                    }
                 });
             }
         })();

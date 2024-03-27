@@ -362,7 +362,7 @@ async function setUpLinkCatching() {
     const close_icon = await sendCommand("get-internal-url", {path: "img/close.svg"});
     x_img.src = close_icon.url;
     x_img.alt = "Close";
-    x_img.style.cssText = "width: 28px; height: 28px; cursor: pointer;";
+    x_img.style.cssText = "width: 28px; height: 28px; cursor: pointer; float: inline-end;";
     x_node.appendChild(x_img);
     x_node.addEventListener("click", () => {
         box_node.style.display = "none";
@@ -370,7 +370,7 @@ async function setUpLinkCatching() {
         clearTimeout(regulation_box.timer);
         regulation_box.timer = null;
         regulation_box.pinned = false;
-        regulation_box.pin_node.style.display = "inline-block";
+        regulation_box.pin_node.style.display = "block";
     });
     box_node.appendChild(x_node);
 
@@ -380,9 +380,9 @@ async function setUpLinkCatching() {
     const pin_icon = await sendCommand("get-internal-url", {path: "img/pin.svg"});
     pin_img.src = pin_icon.url;
     pin_img.alt = "Pin";
-    pin_img.style.cssText = "width: 28px; height: 28px; cursor: pointer;";
+    pin_img.style.cssText = "width: 28px; height: 28px; cursor: pointer; float: inline-end;";
     pin_node.appendChild(pin_img);
-    pin_node.style.display = "inline-block";
+    pin_node.style.display = "block";
     pin_node.addEventListener("click", () => {
         clearTimeout(regulation_box.timer);
         regulation_box.timer = null;
