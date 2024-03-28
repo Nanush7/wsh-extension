@@ -52,7 +52,7 @@ This extension works locally/offline and does not transmit any kind of data over
 
 To install the unpacked Chrome extension, follow these steps:
 
-1. Clone or download the repository to your local machine.
+1. Download the latest version of the source code [here](https://github.com/Nanush7/wsh-extension/releases).
 2. Open your Chromium based browser and go to the Extensions page by typing `chrome://extensions` in the address bar.
 3. Enable the "Developer mode" toggle switch located at the top right corner of the page.
 4. Click on the "Load unpacked" button.
