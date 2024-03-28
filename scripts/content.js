@@ -354,6 +354,7 @@ async function setUpLinkCatching() {
 
     // Create the node that will display the regulation.
     let p_node = document.createElement("p");
+    p_node.style.cssText = "margin: 0";
     box_node.appendChild(p_node);
 
     // Create the close button.
