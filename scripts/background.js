@@ -91,12 +91,13 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     fetch(chrome.runtime.getURL(DEFAULT_OPTIONS_JSON))
     .then(response => response.json())
-    .then(options => {
-        chrome.storage.local.get(Object.keys(options), (result) => {
+    .then(json_options => {
+        const json_option_keys = Object.keys(json_options);
+        chrome.storage.local.get(json_option_keys, (stored_options) => {
             let undefined_options = {};
-            for (let option of Object.keys(options)) {
-                if (result[option] === undefined) {
-                    undefined_options[option] = options[option];
+            for (let jok of json_option_keys) {
+                if (stored_options[jok] === undefined) {
+                    undefined_options[jok] = json_options[jok];
                 }
             }
             if (Object.keys(undefined_options).length > 0) {
@@ -139,6 +140,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
             let url = undefined;
             if (message.params !== undefined) url = chrome.runtime.getURL(message.params.path);
             sendResponse({url: url});
+            break;
         default:
             // Ignore.
             break;

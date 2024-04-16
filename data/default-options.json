@@ -1,4 +1,5 @@
 {
     "enabled": true,
-    "catch_links": false
+    "catch_links": false,
+    "justify-box-text": false
 }

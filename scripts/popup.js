@@ -22,8 +22,9 @@ const config_div = document.getElementById('config-container');
 const regulations_div = document.getElementById('regulations-container');
 const regulations_text = document.getElementById('regulations-text');
 const options = {
-    enabled: document.getElementById('conf-enabled'),
-    catch_links: document.getElementById('conf-catch-links')
+    "enabled": document.getElementById('conf-enabled'),
+    "catch-links": document.getElementById('conf-catch-links'),
+    "justify-box-text":  document.getElementById('conf-justify-box-text')
 };
 
 // --- Utils --- //
@@ -108,13 +109,14 @@ function popupSetup() {
 
     // Add event handlers for the checkboxes.
     for (let [key, value] of Object.entries(options)) {
+        // TODO: Improve.
         if (value === undefined) {
             console.error("Could not find the option: " + key);
         } else {
             // Set saved status for the option.
-            chrome.storage.local.get([key]).then((result) => {
-                if (result[key] !== undefined) {
-                    value.checked = result[key];
+            chrome.storage.local.get([key]).then((stored_options) => {
+                if (stored_options[key] !== undefined) {
+                    value.checked = stored_options[key];
                 }
             });
         }

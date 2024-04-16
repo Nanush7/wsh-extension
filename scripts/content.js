@@ -5,7 +5,7 @@ const WCA_MAIN_URL = "https://www.worldcubeassociation.org/";
 const WCAREGS_URL = "https://wcaregs.netlify.app/";
 const WCA_FORUM_URL = "https://forum.worldcubeassociation.org/";
 const GMAIL_URL = "https://mail.google.com/";
-const GOOLE_SAFE_REDIRECT_URL = "https://www.google.com/url?q=";
+const GOOGLE_SAFE_REDIRECT_URL = "https://www.google.com/url?q=";
 const REGULATIONS_RELATIVE_URL = "regulations/";
 const PERSON_RELATIVE_URL = "persons/";
 const INCIDENT_LOG_RELATIVE_URL = "incidents/";
@@ -17,6 +17,7 @@ const COMMANDS = ["short-replace", "long-replace", "stop-error"];
 const REGULATION_REGEX = /(([1-9][0-9]?[a-z]([1-9][0-9]?[a-z]?)?)|([a-z][1-9][0-9]?([a-z]([1-9][0-9]?)?)?))\b\+{0,10}/i;
 const PERSON_REGEX = /\b[1-9]\d{3}[a-z]{4}\d{2}\b/i
 const INCIDENT_LOG_REGEX = /\bil#[1-9]\d{0,5}\b/i
+const CATCH_LINKS_REGEX = new RegExp(`(${WCA_MAIN_URL}${REGULATIONS_RELATIVE_URL}(guidelines.html)?|${WCAREGS_URL})(#|%23)`, "i");
 
 // -- Styles -- //
 const BOX_NODE_STYLE = `
@@ -51,11 +52,11 @@ let regulation_box = {
     pin_node: null,
     active: false,
     timer: null,
-    pinned: false
-
+    pinned: false,
+    justified: false
 };
-let enabled;
-let link_catching_enabled;
+let enabled = false;
+let link_catching_enabled = false;
 
 // --- Utils --- //
 
@@ -199,7 +200,7 @@ function replace(mode, url) {
     const selected_string = selected_text.toString().trim().toLowerCase();
     let link_text, link_url;
 
-    for (func of [getWCADocument, getRegulationOrGuideline, getPerson, getIncidentLog]) {
+    for (let func of [getWCADocument, getRegulationOrGuideline, getPerson, getIncidentLog]) {
         [link_text, link_url] = func(selected_string, mode);
         if (link_url) break;
     }
@@ -248,7 +249,7 @@ async function displayRegulationBox(original_url) {
 
     // We need to deal with Google's safe redirect urls:
     let url = original_url;
-    if (original_url.startsWith(GOOLE_SAFE_REDIRECT_URL)) {
+    if (original_url.startsWith(GOOGLE_SAFE_REDIRECT_URL)) {
         // The Google safe redirect url feature changes "#" to "%23" and "+" to "%2B",
         // which breaks the regex.
         url = original_url.split("%23")[1].replaceAll("%2B", "+");
@@ -348,13 +349,14 @@ async function setUpWCAMain() {
 }
 
 async function setUpLinkCatching() {
+    // First we create the DOM elements.
     // Create the box node.
     let box_node = document.createElement("div");
     box_node.style.cssText = BOX_NODE_STYLE;
 
     // Create the node that will display the regulation.
     let p_node = document.createElement("p");
-    p_node.style.cssText = "margin: 0";
+    p_node.style.cssText = `margin: 0; text-align: ${regulation_box.justified ? "justify" : "unset"}`;
     box_node.appendChild(p_node);
 
     // Create the close button.
@@ -409,17 +411,17 @@ async function setUpLinkCatching() {
         // - The clicked element is not a link.
         // - We are already in the regulations/wcaregs page.
         // - The clicked element is the regulation number in the box.
-        // - The link does not point to the regulations/wcaregs page (covered in the next).
-        if (!enabled || stop_error || !link_catching_enabled || clicked_element.tagName !== 'A' ||
+        // - The link does not point to the regulations/wcaregs page with a "#" (covered in the next if).
+        if (!enabled || stop_error || !link_catching_enabled || clicked_element.tagName !== "A" ||
         wl.startsWith(WCA_MAIN_URL + REGULATIONS_RELATIVE_URL) || wl.startsWith(WCAREGS_URL) ||
         (regulation_box.div_node.contains(clicked_element) && clicked_element.id === "reg-num")) {
             return;
         }
 
-        if (clicked_element.href.includes(WCA_MAIN_URL + REGULATIONS_RELATIVE_URL) || clicked_element.href.includes(WCAREGS_URL)) {
+        if (CATCH_LINKS_REGEX.test(clicked_element.href)) {
             // Do not follow the link.
             click_event.preventDefault();
-            displayRegulationBox(clicked_element.href);
+            await displayRegulationBox(clicked_element.href);
         }
     });
 }
@@ -436,16 +438,25 @@ async function setUp() {
     // Check if the extension is enabled.
     enabled = false;
     link_catching_enabled = false;
-    const result = await getOptionsFromStorage(["enabled", "catch_links"]);
-    if (result === undefined) {
-        chrome.storage.local.set({enabled: false, catch_links: false});
+    const stored_options = await getOptionsFromStorage(["enabled", "catch-links", "justify-box-text"]);
+    if (stored_options === undefined) {
+        stop_error = true;
         return;
     }
-    if (result.enabled !== undefined) {
-        enabled = result.enabled;
+
+    if (stored_options["enabled"] === undefined) {
+        stop_error = true;
+        console.error("Could not get the enabled option from storage.")
+        return;
     }
-    if (result.catch_links !== undefined) {
-        link_catching_enabled = result.catch_links;
+    enabled = stored_options["enabled"];
+
+    if (stored_options["catch-links"] !== undefined) {
+        link_catching_enabled = stored_options["catch-links"];
+    }
+
+    if (stored_options["justify-box-text"] !== undefined) {
+        regulation_box.justified = stored_options["justify-box-text"];
     }
 
     // Lazy setup.
