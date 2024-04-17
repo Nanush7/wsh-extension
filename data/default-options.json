@@ -1,5 +1,7 @@
 {
     "enabled": true,
     "catch_links": false,
-    "justify-box-text": false
+    "justify-box-text": false,
+    "box-font-size": 14,
+    "box-timeout": 15
 }

@@ -19,41 +19,21 @@ const PERSON_REGEX = /\b[1-9]\d{3}[a-z]{4}\d{2}\b/i
 const INCIDENT_LOG_REGEX = /\bil#[1-9]\d{0,5}\b/i
 const CATCH_LINKS_REGEX = new RegExp(`(${WCA_MAIN_URL}${REGULATIONS_RELATIVE_URL}(guidelines.html)?|${WCAREGS_URL})(#|%23)`, "i");
 
-// -- Styles -- //
-const BOX_NODE_STYLE = `
-    display: none;
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -10%);
-    z-index: 1000;
-    padding: 20px;
-    font-family: 'DejaVu Sans', 'Open Sans', sans-serif;
-    font-size: 16px;
-    color: black;
-    background-color: white;
-    border: 4px solid;
-    border-color: #3d9c46 #e7762a #304a96 #e02826;
-    box-shadow: 0 0 20px;
-    overflow: auto;
-    overflow-wrap: break-word;
-    max-height: 25%;
-    max-width: 50%;
-`;
-
 // --- Global variables --- //
 let regulations = null;
 let documents = null;
 let stop_error = false;
 let setup_done = false;
 let regulation_box = {
-    div_node: null,
+    box_node: null,
     p_node: null,
-    pin_node: null,
+    pin_img: null,
     active: false,
     timer: null,
     pinned: false,
-    justified: false
+    timeout: null,
+    justified: false,
+    font_size: null
 };
 let enabled = false;
 let link_catching_enabled = false;
@@ -85,7 +65,7 @@ async function fetchDocuments() {
         regulations = result.regulations;
         documents = result.documents;
     } else {
-        alert("Regulations and document data not found. Try restaring your browser.");
+        alert("Regulations and document data not found. Try restarting your browser.");
         stop_error = true;
         return false;
     }
@@ -101,7 +81,7 @@ function getWCADocument(text, mode) {
             if (mode === "short-replace") {
                 link_text = doc.short_name;
             } else {
-                link_text = doc.long_name;
+                link_text = doc["long_name"];
             }
             return [link_text, doc.url];
         }
@@ -229,7 +209,7 @@ function getRegulationMessage() {
     }
 
     const selected_string = selected_text.toString().trim().toLowerCase();
-    reg_num = selected_string.match(REGULATION_REGEX);
+    const reg_num = selected_string.match(REGULATION_REGEX);
     if (!reg_num || !regulations[reg_num[0]]) {
         message.status = 2;
     } else {
@@ -237,8 +217,8 @@ function getRegulationMessage() {
         message.status = 0;
         message.regulation_id = regulation.id;
         message.regulation_url = `${WCA_MAIN_URL}${regulation.url.substring(1)}`;
-        message.regulation_content = regulation.content_html;
-        message.regulation_label = regulation.guideline_label;
+        message.regulation_content = regulation["content_html"];
+        message.regulation_label = regulation["guideline_label"];
     }
     return message;
 }
@@ -255,7 +235,7 @@ async function displayRegulationBox(original_url) {
         url = original_url.split("%23")[1].replaceAll("%2B", "+");
     }
     
-    let div_node = regulation_box.div_node;
+    let div_node = regulation_box.box_node;
     let p_node = regulation_box.p_node;
     let unsafe_HTML;
 
@@ -266,8 +246,8 @@ async function displayRegulationBox(original_url) {
     }
     
     if (regulation !== undefined) {
-        const guideline_label = regulation.guideline_label === undefined ? "" : `<b>${regulation.guideline_label}</b>`;
-        unsafe_HTML = `<a id="reg-num" href="${WCA_MAIN_URL}${regulation.url.substring(1)}">${regulation.id}</a>) ${guideline_label} ${regulation.content_html}`;
+        const guideline_label = regulation["guideline_label"] === undefined ? "" : `<b>${regulation["guideline_label"]}</b>`;
+        unsafe_HTML = `<a id="reg-num" href="${WCA_MAIN_URL}${regulation["url"].substring(1)}">${regulation["id"]}</a>) ${guideline_label} ${regulation["content_html"]}`;
     } else {
         // If the regulation is not found, display the original link.
         unsafe_HTML = `Something went wrong. If you want to open the link, disable the link catching option (safer, requires tab reload) or follow the original link (be careful!): <a href="${original_url}">${original_url}</a>`;
@@ -285,7 +265,7 @@ async function displayRegulationBox(original_url) {
     if (regulation_box.active && !regulation_box.pinned) {
         clearTimeout(regulation_box.timer);
     }
-    div_node.style.display = "block";
+    div_node.style.display = "flex";
     regulation_box.active = true;
     // If the box is pinned, we don't set a timer to close it.
     if (!regulation_box.pinned) {
@@ -293,7 +273,7 @@ async function displayRegulationBox(original_url) {
             div_node.style.display = "none";
             regulation_box.active = false;
             regulation_box.timer = null;
-        }, 15000);
+        }, regulation_box.timeout * 1000);
     }
 }
 
@@ -349,54 +329,64 @@ async function setUpWCAMain() {
 }
 
 async function setUpLinkCatching() {
-    // First we create the DOM elements.
+    // Load CSS.
+    const css_url = await sendCommand("get-internal-url", {path: "css/regulations_box.css"});
+    let link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = css_url.url;
+    document.head.appendChild(link);
+
+    // Create DOM elements.
     // Create the box node.
     let box_node = document.createElement("div");
-    box_node.style.cssText = BOX_NODE_STYLE;
+    box_node.id = "wsh-rb-div";
+    let btn_div_node = document.createElement("div");
+    let text_div_node = document.createElement("div");
+    text_div_node.id = "wsh-rb-div-text";
+    box_node.appendChild(btn_div_node);
+    box_node.appendChild(text_div_node);
 
-    // Create the node that will display the regulation.
+    // Create the node to display the regulation.
     let p_node = document.createElement("p");
-    p_node.style.cssText = `margin: 0; text-align: ${regulation_box.justified ? "justify" : "unset"}`;
-    box_node.appendChild(p_node);
+    p_node.id = "wsh-rb-p";
+    p_node.style.fontSize = `${regulation_box.font_size}px`;
+    if (regulation_box.justified) p_node.style.textAlign = "justify";
+    text_div_node.appendChild(p_node);
 
     // Create the close button.
-    let x_node = document.createElement("span");
-    let x_img = document.createElement("img");
+    let close_img = document.createElement("img");
+    close_img.className = "wsh-rb-img"
     const close_icon = await sendCommand("get-internal-url", {path: "img/close.svg"});
-    x_img.src = close_icon.url;
-    x_img.alt = "Close";
-    x_img.style.cssText = "width: 28px; height: 28px; cursor: pointer; float: inline-end;";
-    x_node.appendChild(x_img);
-    x_node.addEventListener("click", () => {
+    close_img.src = close_icon.url;
+    close_img.alt = "Close";
+    btn_div_node.appendChild(close_img);
+    close_img.addEventListener("click", () => {
         box_node.style.display = "none";
         regulation_box.active = false;
         clearTimeout(regulation_box.timer);
         regulation_box.timer = null;
         regulation_box.pinned = false;
-        regulation_box.pin_node.style.display = "block";
+        regulation_box.pin_img.style.display = "block";
     });
-    box_node.appendChild(x_node);
 
     // Create the pin button.
-    let pin_node = document.createElement("span");
     let pin_img = document.createElement("img");
+    pin_img.className = "wsh-rb-img"
     const pin_icon = await sendCommand("get-internal-url", {path: "img/pin.svg"});
     pin_img.src = pin_icon.url;
     pin_img.alt = "Pin";
-    pin_img.style.cssText = "width: 28px; height: 28px; cursor: pointer; float: inline-end;";
-    pin_node.appendChild(pin_img);
-    pin_node.style.display = "block";
-    pin_node.addEventListener("click", () => {
+    pin_img.style.display = "block";
+    btn_div_node.appendChild(pin_img);
+    pin_img.addEventListener("click", () => {
         clearTimeout(regulation_box.timer);
         regulation_box.timer = null;
         regulation_box.pinned = true;
-        pin_node.style.display = "none";
+        pin_img.style.display = "none";
     });
-    box_node.appendChild(pin_node);
 
-    regulation_box.div_node = box_node;
+    regulation_box.box_node = box_node;
     regulation_box.p_node = p_node;
-    regulation_box.pin_node = pin_node;
+    regulation_box.pin_img = pin_img;
     document.body.appendChild(box_node);
 
     // Catch links to regulations.
@@ -414,7 +404,7 @@ async function setUpLinkCatching() {
         // - The link does not point to the regulations/wcaregs page with a "#" (covered in the next if).
         if (!enabled || stop_error || !link_catching_enabled || clicked_element.tagName !== "A" ||
         wl.startsWith(WCA_MAIN_URL + REGULATIONS_RELATIVE_URL) || wl.startsWith(WCAREGS_URL) ||
-        (regulation_box.div_node.contains(clicked_element) && clicked_element.id === "reg-num")) {
+        (regulation_box.box_node.contains(clicked_element) && clicked_element.id === "reg-num")) {
             return;
         }
 
@@ -438,7 +428,7 @@ async function setUp() {
     // Check if the extension is enabled.
     enabled = false;
     link_catching_enabled = false;
-    const stored_options = await getOptionsFromStorage(["enabled", "catch-links", "justify-box-text"]);
+    const stored_options = await getOptionsFromStorage(["enabled", "catch-links", "justify-box-text", "box-font-size", "box-timeout"]);
     if (stored_options === undefined) {
         stop_error = true;
         return;
@@ -451,13 +441,10 @@ async function setUp() {
     }
     enabled = stored_options["enabled"];
 
-    if (stored_options["catch-links"] !== undefined) {
-        link_catching_enabled = stored_options["catch-links"];
-    }
-
-    if (stored_options["justify-box-text"] !== undefined) {
-        regulation_box.justified = stored_options["justify-box-text"];
-    }
+    if (stored_options["catch-links"] !== undefined) link_catching_enabled = stored_options["catch-links"];
+    if (stored_options["justify-box-text"] !== undefined) regulation_box.justified = stored_options["justify-box-text"];
+    if (stored_options["box-font-size"] !== undefined) regulation_box.font_size = stored_options["box-font-size"];
+    if (stored_options["box-timeout"] !== undefined) regulation_box.timeout = stored_options["box-timeout"];
 
     // Lazy setup.
     if (enabled) {

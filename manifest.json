@@ -33,7 +33,8 @@
     {
       "resources": [
         "img/close.svg",
-        "img/pin.svg"
+        "img/pin.svg",
+        "css/regulations_box.css"
       ],
       "matches": [
         "https://www.worldcubeassociation.org/*",

@@ -32,7 +32,7 @@ I am not a JavaScript developer and definitely not a frontend developer in gener
 
 You are more than welcome to propose changes to make the code better, but refrain from making any harsh comments if you ended up with vomit all over your computer, I did what I could to warn you.
 
-Joking aside, if you want to improve anything, including HTML and CSS, please let me know. At some point I will move to TypeScript.
+Joking aside, if you want to improve anything, including HTML and CSS, please let me know. At some point I will move to TypeScript and refactor some parts of the code.
 
 ### Privacy
 

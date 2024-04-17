@@ -1,4 +1,4 @@
-const VERSION = "1.0";
+const VERSION = "1.1.0";
 
 // --- URLs --- //
 const SITES = {
@@ -24,7 +24,9 @@ const regulations_text = document.getElementById('regulations-text');
 const options = {
     "enabled": document.getElementById('conf-enabled'),
     "catch-links": document.getElementById('conf-catch-links'),
-    "justify-box-text":  document.getElementById('conf-justify-box-text')
+    "justify-box-text":  document.getElementById('conf-justify-box-text'),
+    "box-font-size": document.getElementById('conf-box-font-size'),
+    "box-timeout": document.getElementById('conf-box-timeout')
 };
 
 // --- Utils --- //
@@ -107,26 +109,58 @@ function popupSetup() {
         chrome.tabs.create({ url: "../html/info.html" });
     });
 
-    // Add event handlers for the checkboxes.
-    for (let [key, value] of Object.entries(options)) {
+    // Add event handlers for the options inputs.
+    for (let [key, input_elem] of Object.entries(options)) {
         // TODO: Improve.
-        if (value === undefined) {
-            console.error("Could not find the option: " + key);
+        if (input_elem === undefined) {
+            console.error("Could not find the option element: " + key);
         } else {
             // Set saved status for the option.
             chrome.storage.local.get([key]).then((stored_options) => {
                 if (stored_options[key] !== undefined) {
-                    value.checked = stored_options[key];
+                    switch (input_elem.type) {
+                        case "checkbox":
+                            input_elem.checked = stored_options[key];
+                            break;
+                        case "number":
+                            input_elem.value = stored_options[key];
+                            break;
+                    }
                 }
             });
         }
 
-        value.addEventListener("change", function () {
-            chrome.storage.local.set({ [key]: value.checked })
-                .catch(() => {
-                    console.error("Could not save the option: " + key);
-                    value.checked = !value.checked;
-                });
+        input_elem.addEventListener("change", function () {
+            let new_value = null;
+            switch (input_elem.type) {
+                case "checkbox":
+                    new_value = input_elem.checked;
+                    break;
+                case "number":
+                    const min = parseInt(input_elem.min);
+                    const max = parseInt(input_elem.max);
+                    const v = parseInt(input_elem.value);
+                    if (!isNaN(min) && v < min) {
+                        new_value = min;
+                    } else if (!isNaN(max) && v > max) {
+                        new_value = max;
+                    } else {
+                        new_value = v;
+                    }
+                    input_elem.value = new_value;
+                    break;
+                default:
+                    console.error("Unknown option type: " + typeof input_elem.value);
+                    return;
+            }
+            if (new_value !== null) {
+                chrome.storage.local.set({[key]: new_value})
+                    .catch(() => {
+                        console.error("Could not save the option: " + key);
+                    });
+            } else {
+                console.log("Invalid value for option: " + key);
+            }
         });
     }
 }
