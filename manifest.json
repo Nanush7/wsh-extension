@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "WCA Staff Helper",
   "description": "Helper extension to link and reference WCA Regulations and Guidelines, WCA IDs and other documents.",
-  "version": "1.0",
+  "version": "1.1.0",
   "action": {
     "default_popup": "html/popup.html",
     "default_icon": "img/toolbar-icon.png"
