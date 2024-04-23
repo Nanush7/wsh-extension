@@ -6,7 +6,8 @@ if (cm_array.length > 0) {
             const selection = document.getSelection();
             // We assume that there is a selection, otherwise WSHReplaceEvent would not have been fired.
             if (cm_elem.contains(selection.anchorNode) && cm_elem.contains(selection.focusNode)) {
-                cm.replaceSelection(e.detail.text);
+                const clean_text = DOMPurify.sanitize(e.detail.text, {KEEP_CONTENT: false, ALLOWED_TAGS: []});
+                cm.replaceSelection(clean_text);
             }
         });
     }
