@@ -28,7 +28,7 @@ function sendToContentScript(command, all=false) {
 
 function injectWSHEvent(tab_id) {
     // Inject the WSHReplaceEvent listener into the WCA page.
-    chrome.scripting.executeScript({target: {tabId: tab_id}, files: ["scripts/wsh-event-injection.js"]})
+    chrome.scripting.executeScript({target: {tabId: tab_id}, world: "MAIN", files: ["scripts/wsh-event-injection.js"]})
     .catch((error) => {
         console.error("Could not inject WSHReplaceEvent: " + error);
         return false;
@@ -125,7 +125,7 @@ chrome.commands.onCommand.addListener(async (command) => {
     if (COMMANDS.includes(command)) await sendToContentScript(command);
 });
 
-chrome.runtime.onMessage.addListener(async (message, sender) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     if (sender.id !== chrome.runtime.id) return;
     switch (message.command) {
         case "inject-wsh-event":
@@ -135,11 +135,13 @@ chrome.runtime.onMessage.addListener(async (message, sender) => {
             } else {
                 status = 1;
             }
-            return {status: status};
+            sendResponse({status: status});
+            break;
         case "get-internal-url":
             let url = undefined;
             if (message.params !== undefined) url = chrome.runtime.getURL(message.params.path);
-            return {url: url};
+            sendResponse({url: url});
+            break;
         default:
             // Ignore.
             break;

@@ -5,8 +5,7 @@ if (cm_array.length > 0) {
     for (let cm_elem of cm_array) {
         // Following recommendation from:
         // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Sharing_objects_with_page_scripts
-        const cm = cm_elem.wrappedJSObject.CodeMirror;
-        XPCNativeWrapper(cm);
+        const cm = cm_elem.CodeMirror;
 
         document.addEventListener("WSHSelectionRequestEvent", () => {
             // Do not proceed if the current CodeMirror instance is not the one that the event is intended for.

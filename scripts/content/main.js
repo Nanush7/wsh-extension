@@ -267,14 +267,14 @@ async function replace(command) {
 }
 
 chrome.runtime.onMessage.addListener(
-    async function (message, sender) {
+    async function (message, sender, sendResponse) {
         // Check if the message came from the extension itself.
         if (sender.id !== chrome.runtime.id || stop_error) return;
 
         switch (message.command) {
             case "display-regulation":
                 if (enabled) {
-                    return {message: await getRegulationMessage()};
+                    sendResponse({message: await getRegulationMessage()});
                 }
                 break;
             case "stop-error":
