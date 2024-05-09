@@ -28,7 +28,7 @@ function sendToContentScript(command, all=false) {
 
 function injectWSHEvent(tab_id) {
     // Inject the WSHReplaceEvent listener into the WCA page.
-    chrome.scripting.executeScript({target: {tabId: tab_id}, world: "MAIN", files: ["scripts/wsh-event-injection.js"]})
+    chrome.scripting.executeScript({target: {tabId: tab_id}, files: ["scripts/wsh-event-injection.js"]})
     .catch((error) => {
         console.error("Could not inject WSHReplaceEvent: " + error);
         return false;
@@ -57,7 +57,7 @@ async function fetchDocuments() {
         documents = await documentsResponse.json();
     } catch (error) {
         console.error("Could not get data: " + error);
-        sendToContentScript("stop-error", true);
+        await sendToContentScript("stop-error", true);
         return;
     }
 
@@ -69,7 +69,7 @@ async function fetchDocuments() {
         });
     } catch (error) {
         console.error("Could not save data to storage: " + error);
-        sendToContentScript("stop-error", true);
+        await sendToContentScript("stop-error", true);
     }
 }
 
@@ -86,45 +86,46 @@ async function getOptionsFromStorage(options) {
 
 // --- Set listeners up --- //
 
-chrome.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === "chrome_update") return;
 
     fetch(chrome.runtime.getURL(DEFAULT_OPTIONS_JSON))
     .then(response => response.json())
     .then(json_options => {
         const json_option_keys = Object.keys(json_options);
-        chrome.storage.local.get(json_option_keys, (stored_options) => {
-            let undefined_options = {};
-            for (let jok of json_option_keys) {
-                if (stored_options[jok] === undefined) {
-                    undefined_options[jok] = json_options[jok];
+        chrome.storage.local.get(json_option_keys)
+            .then((stored_options) => {
+                let undefined_options = {};
+                for (let jok of json_option_keys) {
+                    if (stored_options[jok] === undefined) {
+                        undefined_options[jok] = json_options[jok];
+                    }
                 }
-            }
-            if (Object.keys(undefined_options).length > 0) {
-                chrome.storage.local.set(undefined_options);
-            }
-        });
+                if (Object.keys(undefined_options).length > 0) {
+                    chrome.storage.local.set(undefined_options);
+                }
+            });
     })
     .catch(error => {
         console.error("Could not fetch default options: " + error);
         sendToContentScript("stop-error", true);
     });
 
-    fetchDocuments();
+    await fetchDocuments();
 });
 
-chrome.runtime.onStartup.addListener(() => {
+chrome.runtime.onStartup.addListener(async () => {
     const result = getOptionsFromStorage(["regulations", "documents"]);
     if (result === undefined || result.regulations === undefined || result.documents === undefined) {
-        fetchDocuments();
+        await fetchDocuments();
     }
 });
 
-chrome.commands.onCommand.addListener((command) => {
-    sendToContentScript(command);
+chrome.commands.onCommand.addListener(async (command) => {
+    if (COMMANDS.includes(command)) await sendToContentScript(command);
 });
 
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender) => {
     if (sender.id !== chrome.runtime.id) return;
     switch (message.command) {
         case "inject-wsh-event":
@@ -134,24 +135,22 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
             } else {
                 status = 1;
             }
-            sendResponse({status: status});
-            break;
+            return {status: status};
         case "get-internal-url":
             let url = undefined;
             if (message.params !== undefined) url = chrome.runtime.getURL(message.params.path);
-            sendResponse({url: url});
-            break;
+            return {url: url};
         default:
             // Ignore.
             break;
     }
 });
 
-chrome.storage.onChanged.addListener((changes, area) => {
+chrome.storage.onChanged.addListener(async (changes, area) => {
     if (area === "local") {
         if (changes.enabled !== undefined) {
             const command = changes.enabled.newValue ? "enable" : "disable";
-            sendToContentScript(command, true);
+            await sendToContentScript(command, true);
         }
     }
 });

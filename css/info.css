@@ -40,13 +40,14 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    & img {
-        height: 40px;
-        width: 40px;
-        padding: 0 20px;
-    }
 }
-  
+
+.image-container img {
+    height: 40px;
+    width: 40px;
+    padding: 0 20px;
+}
+
 .image-container .color-line {
 flex-grow: 1;
 border: none;
