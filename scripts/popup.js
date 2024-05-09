@@ -31,21 +31,19 @@ const options = {
 
 // --- Utils --- //
 
-function sendToContentScript(command) {
+async function sendToContentScript(command) {
     if (COMMANDS.includes(command)) {
-        return (async () => {
-            const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true, url: VALID_URLS});
-            if (tab !== undefined) {
-                return await chrome.tabs.sendMessage(tab.id, {command: command, url: tab.url})
-                .catch((error) => {
-                    if (error.message !== undefined && error.message.includes("Receiving end does not exist")) {
-                        console.warn("Content script not found, try reloading the page.");
-                    } else {
-                        console.error("Could not send message to content script: " + error);
-                    }
-                });
-            }
-        })();
+        const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true, url: VALID_URLS});
+        if (tab !== undefined) {
+            return await chrome.tabs.sendMessage(tab.id, {command: command, url: tab.url})
+            .catch((error) => {
+                if (error.message !== undefined && error.message.includes("Receiving end does not exist")) {
+                    console.warn("Content script not found, try reloading the page.");
+                } else {
+                    console.error("Could not send message to content script: " + error);
+                }
+            });
+        }
     }
 }
 
@@ -182,8 +180,6 @@ function displayRegulation(data) {
         link.setAttribute('rel', 'noreferrer');
     });
 }
-
-// --- Run the setup --- //
 
 sendToContentScript("display-regulation").then((response) => {
     if (response !== undefined && response.message.status === 0) {
