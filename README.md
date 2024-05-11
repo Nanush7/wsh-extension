@@ -42,11 +42,12 @@ This extension works locally/offline and does not transmit any kind of data over
 
 ## Supported Web Browsers
 
-![Static Badge](https://img.shields.io/badge/Google%20Chrome-Yes-blue?style=for-the-badge&logo=google-chrome)
-![Static Badge](https://img.shields.io/badge/Brave-Yes-orange?style=for-the-badge&logo=brave)
+![Static Badge](https://img.shields.io/badge/Google%20Chrome->=102-blue?style=for-the-badge&logo=google-chrome)
+![Static Badge](https://img.shields.io/badge/Brave->=1.40-orange?style=for-the-badge&logo=brave)
+![Static Badge](https://img.shields.io/badge/Firefox->=109-orange?style=for-the-badge&logo=firefox&label=Firefox)
 
 ![Static Badge](https://img.shields.io/badge/Safari-No-blue?style=for-the-badge&logo=safari)
-![Static Badge](https://img.shields.io/badge/Firefox-No-orange?style=for-the-badge&logo=firefox&label=Firefox)
+![Static Badge](https://img.shields.io/badge/Edge-No-blue?style=for-the-badge&logo=Microsoft-Edge&label=Microsoft%20Edge)
 
 ## Chromium Based Browsers (Chrome, Brave, etc.)
 
