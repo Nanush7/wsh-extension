@@ -1,5 +1,3 @@
-const VERSION = "1.1.0";
-
 // --- URLs --- //
 const SITES = {
     wca_main: "https://www.worldcubeassociation.org/",
@@ -12,15 +10,11 @@ const VALID_URLS = Object.values(SITES).map(url => url + '*');
 const COMMANDS = ["display-regulation"];
 
 // --- DOM elements --- //
-const main_div = document.getElementById('main-container');
 const status_text = document.getElementById('status-text');
-const extension_version_p = document.getElementById('extension-version');
 const regulations_version_p = document.getElementById('regulations-version');
 const info_btn = document.getElementById('info-btn');
 const config_btn = document.getElementById('config-btn');
 const config_div = document.getElementById('config-container');
-const regulations_div = document.getElementById('regulations-container');
-const regulations_text = document.getElementById('regulations-text');
 const options = {
     "enabled": document.getElementById('conf-enabled'),
     "catch-links": document.getElementById('conf-catch-links'),
@@ -28,24 +22,6 @@ const options = {
     "box-font-size": document.getElementById('conf-box-font-size'),
     "box-timeout": document.getElementById('conf-box-timeout')
 };
-
-// --- Utils --- //
-
-async function sendToContentScript(command) {
-    if (COMMANDS.includes(command)) {
-        const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true, url: VALID_URLS});
-        if (tab !== undefined) {
-            return await chrome.tabs.sendMessage(tab.id, {command: command, url: tab.url})
-            .catch((error) => {
-                if (error.message !== undefined && error.message.includes("Receiving end does not exist")) {
-                    console.warn("Content script not found, try reloading the page.");
-                } else {
-                    console.error("Could not send message to content script: " + error);
-                }
-            });
-        }
-    }
-}
 
 // --- Popup setup --- //
 
@@ -83,7 +59,6 @@ function setPopupInfo() {
     });
 
     // Set information about versions.
-    extension_version_p.textContent = VERSION;
     chrome.storage.local.get(["regulations_version"]).then((result) => {
         if (result !== undefined && result.regulations_version !== undefined) {
             const v = result.regulations_version.split("#");
@@ -162,29 +137,5 @@ function popupSetup() {
         });
     }
 }
-
-// --- Display regulation --- //
-function displayRegulation(data) {
-    // Hide the main and config divs and show the regulation div.
-    main_div.style.display = 'none';
-    config_div.style.display = 'none';
-    regulations_div.style.display = 'block';
-
-    const guideline_label = data.regulation_label === undefined ? "" : `<b>${data.regulation_label}</b>`;
-    const unsafe_HTML = `<a href="${data.regulation_url}">${data.regulation_id}</a>) ${guideline_label} ${data.regulation_content}`;
-    regulations_text.innerHTML = DOMPurify.sanitize(unsafe_HTML, {ALLOWED_TAGS: ['a', 'b']});
-    // Add target="_blank" to all links.
-    // Also add rel="noreferrer" for security reasons.
-    regulations_text.querySelectorAll('a').forEach(link => {
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noreferrer');
-    });
-}
-
-sendToContentScript("display-regulation").then((response) => {
-    if (response !== undefined && response.message.status === 0) {
-        displayRegulation(response.message);
-    }
-});
 
 popupSetup();

@@ -1,45 +1,29 @@
 {
   "manifest_version": 3,
-  "name": "WCA Staff Helper",
-  "description": "Helper extension to link and reference WCA Regulations and Guidelines, WCA IDs and other documents.",
-  "version": "1.2.0",
-  "minimum_chrome_version": "102",
+  "name": "#{{name}}",
+  "description": "#{{description}}",
+  "version": "#{{version}}",
+  #{{min_version}},
   "action": {
     "default_popup": "html/popup.html",
     "default_icon": "img/toolbar-icon.png"
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://www.worldcubeassociation.org/*",
-        "https://forum.worldcubeassociation.org/*",
-        "https://mail.google.com/*"
-      ],
-      "js": ["scripts/purify.min.js", "scripts/content/base.js"]
-    },
-    {
       "matches": ["https://www.worldcubeassociation.org/*"],
-      "js": ["scripts/content/wca-website.js"]
+      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/wca-website.js", "scripts/content/main.js"]
     },
     {
       "matches": ["https://forum.worldcubeassociation.org/*"],
-      "js": ["scripts/content/wca-forum.js"]
+      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/wca-forum.js", "scripts/content/main.js"]
     },
     {
       "matches": ["https://mail.google.com/*"],
-      "js": ["scripts/content/gmail.js"]
-    },
-    {
-      "matches": [
-        "https://www.worldcubeassociation.org/*",
-        "https://forum.worldcubeassociation.org/*",
-        "https://mail.google.com/*"
-      ],
-      "js": ["scripts/content/main.js"]
+      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/gmail.js", "scripts/content/main.js"]
     }
   ],
   "background": {
-    "service_worker": "scripts/background.js"
+    #{{service_worker}}
   },
   "host_permissions": [
     "https://www.worldcubeassociation.org/*",
@@ -77,7 +61,7 @@
       },
       "description": "Replace the selected text with the long name of the document and the link."
     },
-    "_execute_action": {
+    "display-regulation": {
       "suggested_key": {
         "default": "Ctrl+Shift+Period"
       },

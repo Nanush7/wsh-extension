@@ -3,6 +3,7 @@ class BaseContentModule {
     // -- URLs -- //
     static WCA_MAIN_URL = "https://www.worldcubeassociation.org/";
     static WCAREGS_URL = "https://wcaregs.netlify.app/";
+    static WCA_SHORT_URL = "https://wca.link/";
     static GOOGLE_SAFE_REDIRECT_URL = "https://www.google.com/url?q=";
     static REGULATIONS_RELATIVE_URL = "regulations/";
     static PERSON_RELATIVE_URL = "persons/";
@@ -12,7 +13,7 @@ class BaseContentModule {
     static REGULATION_REGEX = /(([1-9][0-9]?[a-z]([1-9][0-9]?[a-z]?)?)|([a-z][1-9][0-9]?([a-z]([1-9][0-9]?)?)?))\b\+{0,10}/i;
     static PERSON_REGEX = /\b[1-9]\d{3}[a-z]{4}\d{2}\b/i
     static INCIDENT_LOG_REGEX = /\bil#[1-9]\d{0,5}\b/i
-    static CATCH_LINKS_REGEX = new RegExp(`(${this.WCA_MAIN_URL}${this.REGULATIONS_RELATIVE_URL}(guidelines.html)?|${this.WCAREGS_URL})(#|%23)`, "i");
+    static CATCH_LINKS_REGEX = new RegExp(`(${this.WCA_MAIN_URL}${this.REGULATIONS_RELATIVE_URL}(guidelines.html)?|${this.WCAREGS_URL}|${this.WCA_SHORT_URL})(#|%23)`, "i");
 
     constructor(regulations, documents, siteName, siteURL) {
         this._regulations = regulations;
@@ -115,9 +116,10 @@ class BaseContentModule {
     getLinkData(text, mode) {
         "use strict";
         let link_text, link_url;
+        const doc_string = text.toLowerCase();
 
         for (let func of this._documentFunctions) {
-            [link_text, link_url] = func.call(this, text, mode);
+            [link_text, link_url] = func.call(this, doc_string, mode);
             if (link_text && link_url) return [link_text, link_url];
         }
         return [null, null];

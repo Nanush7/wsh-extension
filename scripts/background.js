@@ -1,10 +1,11 @@
+const BROWSER = "chrome";
 const SITES = {
     wca_main: "https://www.worldcubeassociation.org/",
     wca_forum: "https://forum.worldcubeassociation.org/",
     gmail: "https://mail.google.com/"
 }
 const VALID_URLS = Object.values(SITES).map(url => url + '*');
-const COMMANDS = ["short-replace", "long-replace", "stop-error", "enable", "disable"];
+const COMMANDS = ["short-replace", "long-replace", "display-regulation", "stop-error", "enable", "disable"];
 const REGULATIONS_JSON = "data/wca-regulations.json";
 const DOCUMENTS_JSON = "data/wca-documents.json";
 const DEFAULT_OPTIONS_JSON = "data/default-options.json";
@@ -26,13 +27,25 @@ function sendToContentScript(command, all=false) {
     }
 }
 
-function injectWSHEvent(tab_id) {
+async function injectWSHEvent(tab_id) {
     // Inject the WSHReplaceEvent listener into the WCA page.
-    chrome.scripting.executeScript({target: {tabId: tab_id}, world: "MAIN", files: ["scripts/wsh-event-injection.js"]})
-    .catch((error) => {
-        console.error("Could not inject WSHReplaceEvent: " + error);
+    try {
+        if (BROWSER === "chrome") {
+            await chrome.scripting.executeScript({
+                target: {tabId: tab_id},
+                world: "MAIN",
+                files: ["scripts/purify.min.js", "scripts/wsh-event-injection.js"]
+            });
+        } else {
+            await chrome.scripting.executeScript({
+                target: {tabId: tab_id},
+                files: ["scripts/wsh-event-injection.js"]
+            });
+        }
+    } catch (e) {
+        console.error("Could not inject WSHReplaceEvent: " + e);
         return false;
-    });
+    }
     return true;
 }
 
@@ -129,19 +142,27 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     if (sender.id !== chrome.runtime.id) return;
     switch (message.command) {
         case "inject-wsh-event":
-            let status;
-            if (injectWSHEvent(sender.tab.id)) {
+            let status = 1;
+            if (await injectWSHEvent(sender.tab.id)) {
                 status = 0;
-            } else {
-                status = 1;
             }
-            sendResponse({status: status});
-            break;
+            if (BROWSER === "chrome") {
+                sendResponse({status: status});
+                break;
+            }
+            // else:
+            return {status: status};
         case "get-internal-url":
             let url = undefined;
-            if (message.params !== undefined) url = chrome.runtime.getURL(message.params.path);
-            sendResponse({url: url});
-            break;
+            if (message.params !== undefined) {
+                url = chrome.runtime.getURL(message.params.path);
+            }
+            if (BROWSER === "chrome") {
+                sendResponse({url: url});
+                break;
+            }
+            // else:
+            return {url: url};
         default:
             // Ignore.
             break;

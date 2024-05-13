@@ -32,41 +32,32 @@ async function fetchDocuments() {
     return [regulations, documents];
 }
 
-// --- Regulation display functions --- //
-
-async function getRegulationMessage() {
-    let message = {};
+async function getPageSelection() {
     // Get selected text.
     let response;
-    let text = "";
+    let selection = "";
     try {
         response = await content_class.getPageSelection();
-        text = response.text.trim().toLowerCase();
+        selection = response.text.trim();
     } catch (e) {
         console.log(`Could not get selected text: ${e}`);
     }
     // Try the native way to get the selection.
-    if (!response || text === "") {
-        text = document.getSelection().toString().trim().toLowerCase();
+    if (!response || selection === "") {
+        selection = document.getSelection().toString().trim();
     }
-    const reg_num = text.match(BaseContentModule.REGULATION_REGEX);
-    if (!reg_num || !content_class.regulations[reg_num[0]]) {
-        message.status = 1;
-    } else {
-        const regulation = content_class.regulations[reg_num[0]];
-        message.status = 0;
-        message.regulation_id = regulation.id;
-        message.regulation_url = `${BaseContentModule.WCA_MAIN_URL}${regulation.url.substring(1)}`;
-        message.regulation_content = regulation["content_html"];
-        message.regulation_label = regulation["guideline_label"];
-    }
-    return message;
+    return selection;
 }
 
-async function displayRegulationBox(original_url) {
-    /* Display the regulation in a box/popup. */
-    // First we get the regulation data.
+function getRegulationFromString(string) {
+    const reg_num = string.toLowerCase().match(BaseContentModule.REGULATION_REGEX);
+    if (!reg_num) {
+        return undefined;
+    }
+    return content_class.regulations[reg_num[0]];  // Returns undefined if the regulation doesn't exist.
+}
 
+function getRegulationFromUrl(original_url) {
     // We need to deal with Google's safe redirect urls:
     let url = original_url;
     if (original_url.startsWith(BaseContentModule.GOOGLE_SAFE_REDIRECT_URL)) {
@@ -74,28 +65,32 @@ async function displayRegulationBox(original_url) {
         // which breaks the regex.
         url = original_url.split("%23")[1].replaceAll("%2B", "+");
     }
-    
+    return getRegulationFromString(url);
+}
+
+async function displayRegulationBox(regulation, original_url="") {
+    /* Display the regulation in a box/popup. */
+
     let div_node = regulation_box.box_node;
     let p_node = regulation_box.p_node;
     let unsafe_HTML;
 
-    const reg_num = url.match(BaseContentModule.REGULATION_REGEX);
-    let regulation = undefined;
-    if (reg_num !== undefined && reg_num !== null) {
-        regulation = content_class.regulations[reg_num[0].toLowerCase()];
-    }
-    
     if (regulation !== undefined) {
         const guideline_label = regulation["guideline_label"] === undefined ? "" : `<b>${regulation["guideline_label"]}</b>`;
         unsafe_HTML = `<a id="reg-num" href="${BaseContentModule.WCA_MAIN_URL}${regulation["url"].substring(1)}">${regulation["id"]}</a>) ${guideline_label} ${regulation["content_html"]}`;
-    } else {
+    } else if (original_url !== "") {
         // If the regulation is not found, display the original link.
         unsafe_HTML = `Something went wrong. If you want to open the link, disable the link catching option (safer, requires tab reload) or follow the original link (be careful!): <a href="${original_url}">${original_url}</a>`;
+    } else {
+        // If the regulation is not found, display an error message.
+        unsafe_HTML = "Selected text not recognized as a valid WCA regulation.";
     }
 
     // Now we display the regulation.
     p_node.innerHTML = DOMPurify.sanitize(unsafe_HTML, {ALLOWED_TAGS: ['a', 'b']});
     div_node.querySelectorAll('a').forEach(link => {
+        // Add target="_blank" to all links.
+        // Also add rel="noreferrer" for privacy and security reasons.
         link.setAttribute('target', '_blank');
         link.setAttribute('rel', 'noreferrer');
         link.style.color = "#e64503";
@@ -200,7 +195,7 @@ async function setUpLinkCatching() {
         if (BaseContentModule.CATCH_LINKS_REGEX.test(clicked_element["href"])) {
             // Do not follow the link.
             click_event.preventDefault();
-            await displayRegulationBox(clicked_element["href"]);
+            await displayRegulationBox(getRegulationFromUrl(clicked_element["href"]));
         }
     });
 }
@@ -267,14 +262,17 @@ async function replace(command) {
 }
 
 chrome.runtime.onMessage.addListener(
-    async function (message, sender, sendResponse) {
+    async function (message, sender) {
         // Check if the message came from the extension itself.
         if (sender.id !== chrome.runtime.id || stop_error) return;
 
         switch (message.command) {
             case "display-regulation":
                 if (enabled) {
-                    sendResponse({message: await getRegulationMessage()});
+                    const selection = await getPageSelection();
+                    if (selection !== "") {
+                        await displayRegulationBox(getRegulationFromString(selection));
+                    }
                 }
                 break;
             case "stop-error":
