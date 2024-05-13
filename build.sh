@@ -13,21 +13,38 @@ string_in_array() {
 }
 
 copy_files() {
+  local browser="$1";
   rm -rf build;
   mkdir -p build;
   for file in "${FILES[@]}"; do
     cp -r "$file" "$BUILD_DIR";
   done
 
-  find "$BUILD_DIR" -type f | while read -r file; do
+  find "$BUILD_DIR" -type f -printf "%P\n" | while read -r file; do
     if string_in_array "$file" "${VERSION_DISPLAY_FILES[@]}"; then
-      sed --sandbox -i -e "s/#\{\{version\}\}/$WSH_VERSION/";
+      sed --sandbox -i -E -e "s/#\{\{version\}\}/$WSH_VERSION/" "$BUILD_DIR/$file";
     fi
     if string_in_array "$file" "${BROWSER_DEPENDANT_FILES[@]}"; then
-      sed --sandbox -i -e '0,/^const BROWSER = "firefox|chrome";/s//const BROWSER = "'"$1"'";/';
+      sed --sandbox -i -E -e 's/^const BROWSER = "(firefox|chrome)";/const BROWSER = "'"$browser"'";/' "$BUILD_DIR/$file";
     fi
   done
 }
+
+if [[ "$EUID" -eq 0 ]]; then
+  echo "Please do not run this script as root.";
+  echo "Aborting..."
+  exit 1;
+fi
+
+target="$1";
+if [[ "$target" == "package" ]]; then
+  # Most of the process is the same.
+  target="build";
+  package=0;
+else
+  package=1;
+fi
+readonly BROWSER="$2";
 
 # Used for manifest keys.
 readonly WSH_NAME="WCA Staff Helper";
@@ -35,51 +52,51 @@ readonly WSH_DESCRIPTION="Helper extension to link and reference WCA Regulations
 readonly WSH_VERSION=$(cat VERSION);
 readonly FIREFOX_MIN_VERSION="109.0";
 readonly CHROME_MIN_VERSION="102";
-readonly BACKGROUND_FILE="scripts/background.js";
+readonly BACKGROUND_FILE="scripts\/background.js";
 
 # JS files that contain a "const BROWSER = '...';" line.
 readonly BROWSER_DEPENDANT_FILES=("scripts/wsh-event-injection.js" "scripts/background.js");
 
 # Files that contain a "#{{version}}" line.
-readonly VERSION_DISPLAY_FILES=("popup.js");
+readonly VERSION_DISPLAY_FILES=("html/popup.html");
 
 # Files to be copied to the build directory.
 readonly FILES=("css" "data" "html" "img" "scripts" "LICENSE" "README.md");
 readonly BUILD_DIR="build";
 
-if [[ -z "$1" || -z "$2" ]]; then
+if [[ -z "$target" || -z "$BROWSER" ]]; then
   echo "Missing arguments";
-  echo "Usage: build.sh <build|develop> <firefox|chrome>";
+  echo "Usage: build.sh <build|develop|package> <firefox|chrome>";
   exit 1;
 fi
 
-if [[ "$2" == "firefox" ]]; then
+if [[ "$BROWSER" == "firefox" ]]; then
   min_version='"browser_specific_settings": {"gecko": {"strict_min_version": "'$FIREFOX_MIN_VERSION'"}}';
   service_worker='"scripts": ["'$BACKGROUND_FILE'"]';
-elif [[ "$2" == "chrome" ]]; then
+elif [[ "$BROWSER" == "chrome" ]]; then
   min_version='"minimum_chrome_version": "'$CHROME_MIN_VERSION'"';
   service_worker='"service_worker": "'$BACKGROUND_FILE'"';
 else
-  echo "Invalid browser argument: $2";
+  echo "Invalid browser argument: $BROWSER";
   exit 1;
 fi
 
-if [[ "$1" == "build" ]]; then
-  copy_files "$2";
+if [[ "$target" == "build" ]]; then
   manifest_output_path="$BUILD_DIR/manifest.json";
-elif [[ "$1" == "develop" ]]; then
+  copy_files "$BROWSER";
+elif [[ "$target" == "develop" ]]; then
   manifest_output_path="manifest.json";
   # If the file is browser dependant, replace the BROWSER constant.
   for file in "${BROWSER_DEPENDANT_FILES[@]}"; do
-    sed --sandbox -i -e '0,/^const BROWSER = "firefox|chrome";/s//const BROWSER = "'"$2"'";/';
+    sed --sandbox -i -E -e 's/^const BROWSER = "(firefox|chrome)";/const BROWSER = "'"$BROWSER"'";/' "$file";
   done
 else
-  echo "Invalid operation argument: $1";
+  echo "Invalid operation argument: $target";
   exit 1;
 fi
 
 # Replace #{{...}} with the actual values in the manifest file.
-if ! sed --sandbox -e "s/#\{\{name\}\}/$WSH_NAME/" \
+if ! sed --sandbox -E -e "s/#\{\{name\}\}/$WSH_NAME/" \
   -e "s/#\{\{description\}\}/$WSH_DESCRIPTION/" \
   -e "s/#\{\{version\}\}/$WSH_VERSION/" \
   -e "s/#\{\{min_version\}\}/$min_version/" \
@@ -91,4 +108,14 @@ then
 fi
 
 echo "Build completed successfully!";
+
+if [[ "$package" -eq 0 ]]; then
+  if [[ "$BROWSER" == "firefox" ]]; then
+    tar -czf wsh-extension-firefox.tar.gz build;
+  elif [[ "$BROWSER" == "chrome" ]]; then
+    tar -czf wsh-extension-chrome.tar.gz build;
+  fi
+  echo "Package created successfully!";
+fi
+
 exit 0;
