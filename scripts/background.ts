@@ -34,12 +34,12 @@ async function injectWSHEvent(tab_id) {
             await chrome.scripting.executeScript({
                 target: {tabId: tab_id},
                 world: "MAIN",
-                files: ["scripts/purify.min.js", "scripts/wsh-event-injection.js"]
+                files: ["scripts/purify.min.js", "scripts/wsh-event-injection.ts"]
             });
         } else {
             await chrome.scripting.executeScript({
                 target: {tabId: tab_id},
-                files: ["scripts/wsh-event-injection.js"]
+                files: ["scripts/wsh-event-injection.ts"]
             });
         }
     } catch (e) {
