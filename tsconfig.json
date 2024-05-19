@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./built",
+    "outDir": "./build",
     "allowJs": true,
     "target": "es6",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "noEmitOnError": true,
     "noImplicitAny": true,
     "strictNullChecks": true

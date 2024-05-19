@@ -10,11 +10,11 @@ const VALID_URLS = Object.values(SITES).map(url => url + '*');
 const COMMANDS = ["display-regulation"];
 
 // --- DOM elements --- //
-const status_text = document.getElementById('status-text');
-const regulations_version_p = document.getElementById('regulations-version');
-const info_btn = document.getElementById('info-btn');
-const config_btn = document.getElementById('config-btn');
-const config_div = document.getElementById('config-container');
+const status_text = document.getElementById('status-text') as HTMLParagraphElement;
+const regulations_version_p = document.getElementById('regulations-version') as HTMLParagraphElement;
+const info_btn = document.getElementById('info-btn') as HTMLButtonElement;
+const config_btn = document.getElementById('config-btn') as HTMLButtonElement;
+const config_div = document.getElementById('config-container') as HTMLDivElement;
 const options = {
     "enabled": document.getElementById('conf-enabled'),
     "catch-links": document.getElementById('conf-catch-links'),

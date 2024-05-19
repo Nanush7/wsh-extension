@@ -1,33 +1,42 @@
-const BROWSER = "chrome";
-const SITES = {
-    wca_main: "https://www.worldcubeassociation.org/",
-    wca_forum: "https://forum.worldcubeassociation.org/",
-    gmail: "https://mail.google.com/"
-}
-const VALID_URLS = Object.values(SITES).map(url => url + '*');
-const COMMANDS = ["short-replace", "long-replace", "display-regulation", "stop-error", "enable", "disable"];
-const REGULATIONS_JSON = "data/wca-regulations.json";
-const DOCUMENTS_JSON = "data/wca-documents.json";
-const DEFAULT_OPTIONS_JSON = "data/default-options.json";
+export {};
 
+import Tab = chrome.tabs.Tab;
+import { wcadocs, options } from "./common";
 
-function sendToContentScript(command, all=false) {
+const BROWSER: options.TBrowser = "chrome";
+const SITES: Array<string> = [
+    "https://www.worldcubeassociation.org/",
+    "https://forum.worldcubeassociation.org/",
+    "https://mail.google.com/"
+]
+const VALID_URLS: Array<string> = SITES.map(url => url + '*');
+const COMMANDS: Array<options.TCommand> = ["short-replace", "long-replace", "display-regulation", "stop-error", "enable", "disable"];
+const REGULATIONS_JSON: string = "data/wca-regulations.json";
+const DOCUMENTS_JSON: string = "data/wca-documents.json";
+const DEFAULT_OPTIONS_JSON: string = "data/default-options.json";
+
+async function sendToContentScript(command: options.TCommand, all: boolean = false): Promise<void> {
     if (COMMANDS.includes(command)) {
-        return (async () => {
-            let tabs;
-            if (all) tabs = await chrome.tabs.query({url: VALID_URLS});
-            else tabs = await chrome.tabs.query({active: true, lastFocusedWindow: true, url: VALID_URLS});
-            for (let tab of tabs) {
-                await chrome.tabs.sendMessage(tab.id, {command: command, url: tab.url})
-                .catch((error) => {
-                    console.error("Could not send message to content script: " + error);
-                });
-            }
-        })();
+        let tabs: Tab[];
+        let messages: Promise<void>[] = [];
+        if (all) {
+            tabs = await chrome.tabs.query({url: VALID_URLS});
+        } else {
+            tabs = await chrome.tabs.query({active: true, lastFocusedWindow: true, url: VALID_URLS});
+        }
+        for (let tab of tabs) {
+            if (tab.id === undefined) continue;
+            const promise: Promise<any> = chrome.tabs.sendMessage(tab.id, {command: command, url: tab.url});
+            promise.catch((error) => {
+                console.error("Could not send message to content script: " + error);
+            });
+            messages.push(promise);
+        }
+        await Promise.allSettled(messages);
     }
 }
 
-async function injectWSHEvent(tab_id) {
+async function injectWSHEvent(tab_id: number) {
     // Inject the WSHReplaceEvent listener into the WCA page.
     try {
         if (BROWSER === "chrome") {
@@ -49,10 +58,10 @@ async function injectWSHEvent(tab_id) {
     return true;
 }
 
-async function fetchDocuments() {
-    let regulations;
-    let regulations_version;
-    let documents;
+async function fetchDocuments(): Promise<void> {
+    let regulations: Record<string, wcadocs.TRegulation>;
+    let documents: Array<wcadocs.TDocument>;
+    let regulations_version: string;
 
     try {
         let [regulationsResponse, documentsResponse] = await Promise.all([
@@ -63,7 +72,8 @@ async function fetchDocuments() {
         let regulationsData = await regulationsResponse.json();
         regulations_version = regulationsData.shift().version;
         regulations = {};
-        regulationsData.forEach(element => {
+        // Here we are generating a dictionary with the regulation id as the key.
+        regulationsData.forEach((element: wcadocs.TRegulation) => {
             regulations[element.id.toLowerCase()] = element;
         });
 
@@ -86,10 +96,10 @@ async function fetchDocuments() {
     }
 }
 
-async function getOptionsFromStorage(options) {
+function getOptionsFromStorage(options: options.TStoredValue[]): {[key: string]: any} | undefined {
     /* Returns undefined on exception. */
     try {
-        return await chrome.storage.local.get(options);
+        return chrome.storage.local.get(options);
     }
     catch (error) {
         console.error(`Could not read option/s [${options}] from storage. ${error}`);
@@ -108,7 +118,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         const json_option_keys = Object.keys(json_options);
         chrome.storage.local.get(json_option_keys)
             .then((stored_options) => {
-                let undefined_options = {};
+                let undefined_options: Record<string, any> = {};
                 for (let jok of json_option_keys) {
                     if (stored_options[jok] === undefined) {
                         undefined_options[jok] = json_options[jok];
@@ -134,12 +144,12 @@ chrome.runtime.onStartup.addListener(async () => {
     }
 });
 
-chrome.commands.onCommand.addListener(async (command) => {
+chrome.commands.onCommand.addListener(async (command: options.TCommand) => {
     if (COMMANDS.includes(command)) await sendToContentScript(command);
 });
 
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-    if (sender.id !== chrome.runtime.id) return;
+    if (sender.id !== chrome.runtime.id || !sender.tab || !sender.tab.id) return;
     switch (message.command) {
         case "inject-wsh-event":
             let status = 1;
