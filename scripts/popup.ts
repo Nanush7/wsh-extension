@@ -6,9 +6,6 @@ const SITES = {
 }
 const VALID_URLS = Object.values(SITES).map(url => url + '*');
 
-// --- Allowed commands --- //
-const COMMANDS = ["display-regulation"];
-
 // --- DOM elements --- //
 const status_text = document.getElementById('status-text') as HTMLParagraphElement;
 const regulations_version_p = document.getElementById('regulations-version') as HTMLParagraphElement;
@@ -16,11 +13,11 @@ const info_btn = document.getElementById('info-btn') as HTMLButtonElement;
 const config_btn = document.getElementById('config-btn') as HTMLButtonElement;
 const config_div = document.getElementById('config-container') as HTMLDivElement;
 const options = {
-    "enabled": document.getElementById('conf-enabled'),
-    "catch-links": document.getElementById('conf-catch-links'),
-    "justify-box-text":  document.getElementById('conf-justify-box-text'),
-    "box-font-size": document.getElementById('conf-box-font-size'),
-    "box-timeout": document.getElementById('conf-box-timeout')
+    "enabled": document.getElementById('conf-enabled') as HTMLInputElement,
+    "catch-links": document.getElementById('conf-catch-links') as HTMLInputElement,
+    "justify-box-text":  document.getElementById('conf-justify-box-text') as HTMLInputElement,
+    "box-font-size": document.getElementById('conf-box-font-size') as HTMLInputElement,
+    "box-timeout": document.getElementById('conf-box-timeout') as HTMLInputElement
 };
 
 // --- Popup setup --- //
@@ -42,7 +39,7 @@ function setPopupInfo() {
         url: VALID_URLS
     })
     .then((tabs) => {
-        if (tabs.length === 0) {
+        if (tabs.length === 0 || tabs[0].url === undefined) {
             status_text.textContent = "Unknown site";
             return;
         }
@@ -120,7 +117,7 @@ function popupSetup() {
                     } else {
                         new_value = v;
                     }
-                    input_elem.value = new_value;
+                    input_elem.value = String(new_value);
                     break;
                 default:
                     console.error("Unknown option type: " + typeof input_elem.value);

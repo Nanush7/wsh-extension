@@ -1,3 +1,6 @@
+import { wcadocs, allowed_options } from "../common";
+import TRegulationsDict = wcadocs.TRegulationsDict;
+import TDocumentList = wcadocs.TDocumentList;
 
 class BaseContentModule {
     // -- URLs -- //
@@ -13,9 +16,9 @@ class BaseContentModule {
     static REGULATION_REGEX = /(([1-9][0-9]?[a-z]([1-9][0-9]?[a-z]?)?)|([a-z][1-9][0-9]?([a-z]([1-9][0-9]?)?)?))\b\+{0,10}/i;
     static PERSON_REGEX = /\b[1-9]\d{3}[a-z]{4}\d{2}\b/i
     static INCIDENT_LOG_REGEX = /\bil#[1-9]\d{0,5}\b/i
-    static CATCH_LINKS_REGEX = new RegExp(`(${this.WCA_MAIN_URL}${this.REGULATIONS_RELATIVE_URL}(guidelines.html)?|${this.WCAREGS_URL}|${this.WCA_SHORT_URL})(#|%23)`, "i");
+    static CATCH_LINKS_REGEX = new RegExp(`((${this.WCA_MAIN_URL}|${this.WCA_SHORT_URL})${this.REGULATIONS_RELATIVE_URL}(guidelines.html)?|${this.WCAREGS_URL})(#|%23)`, "i");
 
-    constructor(regulations, documents, siteName, siteURL) {
+    constructor(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList, siteName: string, siteURL: string) {
         this._regulations = regulations;
         this._documents = documents;
         this._siteName = siteName;

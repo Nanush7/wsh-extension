@@ -1,21 +1,21 @@
 export {};
 
 import Tab = chrome.tabs.Tab;
-import { wcadocs, options } from "./common";
+import { wcadocs, allowed_options } from "./common";
 
-const BROWSER: options.TBrowser = "chrome";
+const BROWSER: allowed_options.OBrowser = "chrome";
 const SITES: Array<string> = [
     "https://www.worldcubeassociation.org/",
     "https://forum.worldcubeassociation.org/",
     "https://mail.google.com/"
 ]
 const VALID_URLS: Array<string> = SITES.map(url => url + '*');
-const COMMANDS: Array<options.TCommand> = ["short-replace", "long-replace", "display-regulation", "stop-error", "enable", "disable"];
+const COMMANDS: Array<allowed_options.OCommand> = ["short-replace", "long-replace", "display-regulation", "stop-error", "enable", "disable"];
 const REGULATIONS_JSON: string = "data/wca-regulations.json";
 const DOCUMENTS_JSON: string = "data/wca-documents.json";
 const DEFAULT_OPTIONS_JSON: string = "data/default-options.json";
 
-async function sendToContentScript(command: options.TCommand, all: boolean = false): Promise<void> {
+async function sendToContentScript(command: allowed_options.OCommand, all: boolean = false): Promise<void> {
     if (COMMANDS.includes(command)) {
         let tabs: Tab[];
         let messages: Promise<void>[] = [];
@@ -96,7 +96,7 @@ async function fetchDocuments(): Promise<void> {
     }
 }
 
-function getOptionsFromStorage(options: options.TStoredValue[]): {[key: string]: any} | undefined {
+function getOptionsFromStorage(options: allowed_options.OStoredValue[]): {[key: string]: any} | undefined {
     /* Returns undefined on exception. */
     try {
         return chrome.storage.local.get(options);
@@ -144,7 +144,7 @@ chrome.runtime.onStartup.addListener(async () => {
     }
 });
 
-chrome.commands.onCommand.addListener(async (command: options.TCommand) => {
+chrome.commands.onCommand.addListener(async (command: allowed_options.OCommand) => {
     if (COMMANDS.includes(command)) await sendToContentScript(command);
 });
 
