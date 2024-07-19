@@ -1,8 +1,18 @@
-import { wcadocs, allowed_options } from "../common";
+import {wcadocs, allowed_options, communication} from "../common";
 import TRegulationsDict = wcadocs.TRegulationsDict;
 import TDocumentList = wcadocs.TDocumentList;
+import TBasicSelection = communication.TBasicSelection;
+import OReplaceMode = allowed_options.OReplaceMode;
+import OStoredValue = allowed_options.OStoredValue;
+import OCommand = allowed_options.OCommand;
 
-class BaseContentModule {
+export interface ContentModule {
+    setUp(): Promise<boolean>;
+    getPageSelection(): Promise<TBasicSelection>;
+    replace(link_text: string, link_url: string, selection: TBasicSelection): void;
+}
+
+export abstract class BaseContentModule implements ContentModule {
     // -- URLs -- //
     static WCA_MAIN_URL = "https://www.worldcubeassociation.org/";
     static WCAREGS_URL = "https://wcaregs.netlify.app/";
@@ -16,9 +26,16 @@ class BaseContentModule {
     static REGULATION_REGEX = /(([1-9][0-9]?[a-z]([1-9][0-9]?[a-z]?)?)|([a-z][1-9][0-9]?([a-z]([1-9][0-9]?)?)?))\b\+{0,10}/i;
     static PERSON_REGEX = /\b[1-9]\d{3}[a-z]{4}\d{2}\b/i
     static INCIDENT_LOG_REGEX = /\bil#[1-9]\d{0,5}\b/i
-    static CATCH_LINKS_REGEX = new RegExp(`((${this.WCA_MAIN_URL}|${this.WCA_SHORT_URL})${this.REGULATIONS_RELATIVE_URL}(guidelines.html)?|${this.WCAREGS_URL})(#|%23)`, "i");
+    static CATCH_LINKS_REGEX = new RegExp(`((${this.WCA_MAIN_URL}|${this.WCA_SHORT_URL})${this.REGULATIONS_RELATIVE_URL}(full|guidelines.html)?|${this.WCAREGS_URL})(#|%23)`, "i");
 
-    constructor(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList, siteName: string, siteURL: string) {
+    // -- Properties -- //
+    protected readonly _regulations: TRegulationsDict;
+    protected readonly _documents: TDocumentList;
+    protected readonly _siteName: string;
+    protected readonly _siteURL: string;
+    protected readonly _documentFunctions: Array<Function>;
+
+    protected constructor(regulations: TRegulationsDict, documents: TDocumentList, siteName: string, siteURL: string) {
         this._regulations = regulations;
         this._documents = documents;
         this._siteName = siteName;
@@ -31,46 +48,17 @@ class BaseContentModule {
         ];
     }
 
-    get regulations() {
-        return this._regulations;
+    abstract setUp(): Promise<boolean>;
+
+    abstract getPageSelection(): Promise<TBasicSelection>;
+
+    abstract replace(link_text: string, link_url: string, selection: TBasicSelection): void;
+
+    log(message: string) {
+        console.log(`[WCA Staff Helper][${this._siteName}] ${message}`);
     }
 
-    get documents() {
-        return this._documents;
-    }
-
-    get siteName() {
-        return this._siteName;
-    }
-
-    get siteURL() {
-        return this._siteURL;
-    }
-
-    setUp() {
-        return true;
-    }
-
-    getPageSelection() {
-        /*
-        returns:
-        {
-            text: selected text,
-            range: (selected range | null)
-        }
-        */
-        throw new Error("getPageSelection() not implemented.");
-    }
-
-    replace(link_text, link_url, selection) {
-        throw new Error("replace() not implemented.");
-    }
-
-    log(message) {
-        console.log(`[WCA Staff Helper][${this.siteName}] ${message}`);
-    }
-
-    _getWCADocument(text, mode) {
+    protected _getWCADocument(text: string, mode: OReplaceMode) {
         "use strict";
         for (let doc of this._documents) {
             if (text === doc.short_name.toLowerCase()) {
@@ -86,39 +74,40 @@ class BaseContentModule {
         return [null, null];
     }
 
-    _getRegulationOrGuideline(text, mode) {
+    protected _getRegulationOrGuideline(text: string, mode: OReplaceMode) {
         "use strict";
-        let reg_num = text.match(BaseContentModule.REGULATION_REGEX);
+        const reg_num = text.match(BaseContentModule.REGULATION_REGEX);
         if (!reg_num || text.length !== reg_num[0].length || !this._regulations[reg_num[0]]) return [null, null];
-        reg_num = reg_num[0];
+        const reg_num_str = reg_num[0];
         const type = text.includes("+") ? "Guideline" : "Regulation";
-        const link_text = mode === "short-replace" ? this._regulations[reg_num].id : `${type} ${this._regulations[reg_num].id}`;
-        const link_url = `${BaseContentModule.WCA_MAIN_URL}${this._regulations[reg_num].url.substring(1)}`;
+        const link_text = mode === "short-replace" ? this._regulations[reg_num_str].id : `${type} ${this._regulations[reg_num_str].id}`;
+        const link_url = `${BaseContentModule.WCA_MAIN_URL}${this._regulations[reg_num_str].url.substring(1)}`;
         return [link_text, link_url];
     }
 
-    _getPerson(text) {
+    protected _getPerson(text: string) {
         "use strict";
-        let person = text.match(BaseContentModule.PERSON_REGEX);
+        const person = text.match(BaseContentModule.PERSON_REGEX);
         if (!person || text.length !== person[0].length) return [null, null];
         const link_text = person[0].toUpperCase();
         const link_url = `${BaseContentModule.WCA_MAIN_URL}${BaseContentModule.PERSON_RELATIVE_URL}${link_text}`;
         return [link_text, link_url];
     }
 
-    _getIncidentLog(text, mode) {
+    protected _getIncidentLog(text: string, mode: OReplaceMode) {
         "use strict";
-        let incident_log = text.match(BaseContentModule.INCIDENT_LOG_REGEX);
+        const incident_log = text.match(BaseContentModule.INCIDENT_LOG_REGEX);
         if (!incident_log || text.length !== incident_log[0].length) return [null, null];
-        incident_log = incident_log[0].split("#")[1];
-        const link_text = mode === "short-replace" ? `#${incident_log}` : `Incident Log #${incident_log}`;
-        const link_url = `${BaseContentModule.WCA_MAIN_URL}${BaseContentModule.INCIDENT_LOG_RELATIVE_URL}${incident_log}`;
+        const incident_log_str = incident_log[0].split("#")[1];
+        const link_text = mode === "short-replace" ? `#${incident_log_str}` : `Incident Log #${incident_log_str}`;
+        const link_url = `${BaseContentModule.WCA_MAIN_URL}${BaseContentModule.INCIDENT_LOG_RELATIVE_URL}${incident_log_str}`;
         return [link_text, link_url];
     }
 
-    getLinkData(text, mode) {
+    getLinkData(text: string, mode: OReplaceMode) {
         "use strict";
-        let link_text, link_url;
+        let link_text: string;
+        let link_url: string;
         const doc_string = text.toLowerCase();
 
         for (let func of this._documentFunctions) {
@@ -128,7 +117,7 @@ class BaseContentModule {
         return [null, null];
     }
 
-    static async getOptionsFromStorage(options) {
+    static async getOptionsFromStorage(options: OStoredValue) {
         /* Returns undefined on exception. */
         try {
             return await chrome.storage.local.get(options);
@@ -139,7 +128,7 @@ class BaseContentModule {
         return undefined;
     }
 
-    static async sendCommand(command, params={}) {
+    static async sendCommand(command: OCommand, params={}) {
         /* Send command and get response */
         return await chrome.runtime.sendMessage({command: command, params: params});
     }

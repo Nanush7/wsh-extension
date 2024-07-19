@@ -1,3 +1,5 @@
+import {ContentModule} from "./base";
+
 // --- Global variables --- //
 const REPLACE_COMMANDS = ["short-replace", "long-replace"];
 let stop_error = false;
@@ -13,9 +15,9 @@ let regulation_box = {
     justified: false,
     font_size: null
 };
-let enabled = false;
-let link_catching_enabled = false;
-let content_class;
+let enabled: boolean = false;
+let link_catching_enabled: boolean = false;
+let content_class: ContentModule;
 
 async function fetchDocuments() {
     /* Gets regulations and documents from storage. */
@@ -42,9 +44,8 @@ async function getPageSelection() {
     } catch (e) {
         console.log(`Could not get selected text: ${e}`);
     }
-    // Try the native way to get the selection.
-    if (!response || selection === "") {
-        selection = document.getSelection().toString().trim();
+    if (!response) {
+        selection = "";
     }
     return selection;
 }

@@ -1,14 +1,32 @@
+import {communication, wcadocs} from "../common";
+import {BaseContentModule} from "./base";
+import TRegulationsDict = wcadocs.TRegulationsDict;
+import TDocumentList = wcadocs.TDocumentList;
+import TBasicSelection = communication.TBasicSelection;
 
-class ContentModule extends BaseContentModule {
+export class GmailContent extends BaseContentModule {
 
-    constructor(regulations, documents) {
+    static #instance: GmailContent;
+
+    private constructor(regulations: TRegulationsDict, documents: TDocumentList) {
         super(regulations, documents, "Gmail", "https://mail.google.com/");
     }
 
-    getPageSelection() {
-        return new Promise((resolve, reject) => {
+    static getInstance(regulations: TRegulationsDict, documents: TDocumentList) {
+        if (!GmailContent.#instance) {
+            GmailContent.#instance = new GmailContent(regulations, documents);
+        }
+        return GmailContent.#instance;
+    }
+
+    async setUp(): Promise<boolean> {
+        return true;
+    }
+
+    getPageSelection(): Promise<TBasicSelection> {
+        return new Promise((resolve) => {
             const s = document.getSelection();
-            if (s.rangeCount === 0) {
+            if (!s || s.rangeCount === 0) {
                 resolve({text: ""});
             } else {
                 resolve({text: s.toString(), extraFields: {range: s.getRangeAt(0)}});
@@ -16,7 +34,7 @@ class ContentModule extends BaseContentModule {
         });
     }
 
-    replace(link_text, link_url, selection) {
+    replace(link_text: string, link_url: string, selection: any) {
         // Get Gmail composition windows.
         const editable_elements = document.getElementsByClassName("editable");
         // Check: Is the selected text in a compose element?

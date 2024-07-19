@@ -1,12 +1,35 @@
+import {BaseContentModule} from "./base";
+import {communication, wcadocs, DOMPurify} from "../common";
+import TRegulationsDict = wcadocs.TRegulationsDict;
+import TDocumentList = wcadocs.TDocumentList;
+import TBasicSelection = communication.TBasicSelection;
 
-class ContentModule extends BaseContentModule {
-    constructor(regulations, documents) {
+export class WCAForumContent extends BaseContentModule {
+
+    static #instance: WCAForumContent;
+
+    private constructor(regulations: TRegulationsDict, documents: TDocumentList) {
         super(regulations, documents, "WCA Forum", "https://forum.worldcubeassociation.org/");
     }
 
-    getPageSelection() {
+    static getInstance(regulations: TRegulationsDict, documents: TDocumentList) {
+        if (!WCAForumContent.#instance) {
+            WCAForumContent.#instance = new WCAForumContent(regulations, documents);
+        }
+        return WCAForumContent.#instance;
+    }
+
+    async setUp() {
+        return true;
+    }
+
+    getPageSelection(): Promise<TBasicSelection> {
         return new Promise((resolve) => {
-            const editor_elem = document.querySelector(".d-editor-input");
+            const editor_elem = document.querySelector(".d-editor-input") as HTMLInputElement;
+            if (!editor_elem || !editor_elem.selectionStart || !editor_elem.selectionEnd) {
+                resolve({text: ""});
+                return;
+            }
             const range = [editor_elem.selectionStart, editor_elem.selectionEnd];
             const text = editor_elem.value.slice(range[0], range[1]);
             const detail = {
@@ -17,7 +40,7 @@ class ContentModule extends BaseContentModule {
         });
     }
 
-    replace(link_text, link_url, extraFields) {
+    replace(link_text: string, link_url: string, extraFields: any) {
         const safe_text = DOMPurify.sanitize(`[${link_text}](${link_url})`, {ALLOWED_TAGS: []})
         extraFields.editorElement.setRangeText(safe_text, extraFields.range[0], extraFields.range[1], "end");
     }

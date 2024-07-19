@@ -5,7 +5,8 @@
     "target": "es6",
     "lib": [
       "es2020",
-      "dom"
+      "dom",
+      "dom.iterable"
     ],
     "noEmitOnError": true,
     "noImplicitAny": true,

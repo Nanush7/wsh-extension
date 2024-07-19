@@ -1,4 +1,11 @@
 // -- Custom events -- //
+import {communication, wcadocs} from "../common";
+import {BaseContentModule} from "./base";
+import TRegulationsDict = wcadocs.TRegulationsDict;
+import TDocumentList = wcadocs.TDocumentList;
+import TBasicSelection = communication.TBasicSelection;
+import TSelectionResponse = communication.TSelectionResponse;
+
 const SELECTION_REQUEST_EVENT = "WSHSelectionRequestEvent";
 const SELECTION_RESPONSE_EVENT = "WSHSelectionResponseEvent";
 const REPLACE_EVENT = "WSHReplaceEvent";
@@ -8,36 +15,43 @@ const SELECTION_PENDING_FAIL = "A selection is already pending";
 const SELECTION_TIMEOUT_FAIL = "WSHSelectionTimeoutFail";
 const SELECTION_TIMEOUT = 1000;
 
-class ContentModule extends BaseContentModule {
+export class WCAWebsiteContent extends BaseContentModule {
 
     // Private fields.
-    #pendingSelection;
+    static #instance: WCAWebsiteContent;
+    #pendingSelection: boolean;
 
-    constructor(regulations, documents) {
+    private constructor(regulations: TRegulationsDict, documents: TDocumentList) {
         super(regulations, documents, "WCA Website", "https://www.worldcubeassociation.org/");
-
+        this.#pendingSelection = false;
     }
 
-    setUp() {
+    static getInstance(regulations: TRegulationsDict, documents: TDocumentList) {
+        if (!WCAWebsiteContent.#instance) {
+            WCAWebsiteContent.#instance = new WCAWebsiteContent(regulations, documents);
+        }
+        return WCAWebsiteContent.#instance;
+    }
+
+    async setUp(): Promise<boolean> {
         if (document.getElementsByClassName("EasyMDEContainer").length === 0) return false;
 
         this.#pendingSelection = false;
 
-        BaseContentModule.sendCommand("inject-wsh-event")
-            .then((response) => {
-                if (response && response.status !== 0) {
-                    console.error("Could not inject WSHReplaceEvent");
-                    return false;
-                }
-                return true;
-            })
-            .catch((error) => {
-                console.error("Could not inject WSHReplaceEvent: " + error);
+        try {
+            const response = await BaseContentModule.sendCommand("inject-wsh-event");
+            if (response && response.status !== 0) {
+                console.error("Could not inject WSHReplaceEvent");
                 return false;
-            });
+            }
+        } catch (error) {
+            console.error("Could not inject WSHReplaceEvent: " + error);
+            return false;
+        }
+        return true;
     }
 
-    getPageSelection() {
+    getPageSelection(): Promise<TBasicSelection> {
         return new Promise((resolve, reject) => {
             if (this.#pendingSelection) {
                 reject(SELECTION_PENDING_FAIL);
@@ -45,6 +59,8 @@ class ContentModule extends BaseContentModule {
             }
 
             this.#pendingSelection = true;
+            // TODO: Que detecte si CodeMirror está en modo preview.
+            // O sea, si no hay ningún CM con foco y el texto está en el div correspondiente.
 
             // If we never get a response, reject the promise.
             const timeout = setTimeout(() => {
@@ -54,9 +70,10 @@ class ContentModule extends BaseContentModule {
 
             // Add event listener for selection response.
             document.addEventListener(SELECTION_RESPONSE_EVENT, (e) => {
-                this.#pendingSelection = false;
+                const custom_event = e as CustomEvent<TSelectionResponse>
                 clearTimeout(timeout);
-                resolve({text: e.detail.text, extraFields: e.detail});
+                this.#pendingSelection = false;
+                resolve({text: custom_event.detail.text, extraFields: custom_event.detail});
             }, {once: true});
 
             // Request selection from the page to CodeMirror 5.
@@ -65,7 +82,7 @@ class ContentModule extends BaseContentModule {
         });
     }
 
-    replace(link_text, link_url, extraFields) {
+    replace(link_text: string, link_url: string, extraFields: any) {
         let detail = extraFields;
         detail["text"] = `[${link_text}](${link_url})`;
         const e = new CustomEvent(REPLACE_EVENT, {detail: detail});

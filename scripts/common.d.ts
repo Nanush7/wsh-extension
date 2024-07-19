@@ -24,7 +24,8 @@ export namespace allowed_options {
     /*
      * Types related to allowed options.
      */
-    type OCommand = "short-replace" | "long-replace" | "display-regulation" | "stop-error" | "enable" | "disable";
+    type OReplaceMode = "short-replace" | "long-replace";
+    type OCommand = OReplaceMode | "display-regulation" | "inject-wsh-event" | "stop-error" | "enable" | "disable";
     type OBrowser = "chrome" | "firefox";
     type OStoredValue = "regulations" | "documents" | "display_config" | "regulations_version" | "enabled" | "catch_links" | "justify_box_text" | "box_font_size" | "box_timeout";
     // type OSite = "WCA Website" | "WCA Forum" | "Gmail";
@@ -32,16 +33,25 @@ export namespace allowed_options {
 
 export namespace communication {
     /*
-    * Types related to communication between content scripts and background scripts.
-    */
+     * Types related to communication between content scripts and background scripts.
+     */
     type TSelectionResponse = {
         text: string,
         rangeStart: CodeMirror.Position,
         rangeEnd: CodeMirror.Position,
         cmInstanceId: number
     };
+    type TBasicSelection = {
+        text: string,
+        range?: [number, number] | null,
+        extraFields?: any;
+    }
 }
 
+// DOMPurify.
+declare class DOMPurify {
+    static sanitize(text: string, options: any): string;
+}
 // Firefox XPCNativeWrapper.
 declare function XPCNativeWrapper(obj: any): any;
 declare interface CMElement extends Element {
