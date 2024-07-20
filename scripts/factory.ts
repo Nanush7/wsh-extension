@@ -8,7 +8,7 @@ import TDocumentList = wcadocs.TDocumentList;
 /*
  * Factory class for creating instances of BaseContentModule subclasses.
  */
-class Factory {
+export class Factory {
     private static readonly mappedSites = {
         "https://www.worldcubeassociation.org/": WCAWebsiteContent,
         "https://forum.worldcubeassociation.org/": WCAForumContent,

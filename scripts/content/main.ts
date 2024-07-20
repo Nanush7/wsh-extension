@@ -1,19 +1,35 @@
-import {ContentModule} from "./base";
+import {BaseContentModule, ContentModule} from "./base";
+import {allowed_options, DOMPurify, wcadocs} from "../common";
+import {Factory} from "../factory";
+import TRegulation = wcadocs.TRegulation;
+import OReplaceMode = allowed_options.OReplaceMode;
+
+type TRegulationBox = {
+    box_node: HTMLDivElement | null,
+    p_node: HTMLParagraphElement | null,
+    pin_img: HTMLImageElement | null,
+    active: boolean,
+    timer: number,
+    pinned: boolean,
+    timeout: number,
+    justified: boolean,
+    font_size: number
+}
 
 // --- Global variables --- //
 const REPLACE_COMMANDS = ["short-replace", "long-replace"];
 let stop_error = false;
 let setup_done = false;
-let regulation_box = {
+let regulation_box: TRegulationBox = {
     box_node: null,
     p_node: null,
     pin_img: null,
     active: false,
-    timer: null,
+    timer: -1,
     pinned: false,
-    timeout: null,
+    timeout: 0,
     justified: false,
-    font_size: null
+    font_size: 0
 };
 let enabled: boolean = false;
 let link_catching_enabled: boolean = false;
@@ -24,7 +40,7 @@ async function fetchDocuments() {
     let regulations = null;
     let documents = null;
     const result = await BaseContentModule.getOptionsFromStorage(["regulations", "documents"]);
-    if (result !== undefined && result.regulations !== undefined && result.documents !== undefined) {
+    if (result && result.regulations && result.documents) {
         regulations = result.regulations;
         documents = result.documents;
     } else {
@@ -50,7 +66,7 @@ async function getPageSelection() {
     return selection;
 }
 
-function getRegulationFromString(string) {
+function getRegulationFromString(string: string): TRegulation | undefined {
     const reg_num = string.toLowerCase().match(BaseContentModule.REGULATION_REGEX);
     if (!reg_num) {
         return undefined;
@@ -58,7 +74,7 @@ function getRegulationFromString(string) {
     return content_class.regulations[reg_num[0]];  // Returns undefined if the regulation doesn't exist.
 }
 
-function getRegulationFromUrl(original_url) {
+function getRegulationFromUrl(original_url: string): TRegulation | undefined {
     // We need to deal with Google's safe redirect urls:
     let url = original_url;
     if (original_url.startsWith(BaseContentModule.GOOGLE_SAFE_REDIRECT_URL)) {
@@ -69,14 +85,14 @@ function getRegulationFromUrl(original_url) {
     return getRegulationFromString(url);
 }
 
-async function displayRegulationBox(regulation, original_url="") {
+async function displayRegulationBox(regulation: TRegulation | undefined, original_url="") {
     /* Display the regulation in a box/popup. */
 
-    let div_node = regulation_box.box_node;
-    let p_node = regulation_box.p_node;
-    let unsafe_HTML;
+    let div_node = regulation_box.box_node as unknown as HTMLDivElement;
+    let p_node = regulation_box.p_node as unknown as HTMLParagraphElement;
+    let unsafe_HTML: string;
 
-    if (regulation !== undefined) {
+    if (regulation) {
         const guideline_label = regulation["guideline_label"] === undefined ? "" : `<b>${regulation["guideline_label"]}</b>`;
         unsafe_HTML = `<a id="reg-num" href="${BaseContentModule.WCA_MAIN_URL}${regulation["url"].substring(1)}">${regulation["id"]}</a>) ${guideline_label} ${regulation["content_html"]}`;
     } else if (original_url !== "") {
@@ -108,7 +124,7 @@ async function displayRegulationBox(regulation, original_url="") {
         regulation_box.timer = setTimeout(() => {
             div_node.style.display = "none";
             regulation_box.active = false;
-            regulation_box.timer = null;
+            regulation_box.timer = -1;
         }, regulation_box.timeout * 1000);
     }
 }
@@ -145,14 +161,6 @@ async function setUpLinkCatching() {
     close_img.src = close_icon.url;
     close_img.alt = "Close";
     btn_div_node.appendChild(close_img);
-    close_img.addEventListener("click", () => {
-        box_node.style.display = "none";
-        regulation_box.active = false;
-        clearTimeout(regulation_box.timer);
-        regulation_box.timer = null;
-        regulation_box.pinned = false;
-        regulation_box.pin_img.style.display = "block";
-    });
 
     // Create the pin button.
     let pin_img = document.createElement("img");
@@ -162,9 +170,20 @@ async function setUpLinkCatching() {
     pin_img.alt = "Pin";
     pin_img.style.display = "block";
     btn_div_node.appendChild(pin_img);
+
+    // Listener for the close button.
+    close_img.addEventListener("click", () => {
+        box_node.style.display = "none";
+        regulation_box.active = false;
+        clearTimeout(regulation_box.timer);
+        regulation_box.timer = -1;
+        regulation_box.pinned = false;
+        regulation_box.pin_img!.style.display = "block";
+    });
+    // Listener for the pin button.
     pin_img.addEventListener("click", () => {
         clearTimeout(regulation_box.timer);
-        regulation_box.timer = null;
+        regulation_box.timer = -1;
         regulation_box.pinned = true;
         pin_img.style.display = "none";
     });
@@ -177,6 +196,7 @@ async function setUpLinkCatching() {
     // Catch links to regulations.
     document.addEventListener("click", async (click_event) => {
         const clicked_element = click_event.target;
+        if (!clicked_element || !(clicked_element instanceof HTMLAnchorElement) || !clicked_element["href"]) return;
         const wl = window.location.href;
 
         // We want to open the link normally if:
@@ -187,9 +207,10 @@ async function setUpLinkCatching() {
         // - We are already in the regulations/wcaregs page.
         // - The clicked element is the regulation number in the box.
         // - The link does not point to the regulations/wcaregs page with a "#" (covered in the next if).
-        if (!enabled || stop_error || !link_catching_enabled || clicked_element["tagName"] !== "A" ||
-        wl.startsWith(BaseContentModule.WCA_MAIN_URL + BaseContentModule.REGULATIONS_RELATIVE_URL) || wl.startsWith(BaseContentModule.WCAREGS_URL) ||
-        (regulation_box.box_node.contains(clicked_element) && clicked_element["id"] === "reg-num")) {
+        if (!enabled || stop_error || !link_catching_enabled ||
+            wl.startsWith(BaseContentModule.WCA_MAIN_URL + BaseContentModule.REGULATIONS_RELATIVE_URL) ||
+            wl.startsWith(BaseContentModule.WCAREGS_URL) ||
+            (regulation_box.box_node!.contains(clicked_element) && clicked_element["id"] === "reg-num")) {
             return;
         }
 
@@ -204,20 +225,26 @@ async function setUpLinkCatching() {
 async function lazySetUp() {
     let regulations, documents;
     [regulations, documents] = await fetchDocuments();
-    content_class  = new ContentModule(regulations, documents);
-    if (content_class.setUp() === false) {
+    try {
+        content_class = Factory.getContentClass(regulations, documents, window.location.href);
+    } catch (e) {
+        console.error(`Could not create the content class: ${e}`);
         stop_error = true;
         return;
     }
-    await setUpLinkCatching();
-    setup_done = true;
+    if (await content_class.setUp()) {
+        await setUpLinkCatching();
+        setup_done = true;
+    } else {
+        stop_error = true;
+    }
 }
 
 async function setUp() {
     // Check if the extension is enabled.
     enabled = false;
     link_catching_enabled = false;
-    const stored_options = await BaseContentModule.getOptionsFromStorage(["enabled", "catch-links", "justify-box-text", "box-font-size", "box-timeout"]);
+    const stored_options = await BaseContentModule.getOptionsFromStorage(["enabled", "catch_links", "justify_box_text", "box_font_size", "box_timeout"]);
     if (stored_options === undefined) {
         stop_error = true;
         return;
@@ -242,7 +269,7 @@ async function setUp() {
     }
 }
 
-async function replace(command) {
+async function replace(command: OReplaceMode) {
     /* Execute the text replacement flow using the content class. */
 
     content_class.getPageSelection()

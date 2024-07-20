@@ -10,6 +10,10 @@ export interface ContentModule {
     setUp(): Promise<boolean>;
     getPageSelection(): Promise<TBasicSelection>;
     replace(link_text: string, link_url: string, selection: TBasicSelection): void;
+    getLinkData(text: string, mode: OReplaceMode): [string, string] | [null, null];
+    log(message: string): void;
+    regulations: TRegulationsDict;
+    documents: TDocumentList;
 }
 
 export abstract class BaseContentModule implements ContentModule {
@@ -58,6 +62,14 @@ export abstract class BaseContentModule implements ContentModule {
         console.log(`[WCA Staff Helper][${this._siteName}] ${message}`);
     }
 
+    get regulations() {
+        return this._regulations;
+    }
+
+    get documents() {
+        return this._documents;
+    }
+
     protected _getWCADocument(text: string, mode: OReplaceMode) {
         "use strict";
         for (let doc of this._documents) {
@@ -104,7 +116,10 @@ export abstract class BaseContentModule implements ContentModule {
         return [link_text, link_url];
     }
 
-    getLinkData(text: string, mode: OReplaceMode) {
+    getLinkData(text: string, mode: OReplaceMode): [string, string] | [null, null] {
+        /*
+         * Returns [link_text, link_url] if the text is a valid link.
+         */
         "use strict";
         let link_text: string;
         let link_url: string;
@@ -117,7 +132,7 @@ export abstract class BaseContentModule implements ContentModule {
         return [null, null];
     }
 
-    static async getOptionsFromStorage(options: OStoredValue) {
+    static async getOptionsFromStorage(options: OStoredValue[]) {
         /* Returns undefined on exception. */
         try {
             return await chrome.storage.local.get(options);

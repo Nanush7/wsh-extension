@@ -8,6 +8,7 @@ export namespace wcadocs {
         "id": string,
         "content_html": string,
         "url": string,
+        "guideline_label"?: string
     };
     type TRegulationsDict = {
         [id: string]: TRegulation
@@ -25,10 +26,9 @@ export namespace allowed_options {
      * Types related to allowed options.
      */
     type OReplaceMode = "short-replace" | "long-replace";
-    type OCommand = OReplaceMode | "display-regulation" | "inject-wsh-event" | "stop-error" | "enable" | "disable";
+    type OCommand = OReplaceMode | "get-internal-url" | "display-regulation" | "inject-wsh-event" | "stop-error" | "enable" | "disable";
     type OBrowser = "chrome" | "firefox";
     type OStoredValue = "regulations" | "documents" | "display_config" | "regulations_version" | "enabled" | "catch_links" | "justify_box_text" | "box_font_size" | "box_timeout";
-    // type OSite = "WCA Website" | "WCA Forum" | "Gmail";
 }
 
 export namespace communication {
