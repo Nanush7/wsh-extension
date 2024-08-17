@@ -1,4 +1,4 @@
-export {};
+// export {};
 
 import Tab = chrome.tabs.Tab;
 import { wcadocs, allowed_options } from "./common";

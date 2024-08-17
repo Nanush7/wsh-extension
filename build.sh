@@ -16,6 +16,7 @@ copy_files() {
   local browser="$1";
   rm -rf build;
   mkdir -p build;
+  npx tsc
   for file in "${FILES[@]}"; do
     cp -r "$file" "$BUILD_DIR";
   done
@@ -61,12 +62,12 @@ readonly BROWSER_DEPENDANT_FILES=("scripts/wsh-event-injection.js" "scripts/back
 readonly VERSION_DISPLAY_FILES=("html/popup.html");
 
 # Files to be copied to the build directory.
-readonly FILES=("css" "data" "html" "img" "scripts" "LICENSE" "README.md");
+readonly FILES=("css" "data" "html" "img" "LICENSE" "README.md");
 readonly BUILD_DIR="build";
 
 if [[ -z "$target" || -z "$BROWSER" ]]; then
   echo "Missing arguments";
-  echo "Usage: build.sh <build|develop|package> <firefox|chrome>";
+  echo "Usage: build.sh <build|package> <firefox|chrome>";
   exit 1;
 fi
 
@@ -84,12 +85,6 @@ fi
 if [[ "$target" == "build" ]]; then
   manifest_output_path="$BUILD_DIR/manifest.json";
   copy_files "$BROWSER";
-elif [[ "$target" == "develop" ]]; then
-  manifest_output_path="manifest.json";
-  # If the file is browser dependant, replace the BROWSER constant.
-  for file in "${BROWSER_DEPENDANT_FILES[@]}"; do
-    sed --sandbox -i -E -e 's/^const BROWSER = "(firefox|chrome)";/const BROWSER = "'"$BROWSER"'";/' "$file";
-  done
 else
   echo "Invalid operation argument: $target";
   exit 1;

@@ -1,4 +1,4 @@
-import {WCAWebsiteContent} from "content/wca-website";
+import {WCAWebsiteContent} from "./content/wca-website";
 import {GmailContent} from "./content/gmail";
 import {WCAForumContent} from "./content/wca-forum";
 import {wcadocs} from "./common";

@@ -4,6 +4,7 @@
     "@types/codemirror": "^5.60.15",
     "@types/dompurify": "^3.0.5",
     "@types/firefox-webext-browser": "^120.0.3",
+    "@types/tern": "^0.23.9",
     "typescript": "^5.4.5"
   }
 }
