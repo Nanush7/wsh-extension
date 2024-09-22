@@ -1,11 +1,4 @@
 // -- Custom events -- //
-import {communication, wcadocs} from "../common";
-import {BaseContentModule} from "./base";
-import TRegulationsDict = wcadocs.TRegulationsDict;
-import TDocumentList = wcadocs.TDocumentList;
-import TBasicSelection = communication.TBasicSelection;
-import TSelectionResponse = communication.TSelectionResponse;
-
 const SELECTION_REQUEST_EVENT = "WSHSelectionRequestEvent";
 const SELECTION_RESPONSE_EVENT = "WSHSelectionResponseEvent";
 const REPLACE_EVENT = "WSHReplaceEvent";
@@ -15,18 +8,18 @@ const SELECTION_PENDING_FAIL = "A selection is already pending";
 const SELECTION_TIMEOUT_FAIL = "WSHSelectionTimeoutFail";
 const SELECTION_TIMEOUT = 1000;
 
-export class WCAWebsiteContent extends BaseContentModule {
+class WCAWebsiteContent extends BaseContentModule {
 
     // Private fields.
     static #instance: WCAWebsiteContent;
     #pendingSelection: boolean;
 
-    private constructor(regulations: TRegulationsDict, documents: TDocumentList) {
+    private constructor(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList) {
         super(regulations, documents, "WCA Website", "https://www.worldcubeassociation.org/");
         this.#pendingSelection = false;
     }
 
-    static getInstance(regulations: TRegulationsDict, documents: TDocumentList) {
+    static getInstance(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList) {
         if (!WCAWebsiteContent.#instance) {
             WCAWebsiteContent.#instance = new WCAWebsiteContent(regulations, documents);
         }
@@ -51,7 +44,7 @@ export class WCAWebsiteContent extends BaseContentModule {
         return true;
     }
 
-    getPageSelection(): Promise<TBasicSelection> {
+    getPageSelection(): Promise<communication.TBasicSelection> {
         return new Promise((resolve, reject) => {
             if (this.#pendingSelection) {
                 reject(SELECTION_PENDING_FAIL);
@@ -70,7 +63,7 @@ export class WCAWebsiteContent extends BaseContentModule {
 
             // Add event listener for selection response.
             document.addEventListener(SELECTION_RESPONSE_EVENT, (e) => {
-                const custom_event = e as CustomEvent<TSelectionResponse>
+                const custom_event = e as CustomEvent<communication.TSelectionResponse>
                 clearTimeout(timeout);
                 this.#pendingSelection = false;
                 resolve({text: custom_event.detail.text, extraFields: custom_event.detail});

@@ -4,6 +4,7 @@ const SITES = {
     wca_forum: "https://forum.worldcubeassociation.org/",
     gmail: "https://mail.google.com/"
 }
+// @ts-ignore
 const VALID_URLS = Object.values(SITES).map(url => url + '*');
 
 // --- DOM elements --- //

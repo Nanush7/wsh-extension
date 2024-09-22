@@ -1,5 +1,5 @@
 
-export namespace wcadocs {
+declare namespace wcadocs {
     /*
      * Types related to WCA Documents.
      */
@@ -21,7 +21,7 @@ export namespace wcadocs {
     type TDocumentList = TDocument[];
 }
 
-export namespace allowed_options {
+declare namespace allowed_options {
     /*
      * Types related to allowed options.
      */
@@ -31,7 +31,7 @@ export namespace allowed_options {
     type OStoredValue = "regulations" | "documents" | "display_config" | "regulations_version" | "enabled" | "catch_links" | "justify_box_text" | "box_font_size" | "box_timeout";
 }
 
-export namespace communication {
+declare namespace communication {
     /*
      * Types related to communication between content scripts and background scripts.
      */

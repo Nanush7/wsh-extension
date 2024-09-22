@@ -1,15 +1,13 @@
-// export {};
 
-import Tab = chrome.tabs.Tab;
-import { wcadocs, allowed_options } from "./common";
-
+// @ts-ignore
 const BROWSER: allowed_options.OBrowser = "chrome";
-const SITES: Array<string> = [
+const VALID_SITES: Array<string> = [
     "https://www.worldcubeassociation.org/",
     "https://forum.worldcubeassociation.org/",
     "https://mail.google.com/"
 ]
-const VALID_URLS: Array<string> = SITES.map(url => url + '*');
+// @ts-ignore
+const VALID_URLS: Array<string> = VALID_SITES.map(url => url + '*');
 const COMMANDS: Array<allowed_options.OCommand> = ["short-replace", "long-replace", "display-regulation", "stop-error", "enable", "disable"];
 const REGULATIONS_JSON: string = "data/wca-regulations.json";
 const DOCUMENTS_JSON: string = "data/wca-documents.json";
@@ -17,7 +15,7 @@ const DEFAULT_OPTIONS_JSON: string = "data/default-options.json";
 
 async function sendToContentScript(command: allowed_options.OCommand, all: boolean = false): Promise<void> {
     if (COMMANDS.includes(command)) {
-        let tabs: Tab[];
+        let tabs: chrome.tabs.Tab[];
         let messages: Promise<void>[] = [];
         if (all) {
             tabs = await chrome.tabs.query({url: VALID_URLS});
@@ -58,6 +56,7 @@ async function injectWSHEvent(tab_id: number) {
     return true;
 }
 
+// @ts-ignore
 async function fetchDocuments(): Promise<void> {
     let regulations: Record<string, wcadocs.TRegulation>;
     let documents: Array<wcadocs.TDocument>;

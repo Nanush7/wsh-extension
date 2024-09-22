@@ -1,7 +1,5 @@
-import {communication, allowed_options, XPCNativeWrapper, CMElement} from "./common";
-import * as DOMPurify from "./purify.min.js";
-import * as CodeMirror from "codemirror";
 
+// @ts-ignore
 const BROWSER: allowed_options.OBrowser = "chrome";
 
 function add_listeners(cm: CodeMirror.Editor, cmId: number) {

@@ -1,18 +1,13 @@
-import {communication, wcadocs} from "../common";
-import {BaseContentModule} from "./base";
-import TRegulationsDict = wcadocs.TRegulationsDict;
-import TDocumentList = wcadocs.TDocumentList;
-import TBasicSelection = communication.TBasicSelection;
 
-export class GmailContent extends BaseContentModule {
+class GmailContent extends BaseContentModule {
 
     static #instance: GmailContent;
 
-    private constructor(regulations: TRegulationsDict, documents: TDocumentList) {
+    private constructor(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList) {
         super(regulations, documents, "Gmail", "https://mail.google.com/");
     }
 
-    static getInstance(regulations: TRegulationsDict, documents: TDocumentList) {
+    static getInstance(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList) {
         if (!GmailContent.#instance) {
             GmailContent.#instance = new GmailContent(regulations, documents);
         }
@@ -23,7 +18,7 @@ export class GmailContent extends BaseContentModule {
         return true;
     }
 
-    getPageSelection(): Promise<TBasicSelection> {
+    getPageSelection(): Promise<communication.TBasicSelection> {
         return new Promise((resolve) => {
             const s = document.getSelection();
             if (!s || s.rangeCount === 0) {

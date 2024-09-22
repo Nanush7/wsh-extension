@@ -1,28 +1,26 @@
-import {WCAWebsiteContent} from "./content/wca-website";
-import {GmailContent} from "./content/gmail";
-import {WCAForumContent} from "./content/wca-forum";
-import {wcadocs} from "./common";
-import TRegulationsDict = wcadocs.TRegulationsDict;
-import TDocumentList = wcadocs.TDocumentList;
-
 /*
  * Factory class for creating instances of BaseContentModule subclasses.
  */
-export class Factory {
+class Factory {
     private static readonly mappedSites = {
-        "https://www.worldcubeassociation.org/": WCAWebsiteContent,
-        "https://forum.worldcubeassociation.org/": WCAForumContent,
-        "https://mail.google.com/": GmailContent
+        wca_main: "https://www.worldcubeassociation.org/",
+        wca_forum: "https://forum.worldcubeassociation.org/",
+        gmail: "https://mail.google.com/"
     };
     /*
      * Get the class for the content script based on the site.
      */
-    static getContentClass(regulations: TRegulationsDict, documents: TDocumentList, site: string) {
-        for (let [siteURL, contentClass] of Object.entries(Factory.mappedSites)) {
-            if (site.startsWith(siteURL)) {
-                return contentClass.getInstance(regulations, documents);
-            }
+    static getContentClass(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList, site: string) {
+        let contentClass;
+        if (site.startsWith(this.mappedSites.wca_main)) {
+            contentClass = WCAWebsiteContent;
+        } else if (site.startsWith(this.mappedSites.wca_forum)) {
+            contentClass = WCAForumContent;
+        } else if (site.startsWith(this.mappedSites.gmail)) {
+            contentClass = GmailContent;
+        } else {
+            throw new Error(`No content class found for site: ${site}`);
         }
-        throw new Error(`No content class found for site: ${site}`);
+        return contentClass.getInstance(regulations, documents);
     }
 }

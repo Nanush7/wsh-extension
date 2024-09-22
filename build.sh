@@ -20,17 +20,22 @@ copy_files() {
   for file in "${FILES[@]}"; do
     cp -r "$file" "$BUILD_DIR";
   done
+  # TODO: Improve this.
+  cp "scripts/purify.min.js" "$BUILD_DIR/scripts/"
 
-  find "$BUILD_DIR" -type f -printf "%P\n" | while read -r file; do
-    if string_in_array "$file" "${VERSION_DISPLAY_FILES[@]}"; then
-      sed --sandbox -i -E -e "s/#\{\{version\}\}/$WSH_VERSION/" "$BUILD_DIR/$file";
+  find "$BUILD_DIR" -type f | while read -r file; do
+    if string_in_array "$(basename "$file")" "${VERSION_DISPLAY_FILES[@]}"; then
+      version=$(sed 's/\./\\./g' <<< "$WSH_VERSION");
+      sed -E -I '' "s/#{{version}}/$version/" "$file";
     fi
-    if string_in_array "$file" "${BROWSER_DEPENDANT_FILES[@]}"; then
-      sed --sandbox -i -E -e 's/^const BROWSER = "(firefox|chrome)";/const BROWSER = "'"$browser"'";/' "$BUILD_DIR/$file";
+    if string_in_array "$(basename "$file")" "${BROWSER_DEPENDANT_FILES[@]}"; then
+      sed -E -I '' 's/^const BROWSER(:[\w\d\._]+)? = "(firefox|chrome)";/const BROWSER = "'"$browser"'";/' "$file";
     fi
   done
 }
 
+
+# Start:
 if [[ "$EUID" -eq 0 ]]; then
   echo "Please do not run this script as root.";
   echo "Aborting..."
@@ -42,8 +47,12 @@ if [[ "$target" == "package" ]]; then
   # Most of the process is the same.
   target="build";
   package=0;
-else
+elif [[ "$target" == "build" ]]; then
   package=1;
+else
+  echo "Unknown target operation.";
+  echo "Usage: build.sh <build|package> <firefox|chrome>";
+  exit 1;
 fi
 readonly BROWSER="$2";
 
@@ -56,20 +65,14 @@ readonly CHROME_MIN_VERSION="102";
 readonly BACKGROUND_FILE="scripts\/background.js";
 
 # JS files that contain a "const BROWSER = '...';" line.
-readonly BROWSER_DEPENDANT_FILES=("scripts/wsh-event-injection.js" "scripts/background.js");
+readonly BROWSER_DEPENDANT_FILES=("wsh-event-injection.js" "background.js");
 
 # Files that contain a "#{{version}}" line.
-readonly VERSION_DISPLAY_FILES=("html/popup.html");
+readonly VERSION_DISPLAY_FILES=("popup.html");
 
 # Files to be copied to the build directory.
 readonly FILES=("css" "data" "html" "img" "LICENSE" "README.md");
 readonly BUILD_DIR="build";
-
-if [[ -z "$target" || -z "$BROWSER" ]]; then
-  echo "Missing arguments";
-  echo "Usage: build.sh <build|package> <firefox|chrome>";
-  exit 1;
-fi
 
 if [[ "$BROWSER" == "firefox" ]]; then
   min_version='"browser_specific_settings": {"gecko": {"strict_min_version": "'$FIREFOX_MIN_VERSION'"}}';
@@ -85,13 +88,10 @@ fi
 if [[ "$target" == "build" ]]; then
   manifest_output_path="$BUILD_DIR/manifest.json";
   copy_files "$BROWSER";
-else
-  echo "Invalid operation argument: $target";
-  exit 1;
 fi
 
 # Replace #{{...}} with the actual values in the manifest file.
-if ! sed --sandbox -E -e "s/#\{\{name\}\}/$WSH_NAME/" \
+if ! sed -E -e "s/#\{\{name\}\}/$WSH_NAME/" \
   -e "s/#\{\{description\}\}/$WSH_DESCRIPTION/" \
   -e "s/#\{\{version\}\}/$WSH_VERSION/" \
   -e "s/#\{\{min_version\}\}/$min_version/" \

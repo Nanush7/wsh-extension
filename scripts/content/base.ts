@@ -1,22 +1,15 @@
-import {wcadocs, allowed_options, communication} from "../common";
-import TRegulationsDict = wcadocs.TRegulationsDict;
-import TDocumentList = wcadocs.TDocumentList;
-import TBasicSelection = communication.TBasicSelection;
-import OReplaceMode = allowed_options.OReplaceMode;
-import OStoredValue = allowed_options.OStoredValue;
-import OCommand = allowed_options.OCommand;
 
-export interface ContentModule {
+interface ContentModule {
     setUp(): Promise<boolean>;
-    getPageSelection(): Promise<TBasicSelection>;
-    replace(link_text: string, link_url: string, selection: TBasicSelection): void;
-    getLinkData(text: string, mode: OReplaceMode): [string, string] | [null, null];
+    getPageSelection(): Promise<communication.TBasicSelection>;
+    replace(link_text: string, link_url: string, selection: communication.TBasicSelection): void;
+    getLinkData(text: string, mode: allowed_options.OReplaceMode): [string, string] | [null, null];
     log(message: string): void;
-    regulations: TRegulationsDict;
-    documents: TDocumentList;
+    regulations: wcadocs.TRegulationsDict;
+    documents: wcadocs.TDocumentList;
 }
 
-export abstract class BaseContentModule implements ContentModule {
+abstract class BaseContentModule implements ContentModule {
     // -- URLs -- //
     static WCA_MAIN_URL = "https://www.worldcubeassociation.org/";
     static WCAREGS_URL = "https://wcaregs.netlify.app/";
@@ -33,13 +26,13 @@ export abstract class BaseContentModule implements ContentModule {
     static CATCH_LINKS_REGEX = new RegExp(`((${this.WCA_MAIN_URL}|${this.WCA_SHORT_URL})${this.REGULATIONS_RELATIVE_URL}(full|guidelines.html)?|${this.WCAREGS_URL})(#|%23)`, "i");
 
     // -- Properties -- //
-    protected readonly _regulations: TRegulationsDict;
-    protected readonly _documents: TDocumentList;
+    protected readonly _regulations: wcadocs.TRegulationsDict;
+    protected readonly _documents: wcadocs.TDocumentList;
     protected readonly _siteName: string;
     protected readonly _siteURL: string;
     protected readonly _documentFunctions: Array<Function>;
 
-    protected constructor(regulations: TRegulationsDict, documents: TDocumentList, siteName: string, siteURL: string) {
+    protected constructor(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList, siteName: string, siteURL: string) {
         this._regulations = regulations;
         this._documents = documents;
         this._siteName = siteName;
@@ -54,9 +47,9 @@ export abstract class BaseContentModule implements ContentModule {
 
     abstract setUp(): Promise<boolean>;
 
-    abstract getPageSelection(): Promise<TBasicSelection>;
+    abstract getPageSelection(): Promise<communication.TBasicSelection>;
 
-    abstract replace(link_text: string, link_url: string, selection: TBasicSelection): void;
+    abstract replace(link_text: string, link_url: string, selection: communication.TBasicSelection): void;
 
     log(message: string) {
         console.log(`[WCA Staff Helper][${this._siteName}] ${message}`);
@@ -70,7 +63,7 @@ export abstract class BaseContentModule implements ContentModule {
         return this._documents;
     }
 
-    protected _getWCADocument(text: string, mode: OReplaceMode) {
+    protected _getWCADocument(text: string, mode: allowed_options.OReplaceMode) {
         "use strict";
         for (let doc of this._documents) {
             if (text === doc.short_name.toLowerCase()) {
@@ -86,7 +79,7 @@ export abstract class BaseContentModule implements ContentModule {
         return [null, null];
     }
 
-    protected _getRegulationOrGuideline(text: string, mode: OReplaceMode) {
+    protected _getRegulationOrGuideline(text: string, mode: allowed_options.OReplaceMode) {
         "use strict";
         const reg_num = text.match(BaseContentModule.REGULATION_REGEX);
         if (!reg_num || text.length !== reg_num[0].length || !this._regulations[reg_num[0]]) return [null, null];
@@ -106,7 +99,7 @@ export abstract class BaseContentModule implements ContentModule {
         return [link_text, link_url];
     }
 
-    protected _getIncidentLog(text: string, mode: OReplaceMode) {
+    protected _getIncidentLog(text: string, mode: allowed_options.OReplaceMode) {
         "use strict";
         const incident_log = text.match(BaseContentModule.INCIDENT_LOG_REGEX);
         if (!incident_log || text.length !== incident_log[0].length) return [null, null];
@@ -116,7 +109,7 @@ export abstract class BaseContentModule implements ContentModule {
         return [link_text, link_url];
     }
 
-    getLinkData(text: string, mode: OReplaceMode): [string, string] | [null, null] {
+    getLinkData(text: string, mode: allowed_options.OReplaceMode): [string, string] | [null, null] {
         /*
          * Returns [link_text, link_url] if the text is a valid link.
          */
@@ -132,7 +125,7 @@ export abstract class BaseContentModule implements ContentModule {
         return [null, null];
     }
 
-    static async getOptionsFromStorage(options: OStoredValue[]) {
+    static async getOptionsFromStorage(options: allowed_options.OStoredValue[]) {
         /* Returns undefined on exception. */
         try {
             return await chrome.storage.local.get(options);
@@ -143,7 +136,7 @@ export abstract class BaseContentModule implements ContentModule {
         return undefined;
     }
 
-    static async sendCommand(command: OCommand, params={}) {
+    static async sendCommand(command: allowed_options.OCommand, params={}) {
         /* Send command and get response */
         return await chrome.runtime.sendMessage({command: command, params: params});
     }

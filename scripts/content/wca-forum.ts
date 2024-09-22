@@ -1,18 +1,13 @@
-import {BaseContentModule} from "./base";
-import {communication, wcadocs, DOMPurify} from "../common";
-import TRegulationsDict = wcadocs.TRegulationsDict;
-import TDocumentList = wcadocs.TDocumentList;
-import TBasicSelection = communication.TBasicSelection;
 
-export class WCAForumContent extends BaseContentModule {
+class WCAForumContent extends BaseContentModule {
 
     static #instance: WCAForumContent;
 
-    private constructor(regulations: TRegulationsDict, documents: TDocumentList) {
+    private constructor(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList) {
         super(regulations, documents, "WCA Forum", "https://forum.worldcubeassociation.org/");
     }
 
-    static getInstance(regulations: TRegulationsDict, documents: TDocumentList) {
+    static getInstance(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList) {
         if (!WCAForumContent.#instance) {
             WCAForumContent.#instance = new WCAForumContent(regulations, documents);
         }
@@ -23,7 +18,7 @@ export class WCAForumContent extends BaseContentModule {
         return true;
     }
 
-    getPageSelection(): Promise<TBasicSelection> {
+    getPageSelection(): Promise<communication.TBasicSelection> {
         return new Promise((resolve) => {
             const editor_elem = document.querySelector(".d-editor-input") as HTMLInputElement;
             if (!editor_elem || !editor_elem.selectionStart || !editor_elem.selectionEnd) {

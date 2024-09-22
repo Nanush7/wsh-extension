@@ -1,8 +1,3 @@
-import {BaseContentModule, ContentModule} from "./base";
-import {allowed_options, DOMPurify, wcadocs} from "../common";
-import {Factory} from "../factory";
-import TRegulation = wcadocs.TRegulation;
-import OReplaceMode = allowed_options.OReplaceMode;
 
 type TRegulationBox = {
     box_node: HTMLDivElement | null,
@@ -35,6 +30,7 @@ let enabled: boolean = false;
 let link_catching_enabled: boolean = false;
 let content_class: ContentModule;
 
+// @ts-ignore
 async function fetchDocuments() {
     /* Gets regulations and documents from storage. */
     let regulations = null;
@@ -66,7 +62,7 @@ async function getPageSelection() {
     return selection;
 }
 
-function getRegulationFromString(string: string): TRegulation | undefined {
+function getRegulationFromString(string: string): wcadocs.TRegulation | undefined {
     const reg_num = string.toLowerCase().match(BaseContentModule.REGULATION_REGEX);
     if (!reg_num) {
         return undefined;
@@ -74,7 +70,7 @@ function getRegulationFromString(string: string): TRegulation | undefined {
     return content_class.regulations[reg_num[0]];  // Returns undefined if the regulation doesn't exist.
 }
 
-function getRegulationFromUrl(original_url: string): TRegulation | undefined {
+function getRegulationFromUrl(original_url: string): wcadocs.TRegulation | undefined {
     // We need to deal with Google's safe redirect urls:
     let url = original_url;
     if (original_url.startsWith(BaseContentModule.GOOGLE_SAFE_REDIRECT_URL)) {
@@ -85,7 +81,7 @@ function getRegulationFromUrl(original_url: string): TRegulation | undefined {
     return getRegulationFromString(url);
 }
 
-async function displayRegulationBox(regulation: TRegulation | undefined, original_url="") {
+async function displayRegulationBox(regulation: wcadocs.TRegulation | undefined, original_url="") {
     /* Display the regulation in a box/popup. */
 
     let div_node = regulation_box.box_node as unknown as HTMLDivElement;
@@ -269,7 +265,7 @@ async function setUp() {
     }
 }
 
-async function replace(command: OReplaceMode) {
+async function replace(command: allowed_options.OReplaceMode) {
     /* Execute the text replacement flow using the content class. */
 
     content_class.getPageSelection()
