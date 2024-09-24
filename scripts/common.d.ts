@@ -28,7 +28,7 @@ declare namespace allowed_options {
     type OReplaceMode = "short-replace" | "long-replace";
     type OCommand = OReplaceMode | "get-internal-url" | "display-regulation" | "inject-wsh-event" | "stop-error" | "enable" | "disable";
     type OBrowser = "chrome" | "firefox";
-    type OStoredValue = "regulations" | "documents" | "display_config" | "regulations_version" | "enabled" | "catch_links" | "justify_box_text" | "box_font_size" | "box_timeout";
+    type OStoredValue = "regulations" | "documents" | "display-config" | "regulations-version" | "enabled" | "catch-links" | "justify-box-text" | "box-font-size" | "box-timeout";
 }
 
 declare namespace communication {

@@ -23,7 +23,7 @@ abstract class BaseContentModule implements ContentModule {
     static REGULATION_REGEX = /(([1-9][0-9]?[a-z]([1-9][0-9]?[a-z]?)?)|([a-z][1-9][0-9]?([a-z]([1-9][0-9]?)?)?))\b\+{0,10}/i;
     static PERSON_REGEX = /\b[1-9]\d{3}[a-z]{4}\d{2}\b/i
     static INCIDENT_LOG_REGEX = /\bil#[1-9]\d{0,5}\b/i
-    static CATCH_LINKS_REGEX = new RegExp(`((${this.WCA_MAIN_URL}|${this.WCA_SHORT_URL})${this.REGULATIONS_RELATIVE_URL}(full|guidelines.html)?|${this.WCAREGS_URL})(#|%23)`, "i");
+    static CATCH_LINKS_REGEX = new RegExp(`((${this.WCA_MAIN_URL}|${this.WCA_SHORT_URL})${this.REGULATIONS_RELATIVE_URL}((full|guidelines.html)/?)?|${this.WCAREGS_URL})(#|%23)`, "i");
 
     // -- Properties -- //
     protected readonly _regulations: wcadocs.TRegulationsDict;
@@ -86,7 +86,7 @@ abstract class BaseContentModule implements ContentModule {
         const reg_num_str = reg_num[0];
         const type = text.includes("+") ? "Guideline" : "Regulation";
         const link_text = mode === "short-replace" ? this._regulations[reg_num_str].id : `${type} ${this._regulations[reg_num_str].id}`;
-        const link_url = `${BaseContentModule.WCA_MAIN_URL}${this._regulations[reg_num_str].url.substring(1)}`;
+        const link_url = `${BaseContentModule.WCA_MAIN_URL}${BaseContentModule.REGULATIONS_RELATIVE_URL}full/#${this._regulations[reg_num_str].id}`;
         return [link_text, link_url];
     }
 

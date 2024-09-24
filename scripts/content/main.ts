@@ -90,7 +90,7 @@ async function displayRegulationBox(regulation: wcadocs.TRegulation | undefined,
 
     if (regulation) {
         const guideline_label = regulation["guideline_label"] === undefined ? "" : `<b>${regulation["guideline_label"]}</b>`;
-        unsafe_HTML = `<a id="reg-num" href="${BaseContentModule.WCA_MAIN_URL}${regulation["url"].substring(1)}">${regulation["id"]}</a>) ${guideline_label} ${regulation["content_html"]}`;
+        unsafe_HTML = `<a id="reg-num" href="${BaseContentModule.WCA_MAIN_URL}${BaseContentModule.REGULATIONS_RELATIVE_URL}full/#${regulation["id"]}">${regulation["id"]}</a>) ${guideline_label} ${regulation["content_html"]}`;
     } else if (original_url !== "") {
         // If the regulation is not found, display the original link.
         unsafe_HTML = `Something went wrong. If you want to open the link, disable the link catching option (safer, requires tab reload) or follow the original link (be careful!): <a href="${original_url}">${original_url}</a>`;
@@ -240,7 +240,7 @@ async function setUp() {
     // Check if the extension is enabled.
     enabled = false;
     link_catching_enabled = false;
-    const stored_options = await BaseContentModule.getOptionsFromStorage(["enabled", "catch_links", "justify_box_text", "box_font_size", "box_timeout"]);
+    const stored_options = await BaseContentModule.getOptionsFromStorage(["enabled", "catch-links", "justify-box-text", "box-font-size", "box-timeout"]);
     if (stored_options === undefined) {
         stop_error = true;
         return;

@@ -26,10 +26,10 @@ copy_files() {
   find "$BUILD_DIR" -type f | while read -r file; do
     if string_in_array "$(basename "$file")" "${VERSION_DISPLAY_FILES[@]}"; then
       version=$(sed 's/\./\\./g' <<< "$WSH_VERSION");
-      sed -E -I '' "s/#{{version}}/$version/" "$file";
+      sed -E -i "s/#\{\{version\}\}/$version/" "$file";
     fi
     if string_in_array "$(basename "$file")" "${BROWSER_DEPENDANT_FILES[@]}"; then
-      sed -E -I '' 's/^const BROWSER(:[\w\d\._]+)? = "(firefox|chrome)";/const BROWSER = "'"$browser"'";/' "$file";
+      sed -E -i 's/^const BROWSER(:[\w\d\._]+)? = "(firefox|chrome)";/const BROWSER = "'"$browser"'";/' "$file";
     fi
   done
 }
