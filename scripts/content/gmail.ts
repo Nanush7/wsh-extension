@@ -1,14 +1,27 @@
 
-class ContentModule extends BaseContentModule {
+class GmailContent extends BaseContentModule {
 
-    constructor(regulations, documents) {
+    static #instance: GmailContent;
+
+    private constructor(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList) {
         super(regulations, documents, "Gmail", "https://mail.google.com/");
     }
 
-    getPageSelection() {
-        return new Promise((resolve, reject) => {
+    static getInstance(regulations: wcadocs.TRegulationsDict, documents: wcadocs.TDocumentList) {
+        if (!GmailContent.#instance) {
+            GmailContent.#instance = new GmailContent(regulations, documents);
+        }
+        return GmailContent.#instance;
+    }
+
+    async setUp(): Promise<boolean> {
+        return true;
+    }
+
+    getPageSelection(): Promise<communication.TBasicSelection> {
+        return new Promise((resolve: (value: communication.TBasicSelection) => void): void => {
             const s = document.getSelection();
-            if (s.rangeCount === 0) {
+            if (!s || s.rangeCount === 0) {
                 resolve({text: ""});
             } else {
                 resolve({text: s.toString(), extraFields: {range: s.getRangeAt(0)}});
@@ -16,7 +29,7 @@ class ContentModule extends BaseContentModule {
         });
     }
 
-    replace(link_text, link_url, selection) {
+    replace(link_text: string, link_url: string, selection: any) {
         // Get Gmail composition windows.
         const editable_elements = document.getElementsByClassName("editable");
         // Check: Is the selected text in a compose element?
@@ -29,14 +42,14 @@ class ContentModule extends BaseContentModule {
         }
         if (!selection_has_editable_parent) {
             console.log("Selected text is not in the gmail composition element.");
-            return;
+            return false;
         }
 
         // We check that the range start and end are in the same div.
         if (selection.range.startContainer.parentElement.nodeName !== "DIV"
             || selection.range.startContainer.parentElement !== selection.range.endContainer.parentElement) {
             console.log("Cannot replace text in the selection.");
-            return;
+            return false;
         }
 
         selection.range.deleteContents();
@@ -45,5 +58,6 @@ class ContentModule extends BaseContentModule {
         link.textContent = link_text;
         link.rel = "noreferrer";
         selection.range.insertNode(link);
+        return true;
     }
 }

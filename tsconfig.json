@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
-    "outDir": "./built",
+    "outDir": "./build/scripts",
     "allowJs": true,
-    "target": "es6",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "noEmitOnError": true,
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true
   },
   "include": ["./scripts/**/*"]
 }

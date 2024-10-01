@@ -11,15 +11,15 @@
   "content_scripts": [
     {
       "matches": ["https://www.worldcubeassociation.org/*"],
-      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/wca-website.js", "scripts/content/main.js"]
+      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/wca-website.js", "scripts/factory.js", "scripts/content/main.js"]
     },
     {
       "matches": ["https://forum.worldcubeassociation.org/*"],
-      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/wca-forum.js", "scripts/content/main.js"]
+      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/wca-forum.js", "scripts/factory.js", "scripts/content/main.js"]
     },
     {
       "matches": ["https://mail.google.com/*"],
-      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/gmail.js", "scripts/content/main.js"]
+      "js": ["scripts/purify.min.js", "scripts/content/base.js", "scripts/content/gmail.js", "scripts/factory.js", "scripts/content/main.js"]
     }
   ],
   "background": {
