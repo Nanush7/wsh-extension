@@ -30,21 +30,6 @@ let enabled: boolean = false;
 let link_catching_enabled: boolean = false;
 let content_class: ContentModule;
 
-// @ts-ignore
-async function fetchDocuments() {
-    /* Gets regulations and documents from storage. */
-    let regulations = null;
-    let documents = null;
-    const result = await BaseContentModule.getOptionsFromStorage(["regulations", "documents"]);
-    if (result && result.regulations && result.documents) {
-        regulations = result.regulations;
-        documents = result.documents;
-    } else {
-        alert("Regulations and document data not found. Try restarting your browser.");
-        stop_error = true;
-    }
-    return [regulations, documents];
-}
 
 async function getPageSelection(targetReplacement: boolean): Promise<string> {
     // Get selected text.
@@ -219,10 +204,8 @@ async function setUpLinkCatching() {
 }
 
 async function lazySetUp() {
-    let regulations, documents;
-    [regulations, documents] = await fetchDocuments();
     try {
-        content_class = Factory.getContentClass(regulations, documents, window.location.href);
+        content_class = await Factory.getContentClass(window.location.href);
     } catch (e) {
         console.error(`Could not create the content class: ${e}`);
         stop_error = true;

@@ -56,8 +56,7 @@ async function injectWSHEvent(tab_id: number) {
     return true;
 }
 
-// @ts-ignore
-async function fetchDocuments(): Promise<void> {
+async function fetchDocumentsFromFiles(): Promise<void> {
     let regulations: Record<string, wcadocs.TRegulation>;
     let documents: Array<wcadocs.TDocument>;
     let regulations_version: string;
@@ -133,13 +132,13 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         sendToContentScript("stop-error", true);
     });
 
-    await fetchDocuments();
+    await fetchDocumentsFromFiles();
 });
 
 chrome.runtime.onStartup.addListener(async () => {
     const result = getOptionsFromStorage(["regulations", "documents"]);
     if (result === undefined || result.regulations === undefined || result.documents === undefined) {
-        await fetchDocuments();
+        await fetchDocumentsFromFiles();
     }
 });
 

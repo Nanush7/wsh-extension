@@ -18,10 +18,16 @@ class WCAForumContent extends BaseContentModule {
         return true;
     }
 
-    getPageSelection(): Promise<communication.TBasicSelection> {
+    getPageSelection(targetReplacement: boolean): Promise<communication.TBasicSelection> {
         return new Promise((resolve: (value: communication.TBasicSelection) => void): void => {
+            if (!targetReplacement) {
+                const selection = document.getSelection();
+                if (selection !== null)
+                    resolve({text: selection.toString()})
+            }
             const editor_elem = document.querySelector(".d-editor-input") as HTMLInputElement;
-            if (!editor_elem || !editor_elem.selectionStart || !editor_elem.selectionEnd) {
+            if (!editor_elem || editor_elem.selectionStart === null || editor_elem.selectionEnd === null
+            || editor_elem.selectionStart === editor_elem.selectionEnd) {
                 resolve({text: ""});
                 return;
             }

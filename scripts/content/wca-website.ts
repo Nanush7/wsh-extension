@@ -57,7 +57,11 @@ class WCAWebsiteContent extends BaseContentModule {
 
             const documentSelection = document.getSelection();
             if (!targetReplacement && documentSelection && documentSelection.rangeCount > 0) {
-                resolve({text: documentSelection.toString()})
+                const text = documentSelection.toString();
+                if (text !== "") {
+                    resolve({text: text})
+                    return;
+                }
             }
 
             this.#pendingSelection = true;
