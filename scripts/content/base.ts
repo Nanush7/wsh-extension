@@ -1,7 +1,7 @@
 
 interface ContentModule {
     setUp(): Promise<boolean>;
-    getPageSelection(): Promise<communication.TBasicSelection>;
+    getPageSelection(targetReplacement?: boolean): Promise<communication.TBasicSelection>;
     replace(link_text: string, link_url: string, selection: communication.TBasicSelection): void;
     getLinkData(text: string, mode: allowed_options.OReplaceMode): [string, string] | [null, null];
     log(message: string): void;
@@ -47,12 +47,16 @@ abstract class BaseContentModule implements ContentModule {
 
     abstract setUp(): Promise<boolean>;
 
-    abstract getPageSelection(): Promise<communication.TBasicSelection>;
+    abstract getPageSelection(targetReplacement?: boolean): Promise<communication.TBasicSelection>;
 
-    abstract replace(link_text: string, link_url: string, selection: communication.TBasicSelection): void;
+    /*
+     * Returns false if the replacement operation was aborted.
+     * A true return value does not mean that the replacement succeeded.
+     */
+    abstract replace(link_text: string, link_url: string, selection: communication.TBasicSelection): boolean;
 
     log(message: string) {
-        console.log(`[WCA Staff Helper][${this._siteName}] ${message}`);
+        console.log(`[WCA Staff Helper][${this._siteName.toString()}] ${message.toString()}`);
     }
 
     get regulations() {
@@ -120,7 +124,12 @@ abstract class BaseContentModule implements ContentModule {
 
         for (let func of this._documentFunctions) {
             [link_text, link_url] = func.call(this, doc_string, mode);
-            if (link_text && link_url) return [link_text, link_url];
+            if (link_text && link_url) {
+                // We don't trust the browser's storage.
+                const text = DOMPurify.sanitize(link_text, {ALLOWED_TAGS: []});
+                const url = DOMPurify.sanitize(link_url, {ALLOWED_TAGS: []});
+                return [text, url];
+            }
         }
         return [null, null];
     }
@@ -131,7 +140,7 @@ abstract class BaseContentModule implements ContentModule {
             return await chrome.storage.local.get(options);
         }
         catch (error) {
-            console.error(`Could not read option/s [${options}] from storage. ${error}`);
+            console.error(`Could not read option/s [${options.toString()}] from storage. ${error.toString()}`);
         }
         return undefined;
     }

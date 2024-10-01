@@ -46,12 +46,12 @@ async function fetchDocuments() {
     return [regulations, documents];
 }
 
-async function getPageSelection() {
+async function getPageSelection(targetReplacement: boolean): Promise<string> {
     // Get selected text.
     let response;
     let selection = "";
     try {
-        response = await content_class.getPageSelection();
+        response = await content_class.getPageSelection(targetReplacement);
         selection = response.text.trim();
     } catch (e) {
         console.log(`Could not get selected text: ${e}`);
@@ -265,10 +265,10 @@ async function setUp() {
     }
 }
 
-async function replace(command: allowed_options.OReplaceMode) {
+async function replace(command: allowed_options.OReplaceMode): Promise<void> {
     /* Execute the text replacement flow using the content class. */
 
-    content_class.getPageSelection()
+    content_class.getPageSelection(true)
         .then((response) => {
             const selected_text = response.text.trim().toLowerCase();
             if (selected_text === "") return;
@@ -281,7 +281,7 @@ async function replace(command: allowed_options.OReplaceMode) {
             content_class.replace(link_text, link_url, response.extraFields);
         })
         .catch((error) => {
-            console.log(`Could not get the selected text: ${error}`);
+            console.log(`Could not get a valid text selection from the page: ${error.toString()}`);
         });
 }
 
@@ -293,7 +293,7 @@ chrome.runtime.onMessage.addListener(
         switch (message.command) {
             case "display-regulation":
                 if (enabled) {
-                    const selection = await getPageSelection();
+                    const selection = await getPageSelection(false);
                     if (selection !== "") {
                         await displayRegulationBox(getRegulationFromString(selection));
                     }

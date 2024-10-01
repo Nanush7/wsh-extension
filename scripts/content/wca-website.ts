@@ -44,17 +44,23 @@ class WCAWebsiteContent extends BaseContentModule {
         return true;
     }
 
-    getPageSelection(): Promise<communication.TBasicSelection> {
-        return new Promise((resolve, reject) => {
+    getPageSelection(targetReplacement?: boolean): Promise<communication.TBasicSelection> {
+        /*
+         * The selection is only editable if it came from CodeMirror.
+         * If the caller wants to use the selection to replace, we only return selections from CodeMirror.
+         */
+        return new Promise((resolve: (value: communication.TBasicSelection) => void, reject: (reason?: String) => void): void => {
             if (this.#pendingSelection) {
                 reject(SELECTION_PENDING_FAIL);
                 return;
             }
 
-            this.#pendingSelection = true;
-            // TODO: Que detecte si CodeMirror está en modo preview.
-            // O sea, si no hay ningún CM con foco y el texto está en el div correspondiente.
+            const documentSelection = document.getSelection();
+            if (!targetReplacement && documentSelection && documentSelection.rangeCount > 0) {
+                resolve({text: documentSelection.toString()})
+            }
 
+            this.#pendingSelection = true;
             // If we never get a response, reject the promise.
             const timeout = setTimeout(() => {
                 this.#pendingSelection = false;
@@ -62,23 +68,23 @@ class WCAWebsiteContent extends BaseContentModule {
             }, SELECTION_TIMEOUT);
 
             // Add event listener for selection response.
-            document.addEventListener(SELECTION_RESPONSE_EVENT, (e) => {
-                const custom_event = e as CustomEvent<communication.TSelectionResponse>
+            document.addEventListener(SELECTION_RESPONSE_EVENT, (custom_event: CustomEvent<communication.TSelectionResponse>): void => {
                 clearTimeout(timeout);
                 this.#pendingSelection = false;
                 resolve({text: custom_event.detail.text, extraFields: custom_event.detail});
             }, {once: true});
 
             // Request selection from the page to CodeMirror 5.
-            const request = new CustomEvent(SELECTION_REQUEST_EVENT);
+            const request = new CustomEvent(SELECTION_REQUEST_EVENT, {bubbles: false});
             document.dispatchEvent(request);
         });
     }
 
-    replace(link_text: string, link_url: string, extraFields: any) {
+    replace(link_text: string, link_url: string, extraFields: communication.TBasicSelection["extraFields"]) {
         let detail = extraFields;
         detail["text"] = `[${link_text}](${link_url})`;
-        const e = new CustomEvent(REPLACE_EVENT, {detail: detail});
+        const e = new CustomEvent(REPLACE_EVENT, {bubbles: false, detail: detail});
         document.dispatchEvent(e);
+        return true;
     }
 }

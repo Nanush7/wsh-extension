@@ -19,7 +19,7 @@ class WCAForumContent extends BaseContentModule {
     }
 
     getPageSelection(): Promise<communication.TBasicSelection> {
-        return new Promise((resolve) => {
+        return new Promise((resolve: (value: communication.TBasicSelection) => void): void => {
             const editor_elem = document.querySelector(".d-editor-input") as HTMLInputElement;
             if (!editor_elem || !editor_elem.selectionStart || !editor_elem.selectionEnd) {
                 resolve({text: ""});
@@ -38,5 +38,6 @@ class WCAForumContent extends BaseContentModule {
     replace(link_text: string, link_url: string, extraFields: any) {
         const safe_text = DOMPurify.sanitize(`[${link_text}](${link_url})`, {ALLOWED_TAGS: []})
         extraFields.editorElement.setRangeText(safe_text, extraFields.range[0], extraFields.range[1], "end");
+        return true;
     }
 }

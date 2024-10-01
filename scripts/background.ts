@@ -18,12 +18,12 @@ async function sendToContentScript(command: allowed_options.OCommand, all: boole
         let tabs: chrome.tabs.Tab[];
         let messages: Promise<void>[] = [];
         if (all) {
-            tabs = await chrome.tabs.query({url: VALID_URLS});
+            tabs = await chrome.tabs.query({windowType: "normal", status: "complete", url: VALID_URLS});
         } else {
-            tabs = await chrome.tabs.query({active: true, lastFocusedWindow: true, url: VALID_URLS});
+            tabs = await chrome.tabs.query({windowType: "normal", status: "complete", url: VALID_URLS, active: true, currentWindow: true});
         }
         for (let tab of tabs) {
-            if (tab.id === undefined) continue;
+            if (!tab.id) continue;
             const promise: Promise<any> = chrome.tabs.sendMessage(tab.id, {command: command, url: tab.url});
             promise.catch((error) => {
                 console.error("Could not send message to content script: " + error);
@@ -158,9 +158,10 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
             if (BROWSER === "chrome") {
                 sendResponse({status: status});
                 break;
+            } else if (BROWSER === "firefox") {
+                return {status: status};
             }
-            // else:
-            return {status: status};
+            break;
         case "get-internal-url":
             let url = undefined;
             if (message.params !== undefined) {

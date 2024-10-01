@@ -7,6 +7,8 @@ function add_listeners(cm: CodeMirror.Editor, cmId: number) {
         // Do not proceed if the current CodeMirror instance is not the one that the event is intended for.
         if (!cm.hasFocus()) return;
 
+        // TODO: ¿Podría estar haciendo un dispatch con información sensible del usuario?
+        // TODO: Shadow Root.
         const detail: communication.TSelectionResponse = {
             text: cm.getSelection(),
             rangeStart: cm.getCursor("from"),
@@ -14,12 +16,11 @@ function add_listeners(cm: CodeMirror.Editor, cmId: number) {
             cmInstanceId: cmId
         };
 
-        const event = new CustomEvent("WSHSelectionResponseEvent", {detail: detail});
+        const event = new CustomEvent("WSHSelectionResponseEvent", {bubbles: false, detail: detail});
         document.dispatchEvent(event);
     });
 
-    document.addEventListener("WSHReplaceEvent", function(e: CustomEvent) {
-        // Do not proceed if the current CodeMirror instance is not the one that the event is intended for.
+    document.addEventListener("WSHReplaceEvent", (e: CustomEvent) => {
         const detail = e.detail as communication.TSelectionResponse;
         const rs = cm.getCursor("from");
         const re = cm.getCursor("to");

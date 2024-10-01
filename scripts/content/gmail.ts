@@ -19,7 +19,7 @@ class GmailContent extends BaseContentModule {
     }
 
     getPageSelection(): Promise<communication.TBasicSelection> {
-        return new Promise((resolve) => {
+        return new Promise((resolve: (value: communication.TBasicSelection) => void): void => {
             const s = document.getSelection();
             if (!s || s.rangeCount === 0) {
                 resolve({text: ""});
@@ -42,14 +42,14 @@ class GmailContent extends BaseContentModule {
         }
         if (!selection_has_editable_parent) {
             console.log("Selected text is not in the gmail composition element.");
-            return;
+            return false;
         }
 
         // We check that the range start and end are in the same div.
         if (selection.range.startContainer.parentElement.nodeName !== "DIV"
             || selection.range.startContainer.parentElement !== selection.range.endContainer.parentElement) {
             console.log("Cannot replace text in the selection.");
-            return;
+            return false;
         }
 
         selection.range.deleteContents();
@@ -58,5 +58,6 @@ class GmailContent extends BaseContentModule {
         link.textContent = link_text;
         link.rel = "noreferrer";
         selection.range.insertNode(link);
+        return true;
     }
 }
