@@ -1,6 +1,6 @@
 [
   {
-    "version": "2024-01-01#2"
+    "version": "2025-01-01"
   },
   {
     "class": "regulation",
@@ -19,12 +19,6 @@
     "id": "1c",
     "content_html": "The WCA Delegate is responsible for ensuring that the competition adheres to the WCA Regulations and any applicable WCA policies or requirements. The WCA Delegate may appoint other members of the organization team to carry out specific responsibilities on their behalf, but is ultimately accountable for how these responsibilities are carried out.",
     "url": "/regulations/#1c"
-  },
-  {
-    "class": "regulation",
-    "id": "1c1",
-    "content_html": "The WCA Delegate must ensure that the competition follows the <a href=\"https://documents.worldcubeassociation.org/documents/policies/external/Scramble%20Accountability.pdf\">WCA Scramble Accountability Policy</a>.",
-    "url": "/regulations/#1c1"
   },
   {
     "class": "regulation",
@@ -95,8 +89,20 @@
   {
     "class": "regulation",
     "id": "1h1",
-    "content_html": "Scramblers and judges for a round should not scramble for/judge competitors in their own group before they have finished all of their attempts for the round. They may scramble for/judge competitors in their own group at the discretion of the WCA Delegate, but the organization team must ensure that scramblers and judges cannot see any scramble sequences for their attempts that they have not attempted yet (see <a href=\"https://www.worldcubeassociation.org/regulations/#4b2\">Regulation 4b2</a>).",
+    "content_html": "Scramblers and judges for a round must not scramble for/judge competitors in their own group before they have finished all of their attempts for the round. The following exceptions apply:",
     "url": "/regulations/#1h1"
+  },
+  {
+    "class": "regulation",
+    "id": "1h1a",
+    "content_html": "For 3x3x3 Fewest Moves, judges may judge competitors in their own group before they have finished their attempt (i.e. while they are competing).",
+    "url": "/regulations/#1h1a"
+  },
+  {
+    "class": "regulation",
+    "id": "1h1b",
+    "content_html": "For 3x3x3 Multi-Blind, competitors may judge other competitors in their own group after they have finished their attempt.",
+    "url": "/regulations/#1h1b"
   },
   {
     "class": "regulation",
@@ -149,7 +155,7 @@
   {
     "class": "regulation",
     "id": "2c",
-    "content_html": "Competitors register by providing all information required by the organization team (including: name, region of representation, date of birth, gender, contact information, selected events).",
+    "content_html": "Competitors register by providing all information required by the organization team (including: name, country, date of birth, gender, contact information, selected events).",
     "url": "/regulations/#2c"
   },
   {
@@ -161,43 +167,43 @@
   {
     "class": "regulation",
     "id": "2c2",
-    "content_html": "Returning competitors must provide personal information consistent with their WCA profile. If a competitor wishes to change or update their personal information between competitions (e.g. a change of region of representation, name, or gender), they must <a href=\"https://www.worldcubeassociation.org/contact/website\">contact the WCA Results Team</a> either directly or through a WCA Delegate.",
+    "content_html": "Returning competitors must provide personal information consistent with their WCA profile. If a competitor wishes to change or update their personal information between competitions (e.g. a change of country, name, or gender), they must <a href=\"https://www.worldcubeassociation.org/contact?contactRecipient=wrt\">contact the WCA Results Team</a> either directly or through a WCA Delegate.",
     "url": "/regulations/#2c2"
   },
   {
     "class": "regulation",
     "id": "2d",
-    "content_html": "A competitor's name, region of representation, gender, and competition results are considered public information. All other personal information is considered confidential, and must not be disclosed to outside organizations/persons without the consent of the competitor.",
+    "content_html": "A competitor's name, country, gender, and competition results are considered public information. All other personal information is considered confidential, and must not be disclosed to outside organizations/persons without the consent of the competitor.",
     "url": "/regulations/#2d"
   },
   {
     "class": "regulation",
     "id": "2e",
-    "content_html": "Competitors must represent a region of which they hold citizenship. The WCA Delegate should verify citizenship by means of documents (e.g. a passport) at their first competition. If a competitor is found ineligible to represent the region under which they have registered, the competitor may be disqualified retroactively and/or suspended, at the discretion of the WCA Board.",
+    "content_html": "Competitors must represent a country of which they hold citizenship. The WCA Delegate should verify citizenship by means of documents or photos of documents (e.g. a passport) at their first competition. If a competitor is found ineligible to represent the country under which they have registered, the competitor may be disqualified retroactively and/or suspended, at the discretion of the WCA Board.",
     "url": "/regulations/#2e"
   },
   {
     "class": "regulation",
     "id": "2e1",
-    "content_html": "The eligible regions of representation are defined by the <a href=\"https://www.worldcubeassociation.org/regulations/countries/\">WCA List of Recognized Regions</a>.",
+    "content_html": "The eligible countries are defined by the <a href=\"https://www.worldcubeassociation.org/regulations/countries/\">WCA List of Recognized Countries</a>.",
     "url": "/regulations/#2e1"
   },
   {
     "class": "regulation",
     "id": "2e2",
-    "content_html": "Competitors may change their region of representation only before or at their first competition of a calendar year.",
+    "content_html": "Competitors may change their country at any point between competitions (see <a href=\"https://www.worldcubeassociation.org/regulations/#2c2\">Regulation 2c2</a>), as long as it has been at least one year since any previous change.",
     "url": "/regulations/#2e2"
   },
   {
     "class": "regulation",
     "id": "2e2a",
-    "content_html": "Exception: If the competitor loses citizenship of the region which they were previously representing, they must change their region of representation before or at their next competition (see <a href=\"https://www.worldcubeassociation.org/regulations/#2c2\">Regulation 2c2</a>).",
+    "content_html": "Exception: If the competitor loses citizenship of the country which they were previously representing, they must change their country before or at their next competition.",
     "url": "/regulations/#2e2a"
   },
   {
     "class": "regulation",
     "id": "2e2b",
-    "content_html": "Exception: If the competitor has acquired a new citizenship within the calendar year, they may change their region of representation to their new citizenship at any point between competitions.",
+    "content_html": "Exception: If the competitor has acquired a new citizenship within the calendar year, they may change their country to their new citizenship before or at their next competition.",
     "url": "/regulations/#2e2b"
   },
   {
@@ -221,8 +227,14 @@
   {
     "class": "regulation",
     "id": "2g3",
-    "content_html": "Competitors in a group in progress must not communicate with other competitors in the group about the scrambled states of the group, unless all such competitors are not eligible for any further attempts in the group. Penalty: disqualification of the competitor(s) from the event, at the discretion of the WCA Delegate. Exception: For 3x3x3 Fewest Moves, competitors that have finished their attempt may share the scramble sequence with anyone who is not actively competing in the relevant attempt.",
+    "content_html": "Competitors in a group in progress must not communicate with other competitors in the group about the scrambled states of the group, unless all such competitors are not eligible for any further attempts in the group. Penalty: disqualification of the competitor(s) from the event, at the discretion of the WCA Delegate. Exception: For 3x3x3 Fewest Moves and 3x3x3 Multi-Blind, competitors that have finished their attempt may share and discuss the scramble sequence(s) with other competitors in the group who have either finished their attempt or declined their attempt.",
     "url": "/regulations/#2g3"
+  },
+  {
+    "class": "regulation",
+    "id": "2g3a",
+    "content_html": "For rounds where results are being entered live, the organization team may enforce that competitors are not permitted to view the results entered from their group until they have completed their attempts.",
+    "url": "/regulations/#2g3a"
   },
   {
     "class": "regulation",
@@ -233,7 +245,7 @@
   {
     "class": "regulation",
     "id": "2i",
-    "content_html": "While inspecting or solving, competitors must not use electronics or audio equipment (e.g. cell phones, MP3 players, dictaphones, additional lighting) apart from the Stackmat timer or stopwatch. Penalty: disqualification of the attempt (DNF).",
+    "content_html": "While inspecting or solving, competitors must not use electronics (e.g. cell phones, ear buds, additional lighting) apart from the Stackmat timer or stopwatch. Penalty: disqualification of the attempt (DNF). Any item which has any electronic component is considered electronic.",
     "url": "/regulations/#2i"
   },
   {
@@ -257,7 +269,7 @@
   {
     "class": "regulation",
     "id": "2i1c",
-    "content_html": "Hand warmers.",
+    "content_html": "Non-electronic hand warmers.",
     "url": "/regulations/#2i1c"
   },
   {
@@ -269,14 +281,20 @@
   {
     "class": "regulation",
     "id": "2i2",
-    "content_html": "Competitors may use cameras at the solving station at the discretion of the WCA Delegate, but the following restrictions apply from the start of the attempt until the competitor stops the solve. Penalty for breaking a restriction: disqualification of the attempt (DNF).",
+    "content_html": "Competitors may use cameras and/or microphones at the solving station at the discretion of the WCA Delegate, but the following restrictions apply from the start of the attempt until the competitor stops the solve. Penalty for breaking a restriction: disqualification of the attempt (DNF).",
     "url": "/regulations/#2i2"
   },
   {
     "class": "regulation",
     "id": "2i2a",
-    "content_html": "Each camera monitor must be blank or out of sight of the competitor (see <a href=\"https://www.worldcubeassociation.org/regulations/#A5b\">Regulation A5b</a>).",
+    "content_html": "Each camera monitor must be blank or out of sight of the competitor. Exception: if a visible active monitor is discovered, completed attempts need not be disqualified if the competitor did not receive assistance from the monitor, at the discretion of the WCA Delegate (see <a href=\"https://www.worldcubeassociation.org/regulations/#A5b\">Regulation A5b</a>), however the competitor must not be permitted to perform any further attempts with such a monitor.",
     "url": "/regulations/#2i2a"
+  },
+  {
+    "class": "regulation",
+    "id": "2i2c",
+    "content_html": "The competitor must not press any buttons on these devices (e.g. for starting or stopping a recording).",
+    "url": "/regulations/#2i2c"
   },
   {
     "class": "regulation",
@@ -383,7 +401,7 @@
   {
     "class": "regulation",
     "id": "2n1",
-    "content_html": "Disputes are only permitted during the competition (see <a href=\"https://www.worldcubeassociation.org/regulations/#9u\">Regulation 9u</a>), within 30 minutes after the disputed incident happened, or before the start of any following rounds of the relevant event.",
+    "content_html": "Disputes are only permitted during the competition (see <a href=\"https://www.worldcubeassociation.org/regulations/#9u\">Regulation 9u</a>), within 30 minutes of the disputed incident and before the start of any following rounds of the relevant event.",
     "url": "/regulations/#2n1"
   },
   {
@@ -437,7 +455,7 @@
   {
     "class": "regulation",
     "id": "3a",
-    "content_html": "Competitors must provide their own puzzles for the competition.",
+    "content_html": "Competitors are responsible for providing their puzzles for the competition.",
     "url": "/regulations/#3a"
   },
   {
@@ -623,7 +641,7 @@
   {
     "class": "regulation",
     "id": "3l",
-    "content_html": "A puzzle may have one or more logos on a colored part. If it does, it must have at most one colored part with a logo or multiple logos. Exception: For blindfolded events, a puzzle must not have any logos.",
+    "content_html": "A puzzle may have one or more logos on a colored part. If it does, it must have at most one colored part with a logo or multiple logos. Exception: For 4x4x4 Blindfolded, 5x5x5 Blindfolded, and 3x3x3 Multi-Blind, a puzzle must not have any logos.",
     "url": "/regulations/#3l"
   },
   {
@@ -665,7 +683,7 @@
   {
     "class": "regulation",
     "id": "4b",
-    "content_html": "Puzzles must be scrambled using computer-generated random scramble sequences.",
+    "content_html": "Competition scramble sequences must be generated using a current official version of an official WCA scramble program (available <a href=\"https://www.worldcubeassociation.org/regulations/scrambles/\">via the WCA website</a>).",
     "url": "/regulations/#4b"
   },
   {
@@ -772,12 +790,6 @@
   },
   {
     "class": "regulation",
-    "id": "4f",
-    "content_html": "Competition scramble sequences must be generated using a current official version of an official WCA scramble program (available <a href=\"https://www.worldcubeassociation.org/regulations/scrambles/\">via the WCA website</a>).",
-    "url": "/regulations/#4f"
-  },
-  {
-    "class": "regulation",
     "id": "4g",
     "content_html": "After scrambling a puzzle, the scrambler must verify that the puzzle is scrambled correctly. If the puzzle state is wrong, the scrambler must correct it (e.g. by solving the puzzle and applying the scramble sequence again).",
     "url": "/regulations/#4g"
@@ -815,7 +827,7 @@
   {
     "class": "regulation",
     "id": "5b",
-    "content_html": "If a puzzle defect occurs during an attempt, the competitor may choose to either repair the defect and continue the attempt, or to stop the attempt.",
+    "content_html": "If a puzzle defect occurs during an attempt, the competitor may choose to either repair the defect and continue the attempt, or to stop the attempt. The competitor is not permitted to cause a puzzle defect intentionally, unless correcting a previous puzzle defect (see <a href=\"https://www.worldcubeassociation.org/regulations/#5b3b\">Regulation 5b3b</a> and <a href=\"https://www.worldcubeassociation.org/regulations/#5b3c\">Regulation 5b3c</a>). Examples of intentionally causing puzzle defects: removing an attached center cap, rotating a corner piece, peeling a sticker.",
     "url": "/regulations/#5b"
   },
   {
@@ -851,7 +863,7 @@
   {
     "class": "regulation",
     "id": "5b3c",
-    "content_html": "If the puzzle is unsolvable, and can be made solvable by rotating a single corner piece, the competitor may correct the corner piece by twisting it in place without disassembling the puzzle.",
+    "content_html": "If the puzzle is unsolvable, and can be made solvable by rotating a single corner piece, the competitor may correct the corner piece by twisting it in place without disassembling the puzzle. If multiple corner pieces have been twisted as a result of puzzle defects, the competitor may correct these twists, as long as the number of pieces corrected by the competitor does not exceed the number of pieces twisted as a result of puzzle defects.",
     "url": "/regulations/#5b3c"
   },
   {
@@ -983,14 +995,8 @@
   {
     "class": "regulation",
     "id": "7h",
-    "content_html": "The competition area should have one or more Competitor Waiting Areas.",
+    "content_html": "If competitors do not remain at the same station for all of their attempts in a round, the competition area must have one or more Competitor Waiting Areas. Exception: rounds with individually scheduled attempts.",
     "url": "/regulations/#7h"
-  },
-  {
-    "class": "regulation",
-    "id": "7h1",
-    "content_html": "The organization team may require that a competitor who has been called to compete must remain within their assigned Competitor Waiting Area until the competitor has finished all attempts for the round.",
-    "url": "/regulations/#7h1"
   },
   {
     "class": "regulation",
@@ -1109,13 +1115,13 @@
   {
     "class": "regulation",
     "id": "9f1",
-    "content_html": "All timed results under 10 minutes, except for 3x3x3 Multi-Blind, are measured and truncated down to hundredths of a second. All timed averages and means under 10 minutes are measured and rounded to the nearest hundredth of a second.",
+    "content_html": "All timed results under 10 minutes, except for 3x3x3 Multi-Blind, are measured and truncated to hundredths of a second. All timed averages and means under 10 minutes are measured and rounded to the nearest hundredth of a second.",
     "url": "/regulations/#9f1"
   },
   {
     "class": "regulation",
     "id": "9f2",
-    "content_html": "All timed results, averages, and means over 10 minutes, as well as all times for 3x3x3 Multi-Blind results, are measured and rounded to the nearest second (e.g. X.49 becomes X, X.50 becomes X+1).",
+    "content_html": "All timed results over 10 minutes, as well as all times for 3x3x3 Multi-Blind results, are measured and truncated to seconds. All timed averages and means over 10 minutes are measured and rounded to the nearest second (e.g. X.49 becomes X, X.50 becomes X+1).",
     "url": "/regulations/#9f2"
   },
   {
@@ -1133,7 +1139,7 @@
   {
     "class": "regulation",
     "id": "9f5",
-    "content_html": "The result of an attempt is recorded as DNS (Did Not Start) if the competitor is eligible for an attempt but declines it.",
+    "content_html": "The result of an attempt is recorded as DNS (Did Not Start) if the competitor was eligible for the attempt and did not start it (see <a href=\"https://www.worldcubeassociation.org/regulations/#A3b2\">Regulation A3b2</a>).",
     "url": "/regulations/#9f5"
   },
   {
@@ -1264,6 +1270,12 @@
   },
   {
     "class": "regulation",
+    "id": "9l1",
+    "content_html": "An attempt is considered invalid if an extra attempt is required to be granted.",
+    "url": "/regulations/#9l1"
+  },
+  {
+    "class": "regulation",
     "id": "9m",
     "content_html": "Events must have at most four rounds.",
     "url": "/regulations/#9m"
@@ -1318,9 +1330,21 @@
   },
   {
     "class": "regulation",
+    "id": "9p2b",
+    "content_html": "Exception: For competitions designated as a National Championship or Continental Championship, the organization team may amend advancement conditions to reserve spaces for competitors representing the relevant region. A maximum of 8 spaces or 50% of spaces in the following round, whichever is the lower, may be reserved in this way. For a round with reserved spaces, the competitors advancing from the previous round are a reserved number of best competitors representing the relevant region, followed by the remaining best competitors representing any region.",
+    "url": "/regulations/#9p2b"
+  },
+  {
+    "class": "regulation",
     "id": "9p3",
     "content_html": "If a qualifying competitor withdraws from a round, they may be replaced by the best-ranked non-qualifying competitor from the preceding round.",
     "url": "/regulations/#9p3"
+  },
+  {
+    "class": "regulation",
+    "id": "9p4",
+    "content_html": "A competitor with results of only DNF and/or DNS is not eligible to advance.",
+    "url": "/regulations/#9p4"
   },
   {
     "class": "regulation",
@@ -1474,6 +1498,12 @@
   },
   {
     "class": "regulation",
+    "id": "10h1a",
+    "content_html": "Inner clock faces that do not clearly point to a particular hour marker are considered to point to the nearest hour marker.",
+    "url": "/regulations/#10h1a"
+  },
+  {
+    "class": "regulation",
     "id": "11a",
     "content_html": "Incidents include:",
     "url": "/regulations/#11a"
@@ -1517,7 +1547,7 @@
   {
     "class": "regulation",
     "id": "11e1",
-    "content_html": "If a competitor is granted an extra attempt, the extra attempt must be scrambled using a different scramble sequence. This scramble sequence must be generated using a current official version of an official WCA scramble program (see <a href=\"https://www.worldcubeassociation.org/regulations/#4f\">Regulation 4f</a>).",
+    "content_html": "If a competitor is granted an extra attempt, the extra attempt must be scrambled using a different scramble sequence. This scramble sequence must be generated using a current official version of an official WCA scramble program (see <a href=\"https://www.worldcubeassociation.org/regulations/#4b\">Regulation 4b</a>).",
     "url": "/regulations/#11e1"
   },
   {
@@ -1535,8 +1565,62 @@
   {
     "class": "regulation",
     "id": "11f",
-    "content_html": "Decisions about an incident may be supported with video or photographic analysis, at the discretion of the WCA Delegate.",
+    "content_html": "Decisions about an incident may be supported with video, photographic, or audio evidence, at the discretion of the WCA Delegate.",
     "url": "/regulations/#11f"
+  },
+  {
+    "class": "regulation",
+    "id": "11f1",
+    "content_html": "Video, and similar forms of recorded evidence, should be reviewed in real time. Exception: slow-motion or frame-by-frame analysis may be used in the following circumstances:",
+    "url": "/regulations/#11f1"
+  },
+  {
+    "class": "regulation",
+    "id": "11f1a",
+    "content_html": "The individual result is a regional record or a personal record in the top 50 results of the world rankings.",
+    "url": "/regulations/#11f1a"
+  },
+  {
+    "class": "regulation",
+    "id": "11f1b",
+    "content_html": "The average or mean the result is a part of is a regional record or a personal record in the top 50 results of the world rankings.",
+    "url": "/regulations/#11f1b"
+  },
+  {
+    "class": "regulation",
+    "id": "11f1c",
+    "content_html": "The result is achieved in a final round of a National Championship, Continental Championship or World Championship.",
+    "url": "/regulations/#11f1c"
+  },
+  {
+    "class": "regulation",
+    "id": "11f1d",
+    "content_html": "To support the removal of any penalty originally assessed by the judge or WCA Delegate see <a href=\"https://www.worldcubeassociation.org/regulations/#11f2a\">Regulation 11f2a</a>.",
+    "url": "/regulations/#11f1d"
+  },
+  {
+    "class": "regulation",
+    "id": "11f2",
+    "content_html": "Evidence obtained from slow-motion or frame-by-frame analysis may only be used to support the following decisions:",
+    "url": "/regulations/#11f2"
+  },
+  {
+    "class": "regulation",
+    "id": "11f2a",
+    "content_html": "The removal of any penalty originally assessed by the judge or WCA Delegate.",
+    "url": "/regulations/#11f2a"
+  },
+  {
+    "class": "regulation",
+    "id": "11f2b",
+    "content_html": "The application of a penalty according to <a href=\"https://www.worldcubeassociation.org/regulations/#A3c1\">Regulation A3c1</a>, <a href=\"https://www.worldcubeassociation.org/regulations/#A4b\">Regulation A4b</a>, or <a href=\"https://www.worldcubeassociation.org/regulations/#A4b1\">Regulation A4b1</a>.",
+    "url": "/regulations/#11f2b"
+  },
+  {
+    "class": "regulation",
+    "id": "11f2c",
+    "content_html": "To investigate cheating (see <a href=\"https://www.worldcubeassociation.org/regulations/#2k\">Regulation 2k</a>).",
+    "url": "/regulations/#11f2c"
   },
   {
     "class": "regulation",
@@ -1549,6 +1633,96 @@
     "id": "11h",
     "content_html": "A WCA Delegate may require competitors in serious violation of <a href=\"https://www.worldcubeassociation.org/regulations/#2k3\">Regulation 2k3</a> to leave the competition venue, taking into account the seriousness of the situation and the best possible course of action. If the competitor refuses to do so, they may face disciplinary action in the WCA.",
     "url": "/regulations/#11h"
+  },
+  {
+    "class": "regulation",
+    "id": "11i",
+    "content_html": "If it is found that a competitor's puzzle was not scrambled correctly after they have completed their solve, the following regulations apply:",
+    "url": "/regulations/#11i"
+  },
+  {
+    "class": "regulation",
+    "id": "11i1",
+    "content_html": "In the following cases, an extra attempt must be granted to replace the affected attempt. If no extra attempt is granted, the result will be considered DNS:",
+    "url": "/regulations/#11i1"
+  },
+  {
+    "class": "regulation",
+    "id": "11i1a",
+    "content_html": "The individual result is a regional record, or is a personal record in the top 50 competitors of the world rankings.",
+    "url": "/regulations/#11i1a"
+  },
+  {
+    "class": "regulation",
+    "id": "11i1b",
+    "content_html": "The average or mean the result is a part of is a regional record, or part of a personal record in the top 50 competitors of the world rankings.",
+    "url": "/regulations/#11i1b"
+  },
+  {
+    "class": "regulation",
+    "id": "11i1c",
+    "content_html": "The result is achieved in a final round of a National Championship, Continental Championship or World Championship.",
+    "url": "/regulations/#11i1c"
+  },
+  {
+    "class": "regulation",
+    "id": "11i1d",
+    "content_html": "The result was achieved by solving the puzzle in fewer moves than the limits defined in <a href=\"https://www.worldcubeassociation.org/regulations/#4b3\">Regulation 4b3</a>.",
+    "url": "/regulations/#11i1d"
+  },
+  {
+    "class": "regulation",
+    "id": "11i1e",
+    "content_html": "Exception: For 5x5x5 Cube, 6x6x6 Cube, 7x7x7 Cube, Megaminx, and 3x3x3 Multi-Blind, an extra attempt is not necessary to be granted under the circumstances described above.",
+    "url": "/regulations/#11i1e"
+  },
+  {
+    "class": "regulation",
+    "id": "11i2",
+    "content_html": "For all other cases, the result may stand. Exception: the WCA Delegate may grant an extra attempt at their discretion if they believe this provides a significantly fairer outcome (e.g. the incorrect scramble received was extremely easy and the competitor achieved a new personal record, the incorrect scramble impacted the podium for an event, or the puzzle was deliberately scrambled incorrectly).",
+    "url": "/regulations/#11i2"
+  },
+  {
+    "class": "regulation",
+    "id": "11i2a",
+    "content_html": "If an extra attempt would produce a significantly more fair outcome, the original attempt is considered invalid (see <a href=\"https://www.worldcubeassociation.org/regulations/#9l\">Regulation 9l</a>).",
+    "url": "/regulations/#11i2a"
+  },
+  {
+    "class": "regulation",
+    "id": "11i2b",
+    "content_html": "If an extra attempt cannot be awarded for an incorrect scramble leading to a significantly unfair outcome (for example, because the incorrect scramble is discovered after the competition) the result will be considered DNS.",
+    "url": "/regulations/#11i2b"
+  },
+  {
+    "class": "regulation",
+    "id": "11j",
+    "content_html": "If a competitor incorrectly receives a scramble that they have already received (i.e. a duplicate scramble), the following regulations apply:",
+    "url": "/regulations/#11j"
+  },
+  {
+    "class": "regulation",
+    "id": "11j1",
+    "content_html": "If the competitor believes they received a duplicate scramble in inspection, they should stop their attempt and call over a WCA Delegate without applying any moves to the puzzle. A competitor should not be penalized for incorrectly reporting a duplicate scramble genuinely, at the discretion of the WCA Delegate.",
+    "url": "/regulations/#11j1"
+  },
+  {
+    "class": "regulation",
+    "id": "11j2",
+    "content_html": "If the error is noticed during the group, the WCA Delegate should make an effort to give the competitor the correct scramble. An extra attempt may be given if the WCA Delegate is not certain what the correct scramble should be.",
+    "url": "/regulations/#11j2"
+  },
+  {
+    "class": "regulation",
+    "id": "11j3",
+    "content_html": "If the error is noticed during the competition but after the group, the missing attempt must be replaced with an extra attempt.",
+    "url": "/regulations/#11j3"
+  },
+  {
+    "class": "regulation",
+    "id": "11j4",
+    "content_html": "If the error is only noticed after the competition, the result will be considered DNS.",
+    "url": "/regulations/#11j4"
   },
   {
     "class": "regulation",
@@ -1810,6 +1984,12 @@
   },
   {
     "class": "regulation",
+    "id": "12i1",
+    "content_html": "Exception: For Clock, only changes in the position of the inner clock faces are considered to be moves. Changes to the state of the pins are not considered to be moves.",
+    "url": "/regulations/#12i1"
+  },
+  {
+    "class": "regulation",
     "id": "A1",
     "content_html": "Speed Solving attempts must abide by the following procedures.",
     "url": "/regulations/#A1"
@@ -1883,8 +2063,26 @@
   {
     "class": "regulation",
     "id": "A2a",
-    "content_html": "When called for a round, the competitor submits the puzzle, in its solved state, to the scrambler. The competitor then waits in their assigned Competitor Waiting Area until they are called to compete.",
+    "content_html": "When called for a round, the competitor submits a solved puzzle to the scrambler.",
     "url": "/regulations/#A2a"
+  },
+  {
+    "class": "regulation",
+    "id": "A2a1",
+    "content_html": "If a Competitor Waiting Area is in use, the competitor must remain within their assigned Competitor Waiting Area until they are called to complete an attempt. The competitor must return to their assigned Competitor Waiting Area after completing each attempt if they have more attempts in the round. Exception: competitors may leave the Competitor Waiting Area with permission from the WCA Delegate. Penalty: disqualification of the remaining attempts (DNF), at the discretion of the WCA Delegate.",
+    "url": "/regulations/#A2a1"
+  },
+  {
+    "class": "regulation",
+    "id": "A2a2",
+    "content_html": "If a Competitor Waiting Area is not in use, the competitor must remain at their assigned solving station until they have completed all their attempts in the round. Exception: competitors may leave their assigned solving station with permission from the WCA Delegate. Penalty: disqualification of the remaining attempts (DNF), at the discretion of the WCA Delegate.",
+    "url": "/regulations/#A2a2"
+  },
+  {
+    "class": "regulation",
+    "id": "A2a3",
+    "content_html": "Once called for a round, a competitor must not attempt to enter any area assigned for scrambling until all competitors in their group have no further attempts, unless permission has been granted by the WCA Delegate.",
+    "url": "/regulations/#A2a3"
   },
   {
     "class": "regulation",
@@ -1912,6 +2110,12 @@
   },
   {
     "class": "regulation",
+    "id": "A2c2",
+    "content_html": "When competing, competitors must not actively try to watch another competitor complete an official attempt. If the competitor watches another competitor attempt a scramble they have not yet received, the corresponding attempt is recorded as DNF.",
+    "url": "/regulations/#A2c2"
+  },
+  {
+    "class": "regulation",
     "id": "A2d",
     "content_html": "When taking a puzzle from the scrambler, the judge briefly inspects the puzzle to ensure thorough scrambling of the puzzle. The judge raises any concerns with the scrambler, who then conducts a detailed check.",
     "url": "/regulations/#A2d"
@@ -1919,7 +2123,7 @@
   {
     "class": "regulation",
     "id": "A2d1",
-    "content_html": "The scrambler or an authorized judge must check the scrambled puzzle, and sign (or initial) the score sheet to affirm that they applied the correctly-numbered scramble sequence and checked that it matches the image (see <a href=\"https://www.worldcubeassociation.org/regulations/#4g\">Regulation 4g</a>). Exception: for 6x6x6 Cube, 7x7x7 Cube, and Megaminx the scrambler may sign (or initial) to affirm that the puzzle is sufficiently scrambled (see <a href=\"https://www.worldcubeassociation.org/regulations/#4g1\">Regulation 4g1</a>).",
+    "content_html": "The scrambler or an authorized judge must check the scrambled puzzle, and sign the score sheet to affirm that they applied the correctly-numbered scramble sequence and checked that it matches the image (see <a href=\"https://www.worldcubeassociation.org/regulations/#4g\">Regulation 4g</a>). Exception: for 6x6x6 Cube, 7x7x7 Cube, and Megaminx the scrambler may sign to affirm that the puzzle is sufficiently scrambled (see <a href=\"https://www.worldcubeassociation.org/regulations/#4g1\">Regulation 4g1</a>). Scrambler signatures should be consistent throughout the competition and should identify the scrambler.",
     "url": "/regulations/#A2d1"
   },
   {
@@ -1933,6 +2137,12 @@
     "id": "A2e1",
     "content_html": "The competitor is not permitted to request a specific orientation, and the judge must not influence the orientation they place the puzzle on the mat based on what they know or expect the puzzle state to be.",
     "url": "/regulations/#A2e1"
+  },
+  {
+    "class": "regulation",
+    "id": "A2e2",
+    "content_html": "The competitor must not remove the cover themselves. Penalty: disqualification of the attempt (DNF).",
+    "url": "/regulations/#A2e2"
   },
   {
     "class": "regulation",
@@ -2027,7 +2237,7 @@
   {
     "class": "regulation",
     "id": "A3d",
-    "content_html": "At the end of the inspection, the competitor places the puzzle on the mat, in any orientation. Penalty for placing it outside the mat: time penalty (+2 seconds).",
+    "content_html": "At the end of the inspection, the competitor places the puzzle on the mat, in any orientation. The puzzle must be placed fully on the mat and must not be fully or partially resting on the Stackmat timer. Penalty: time penalty (+2 seconds).",
     "url": "/regulations/#A3d"
   },
   {
@@ -2116,6 +2326,12 @@
   },
   {
     "class": "regulation",
+    "id": "A6a1",
+    "content_html": "If the judge is not immediately available to stop the stopwatch when a stopwatch is in use, the competitor may stop the stopwatch.",
+    "url": "/regulations/#A6a1"
+  },
+  {
+    "class": "regulation",
     "id": "A6b",
     "content_html": "The competitor is responsible for stopping the Stackmat timer correctly.",
     "url": "/regulations/#A6b"
@@ -2123,13 +2339,13 @@
   {
     "class": "regulation",
     "id": "A6b1",
-    "content_html": "If the timer stops before the competitor has solved the puzzle and the timer shows a time strictly below 0.06 seconds, then the attempt is replaced by an extra attempt. A competitor forfeits the right to the additional attempt if the WCA Delegate determines that the timer was stopped deliberately.",
+    "content_html": "If the timer stops before the competitor has solved the puzzle and the timer shows a time strictly below 0.06 seconds, then the attempt is replaced by an extra attempt. Exception: No extra attempt is required if the WCA Delegate determines that the timer was stopped deliberately, or as a result of interacting with the timer in an unusual way (e.g. making only minimal contact with the timer, not lifting the hands cleanly away from the timer).",
     "url": "/regulations/#A6b1"
   },
   {
     "class": "regulation",
     "id": "A6b2",
-    "content_html": "If the timer stops before the competitor has solved the puzzle and displays a time of 0.06 seconds or higher, then the attempt is disqualified (DNF). Exception: if the competitor can demonstrate that the timer malfunctioned, they may receive an extra attempt, at the discretion of the WCA Delegate.",
+    "content_html": "If the timer stops before the competitor has solved the puzzle and displays a time of 0.06 seconds or higher, then the attempt is disqualified (DNF). Exception: The WCA Delegate may provide an extra attempt if they believe the timer may have malfunctioned and the competitor did not stop the timer deliberately.",
     "url": "/regulations/#A6b2"
   },
   {
@@ -2165,7 +2381,7 @@
   {
     "class": "regulation",
     "id": "A6f",
-    "content_html": "The competitor must not reset the timer until both the competitor and the judge have signed the score sheet. Penalty: disqualification of the attempt (DNF), at the discretion of the judge.",
+    "content_html": "The competitor must not reset the timer until both the competitor and the judge have signed the score sheet. Penalty: disqualification of the attempt (DNF), at the discretion of the judge. Exception: see <a href=\"https://www.worldcubeassociation.org/regulations/#A7c5\">Regulation A7c5</a>.",
     "url": "/regulations/#A6f"
   },
   {
@@ -2213,7 +2429,7 @@
   {
     "class": "regulation",
     "id": "A7b",
-    "content_html": "The judge records the result on a score sheet and signs next to the result to acknowledge that the result is correct, complete, properly formatted, and clearly readable.",
+    "content_html": "The judge records the result on a score sheet and signs next to the result to acknowledge that the result is correct, complete, properly formatted, and clearly readable. Judge signatures should be consistent throughout the competition and should identify the judge.",
     "url": "/regulations/#A7b"
   },
   {
@@ -2225,7 +2441,7 @@
   {
     "class": "regulation",
     "id": "A7c",
-    "content_html": "The competitor must check the recorded result, and sign (or initial) the score sheet to acknowledge that the result is correct, complete, properly formatted, and clearly readable. This finishes the attempt.",
+    "content_html": "The competitor must check the recorded result, and sign the score sheet to acknowledge that the result is correct, complete, properly formatted, and clearly readable. This finishes the attempt.",
     "url": "/regulations/#A7c"
   },
   {
@@ -2237,7 +2453,7 @@
   {
     "class": "regulation",
     "id": "A7c2",
-    "content_html": "If the competitor intentionally signs (or otherwise marks) an attempt before they have begun it, they forfeit the attempt and the result will be considered DNS.",
+    "content_html": "If the competitor intentionally signs (or otherwise marks) an attempt before they have begun it, they forfeit the attempt and the result will be considered DNS. Exception: for 3x3x3 Multi-Blind, the competitor may write the number of cubes they are attempting on the scorecard.",
     "url": "/regulations/#A7c2"
   },
   {
@@ -2257,6 +2473,24 @@
     "id": "A7c5",
     "content_html": "Missing signatures found before the end of the competition (see <a href=\"https://www.worldcubeassociation.org/regulations/#9u\">Regulation 9u</a>) may be added by the judge and/or the competitor, at the discretion of the WCA Delegate.",
     "url": "/regulations/#A7c5"
+  },
+  {
+    "class": "regulation",
+    "id": "A7c6",
+    "content_html": "Competitor signatures should be consistent throughout the competition and should identify the competitor. Competitors must not intentionally sign incorrectly. Penalty: disqualification of the attempt (DNF), at the discretion of the WCA Delegate.",
+    "url": "/regulations/#A7c6"
+  },
+  {
+    "class": "regulation",
+    "id": "A7c7",
+    "content_html": "The competitor should not mark the score sheet anywhere other than in the area provided for them to sign.",
+    "url": "/regulations/#A7c7"
+  },
+  {
+    "class": "regulation",
+    "id": "A7c8",
+    "content_html": "If a signature was missed due to the inexperience of the competitor, it may be added at any time, at the discretion of the WCA Delegate. If it is no longer possible for the scorecard to be physically signed by the competitor or the judge, an attestation that the result was correctly recorded may be accepted as a signature, at the discretion of the WCA Delegate.",
+    "url": "/regulations/#A7c8"
   },
   {
     "class": "regulation",
@@ -2404,8 +2638,14 @@
   },
   {
     "class": "regulation",
+    "id": "B4c2",
+    "content_html": "A sight blocker must be positioned such that the competitor's view of the puzzle would still clearly be blocked if they were not wearing a blindfold.",
+    "url": "/regulations/#B4c2"
+  },
+  {
+    "class": "regulation",
     "id": "B4c3",
-    "content_html": "If the judge and competitor agree beforehand, the competitor may choose to place the puzzle behind a suitable object (e.g. a music stand, the surface of the table) by themselves during the blindfolded phase.",
+    "content_html": "If the judge and competitor agree beforehand, or if required by the organization team, a suitable object (e.g. a music stand, the surface of the table) placed by the competitor may be used as the sight blocker. The competitor must make a reasonable attempt to place the sight blocker themselves. Penalty: disqualification of the attempt (DNF). If the sight blocker is not positioned such that the competitor's view of the puzzle would still clearly be blocked if they were not wearing a blindfold, an extra sight blocker should be placed by the judge.",
     "url": "/regulations/#B4c3"
   },
   {
@@ -2518,39 +2758,57 @@
   },
   {
     "class": "regulation",
+    "id": "E2b2",
+    "content_html": "If a competitor joins an attempt that is already in progress (see <a href=\"https://www.worldcubeassociation.org/regulations/#E6\">Regulation E6</a>), their time limit is the time remaining (i.e. they must finish when other competitors reach their 60 minute time limit).",
+    "url": "/regulations/#E2b2"
+  },
+  {
+    "class": "regulation",
     "id": "E2c",
-    "content_html": "At 60 minutes, each competitor must submit to the judge a single piece of paper with a written solution and information to identify the attempt.",
+    "content_html": "At 60 minutes, each competitor must submit to the judge a single piece of paper with a written solution and information to identify the attempt. The competitor's solution is considered correct if starting with a solved puzzle and applying the scramble sequence followed by the solution results in a solved puzzle. Penalty for an incorrect solution: disqualification of the attempt (DNF).",
     "url": "/regulations/#E2c"
   },
   {
     "class": "regulation",
     "id": "E2c1",
-    "content_html": "Information to identify the attempt is: the competitor's name, WCA ID, or competition registrant ID (at least one, optionally multiple), and optionally the competition name, round, or attempt number. Penalty for a submitted solution without name, WCA ID, or competition registrant ID: disqualification of the attempt (DNF).",
+    "content_html": "Information to identify the attempt is: the competitor's name, WCA ID, or competition registrant ID (at least one, optionally multiple), and optionally the competition name, round, or attempt number. Penalty for a submitted solution without information to identify the attempt: disqualification of the attempt (DNF). Information to identify the attempt may be added by the competitor after the attempt has been submitted but before the end of the competition, at the discretion of the WCA Delegate and under the direct supervision of a judge. The competitor must not write anything after the time limit without the judge's supervision and must not make any changes to the solution. Penalty: disqualification of the attempt (DNF).",
     "url": "/regulations/#E2c1"
   },
   {
     "class": "regulation",
     "id": "E2c2",
-    "content_html": "The solution must be a single unambiguous move sequence with each individual move written out in sequential order. Penalty for an ambiguous solution: disqualification of the attempt (DNF).",
+    "content_html": "The solution must be an unambiguous sequence of moves with each move written out in sequential order. Penalty for an ambiguous solution: disqualification of the attempt (DNF).",
     "url": "/regulations/#E2c2"
   },
   {
     "class": "regulation",
     "id": "E2c3",
-    "content_html": "The competitor should clearly black out/scribble out all moves on the paper that are not part of their intended solution.",
+    "content_html": "The competitor should make it clear which moves are intended to be part of their solution, by clearly blacking out/scribbling out any moves to exclude, or by drawing a single outline around their solution.",
     "url": "/regulations/#E2c3"
   },
   {
     "class": "regulation",
     "id": "E2c4",
-    "content_html": "The competitor's solution must only use moves that are exactly defined as notation for the 3x3x3 Cube in <a href=\"https://www.worldcubeassociation.org/regulations/#12a\">Regulation 12a</a>, and must not use any symbols or combinations of symbols that are not specifically defined there. Penalty: disqualification of the attempt (DNF).",
+    "content_html": "Only numbers, letters, and apostrophes are considered as part of a competitor\u2019s solution. Other symbols are disregarded. The remaining solution must only use moves that are exactly defined as notation for the 3x3x3 Cube in <a href=\"https://www.worldcubeassociation.org/regulations/#12a\">Regulation 12a</a>. Penalty: disqualification of the attempt (DNF).",
     "url": "/regulations/#E2c4"
   },
   {
     "class": "regulation",
-    "id": "E2c5",
-    "content_html": "The competitor's solution is considered correct if starting with a solved puzzle and applying the scramble sequence followed by the solution results in a solved puzzle. Penalty for an incorrect solution: disqualification of the attempt (DNF).",
-    "url": "/regulations/#E2c5"
+    "id": "E2c6",
+    "content_html": "If a competitor used incorrect capitalization for a move defined in <a href=\"https://www.worldcubeassociation.org/regulations/#12a\">Regulation 12a</a>, it should be interpreted as if it has the correct capitalization and accepted as valid notation.",
+    "url": "/regulations/#E2c6"
+  },
+  {
+    "class": "regulation",
+    "id": "E2c7",
+    "content_html": "Any writing or other markings on the solution sheet which are clearly not a part of the competitor's intended solution may be disregarded, at the discretion of the judge.",
+    "url": "/regulations/#E2c7"
+  },
+  {
+    "class": "regulation",
+    "id": "E2c8",
+    "content_html": "Competitors must not intentionally make their solution harder to judge by using moves or symbols not defined as notation for the 3x3x3 Cube, incorrect capitalization, or by any other means. Penalty: disqualification of the attempt (DNF) at the discretion of the WCA Delegate.",
+    "url": "/regulations/#E2c8"
   },
   {
     "class": "regulation",
@@ -2632,27 +2890,27 @@
   },
   {
     "class": "regulation",
-    "id": "F1",
-    "content_html": "Standard speed solving procedures are followed, as described in <a href=\"https://www.worldcubeassociation.org/regulations/#A\">Article A</a> (Speed Solving). Additional regulations that supersede the corresponding procedures in <a href=\"https://www.worldcubeassociation.org/regulations/#A\">Article A</a> are described below.",
-    "url": "/regulations/#F1"
+    "id": "E6",
+    "content_html": "A competitor may join a 3x3x3 Fewest Moves attempt that is already in progress, at the discretion of the WCA Delegate. Exception: a competitor must not be permitted to join an ongoing attempt in the following cases:",
+    "url": "/regulations/#E6"
   },
   {
     "class": "regulation",
-    "id": "F2",
-    "content_html": "The organization team may enforce using a stand for the puzzle to prevent it from falling before the start of the attempt. If such stands are used, the organization team should make an announcement before the round starts.",
-    "url": "/regulations/#F2"
+    "id": "E6a",
+    "content_html": "A competitor has finished their attempt already (see <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#E2b+\">Guideline E2b+</a>).",
+    "url": "/regulations/#E6a"
   },
   {
     "class": "regulation",
-    "id": "F3",
-    "content_html": "The competitor may change the state of the pins during the inspection. These changes are not counted as moves.",
-    "url": "/regulations/#F3"
+    "id": "E6b",
+    "content_html": "The attempt takes place in a competition with multiple physical locations (i.e. &quot;3x3x3 Fewest Moves simultaneous competitions&quot;).",
+    "url": "/regulations/#E6b"
   },
   {
     "class": "regulation",
-    "id": "F4",
-    "content_html": "The competitor must not change the state of any inner clock faces in the puzzle during the inspection. Penalty: disqualification of the attempt (DNF).",
-    "url": "/regulations/#F4"
+    "id": "E6c",
+    "content_html": "There is any risk that information about the scramble may have become known to the competitor who wishes to join.",
+    "url": "/regulations/#E6c"
   },
   {
     "class": "regulation",
@@ -2681,7 +2939,7 @@
   {
     "class": "regulation",
     "id": "H1a3",
-    "content_html": "Before the attempt, the scrambled puzzles must be placed on the table in an arbitrary orientation while ensuring they remain completely covered. The puzzles should be arranged in a shape as square as possible (e.g. 8 puzzles should be arranged in 2 rows with 3 puzzles and 1 row with 2 puzzles).",
+    "content_html": "Before the attempt, the scrambled puzzles must be placed on the table in an arbitrary orientation while ensuring they remain completely covered. The puzzles should be arranged in a shape as square as possible and should not be stacked (e.g. 8 puzzles should be arranged in 2 rows with 3 puzzles and 1 row with 2 puzzles and in 1 layer only).",
     "url": "/regulations/#H1a3"
   },
   {
@@ -2745,22 +3003,15 @@
   {
     "class": "regulation",
     "id": "1h+++",
-    "content_html": "Competitors may request to compete at a time different to the scheduled time for the round in a separate group. The WCA Delegate should carefully consider the fairness and practicality of the situation before approving any such requests, and must ensure that such attempts follow <a href=\"https://www.worldcubeassociation.org/regulations/#9l\">Regulation 9l</a> (i.e. they must start after all competitors have finished their attempts from any previous round of the same event, and finish before any competitor has started an attempt for any following round of the same event). Competitors requesting such accommodations should contact the organization team and WCA Delegate before the competition. Exception: such accommodations are not permitted for 3x3x3 Fewest Moves, which specifies its own limited accommodations in <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#E2b++\">Guideline E2b++</a>.",
+    "content_html": "Competitors may request to compete at a time different to the scheduled time for the round in a separate group. The WCA Delegate should carefully consider the fairness and practicality of the situation before approving any such requests, and must ensure that such attempts follow <a href=\"https://www.worldcubeassociation.org/regulations/#9l\">Regulation 9l</a> (i.e. they must start after all competitors have finished their attempts from any previous round of the same event, and finish before any competitor has started an attempt for any following round of the same event). Competitors requesting such accommodations should contact the organization team and WCA Delegate before the competition. Exception: such accommodations are not permitted for 3x3x3 Fewest Moves, which specifies its own limited accommodations in <a href=\"https://www.worldcubeassociation.org/regulations/#E6\">Regulation E6</a>.",
     "url": "/regulations/guidelines.html#1h+++",
     "guideline_label": "ADDITION"
   },
   {
     "class": "regulation",
-    "id": "1h1+",
-    "content_html": "Scramblers/judges should only scramble for/judge other competitors in the same group if it is important for competition logistics.",
-    "url": "/regulations/guidelines.html#1h1+",
-    "guideline_label": "CLARIFICATION"
-  },
-  {
-    "class": "regulation",
-    "id": "1h1++",
-    "content_html": "For 3x3x3 Fewest Moves, judges may judge competitors in their own group before they have finished their attempt (i.e. while they are competing).",
-    "url": "/regulations/guidelines.html#1h1++",
+    "id": "1h1a+",
+    "content_html": "Judges who are competing in a 3x3x3 Fewest Moves attempt they are judging must not begin grading attempts until they have finished their own attempt. They may begin grading before the end of the 60 minutes if they have submitted their attempt early (see <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#E2b+\">Guideline E2b+</a>). They should get another judge to grade their own attempt.",
+    "url": "/regulations/guidelines.html#1h1a+",
     "guideline_label": "CLARIFICATION"
   },
   {
@@ -2773,7 +3024,7 @@
   {
     "class": "regulation",
     "id": "2c2+",
-    "content_html": "A WCA profile is the collection of data related to a competitor, and includes their personal information (name, region of representation, gender, and date of birth) as well as all their results in official WCA competitions.",
+    "content_html": "A WCA profile is the collection of data related to a competitor, and includes their personal information (name, country, gender, and date of birth) as well as all their results in official WCA competitions.",
     "url": "/regulations/guidelines.html#2c2+",
     "guideline_label": "CLARIFICATION"
   },
@@ -2787,9 +3038,9 @@
   {
     "class": "regulation",
     "id": "2d++",
-    "content_html": "If a third party (e.g. journalist) asks the organization team to be put in contact with any competitor(s), the competitor(s) should first be asked for consent.",
+    "content_html": "If a third party (e.g. journalist) asks the organization team to be put in contact with any competitor(s), the competitor(s) must first be asked for consent.",
     "url": "/regulations/guidelines.html#2d++",
-    "guideline_label": "RECOMMENDATION"
+    "guideline_label": "REMINDER"
   },
   {
     "class": "regulation",
@@ -2801,7 +3052,7 @@
   {
     "class": "regulation",
     "id": "2e++",
-    "content_html": "The WCA Delegate should also verify the name and date of birth by means of documents (e.g. a passport) of every new competitor at their first competition.",
+    "content_html": "The WCA Delegate should also verify the name and date of birth by means of documents or photos of documents (e.g. a passport) of every new competitor at their first competition.",
     "url": "/regulations/guidelines.html#2e++",
     "guideline_label": "ADDITION"
   },
@@ -2815,14 +3066,14 @@
   {
     "class": "regulation",
     "id": "2i+",
-    "content_html": "Although the competitor may pick up a stopwatch to view the current time (when they are not blindfolded), they must not start, stop, pause, or otherwise interact with the timekeeping of the stopwatch.",
+    "content_html": "Although the competitor may pick up a stopwatch to view the current time (when they are not blindfolded), they must not start, stop, pause, or otherwise interact with the timekeeping of the stopwatch. Exception: The competitor may stop the stopwatch at the end of their attempt if the judge is not immediately available (see <a href=\"https://www.worldcubeassociation.org/regulations/#A6a1\">Regulation A6a1</a>).",
     "url": "/regulations/guidelines.html#2i+",
     "guideline_label": "ADDITION"
   },
   {
     "class": "regulation",
     "id": "2i++",
-    "content_html": "The organization team may provide the competitor an unofficial stopwatch for viewing the elapsed time (started together with the main stopwatch), in which case the competitor is not permitted to touch the official stopwatch.",
+    "content_html": "The organization team may provide the competitor an unofficial stopwatch for viewing the elapsed time (started together with the main stopwatch), in which case the competitor is not permitted to touch the official stopwatch. Exception: See the exception in <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#2i+\">Guideline 2i+</a>.",
     "url": "/regulations/guidelines.html#2i++",
     "guideline_label": "ADDITION"
   },
@@ -2856,6 +3107,13 @@
   },
   {
     "class": "regulation",
+    "id": "2i+++++++",
+    "content_html": "Devices which were previously electronic but have their electronic parts removed may be permitted, at the discretion of the WCA Delegate.",
+    "url": "/regulations/guidelines.html#2i+++++++",
+    "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
     "id": "2i1b+",
     "content_html": "This includes relevant devices which are switched off or disconnected.",
     "url": "/regulations/guidelines.html#2i1b+",
@@ -2863,15 +3121,8 @@
   },
   {
     "class": "regulation",
-    "id": "2i1c+",
-    "content_html": "Electronic hand warmers are considered electronic devices, and therefore are not permitted while inspecting or solving. However, non-electronic hand warmers may be used at any time during an attempt.",
-    "url": "/regulations/guidelines.html#2i1c+",
-    "guideline_label": "CLARIFICATION"
-  },
-  {
-    "class": "regulation",
     "id": "2i2+",
-    "content_html": "The competitor may hold or wear a camera anywhere, as long as the live feed of the camera is not visible to the competitor.",
+    "content_html": "The competitor may hold or wear a camera or microphone anywhere, as long as the live feed of the camera is not visible to the competitor.",
     "url": "/regulations/guidelines.html#2i2+",
     "guideline_label": "CLARIFICATION"
   },
@@ -2895,6 +3146,13 @@
     "content_html": "WCA Delegates should only use their discretion to prevent competitors from being a severe detriment to the competition (e.g. wasting time and/or competition resources). Competitors should not be disqualified for a &quot;poor&quot; result when they are competing to the best of their abilities.",
     "url": "/regulations/guidelines.html#2k6+",
     "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
+    "id": "2n3+",
+    "content_html": "The competitor may escalate their dispute after the competition by following the process decribed in the <a href=\"https://documents.worldcubeassociation.org/documents/motions/16.2024.1%20-%20Disputes.pdf\">Disputes Motion</a>.",
+    "url": "/regulations/guidelines.html#2n3+",
+    "guideline_label": "ADDITION"
   },
   {
     "class": "regulation",
@@ -2996,6 +3254,13 @@
   },
   {
     "class": "regulation",
+    "id": "3h4+",
+    "content_html": "For Clock, visual modifications that enhance the ability to determine the orientation of the puzzle are permitted, as traditional puzzle designs already provide this information.",
+    "url": "/regulations/guidelines.html#3h4+",
+    "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
     "id": "3j++",
     "content_html": "There is a <a href=\"https://drive.google.com/file/d/1m6THsA8fXRN7QFM4ApJbm6eVODKGbMLx/view\">Visual Guide</a> available for <a href=\"https://www.worldcubeassociation.org/regulations/#3j\">Regulation 3j</a>.",
     "url": "/regulations/guidelines.html#3j++",
@@ -3032,7 +3297,7 @@
   {
     "class": "regulation",
     "id": "3l++",
-    "content_html": "In the past, puzzles with logos have been permitted for blindfolded events. Such puzzles are no longer permitted.",
+    "content_html": "Logos are permitted for 3x3x3 Blindfolded, but not any other blindfolded events, including 3x3x3 Multi-Blind.",
     "url": "/regulations/guidelines.html#3l++",
     "guideline_label": "CLARIFICATION"
   },
@@ -3042,6 +3307,20 @@
     "content_html": "On NxNxN puzzles, a center piece is any piece with a single colored part. For example, the 5x5x5 Cube has 9 center pieces on each face.",
     "url": "/regulations/guidelines.html#3l1+",
     "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
+    "id": "4b+",
+    "content_html": "The WCA Delegate should generate sufficient scramble sequences for the entire competition ahead of time, including spare scramble sequences for extra attempts.",
+    "url": "/regulations/guidelines.html#4b+",
+    "guideline_label": "RECOMMENDATION"
+  },
+  {
+    "class": "regulation",
+    "id": "4b++",
+    "content_html": "If the WCA Delegate generates any additional scramble sequences during the competition, the scramble sequences must be saved.",
+    "url": "/regulations/guidelines.html#4b++",
+    "guideline_label": "REMINDER"
   },
   {
     "class": "regulation",
@@ -3087,17 +3366,10 @@
   },
   {
     "class": "regulation",
-    "id": "4f+",
-    "content_html": "The WCA Delegate should generate sufficient scramble sequences for the entire competition ahead of time, including spare scramble sequences for extra attempts.",
-    "url": "/regulations/guidelines.html#4f+",
+    "id": "4g+",
+    "content_html": "After verifying the puzzle is scrambled correctly, the scrambler may pass the puzzle to another scrambler to verify. In this case, both scramblers should sign the scorecard.",
+    "url": "/regulations/guidelines.html#4g+",
     "guideline_label": "RECOMMENDATION"
-  },
-  {
-    "class": "regulation",
-    "id": "4f++",
-    "content_html": "If the WCA Delegate generates any additional scramble sequences during the competition, the scramble sequences must be saved.",
-    "url": "/regulations/guidelines.html#4f++",
-    "guideline_label": "REMINDER"
   },
   {
     "class": "regulation",
@@ -3112,13 +3384,6 @@
     "content_html": "The WCA Delegate should use stronger discretion when determining whether or not incorrect puzzle states for 5x5x5 Cube need to be corrected.",
     "url": "/regulations/guidelines.html#4g1b++",
     "guideline_label": "RECOMMENDATION"
-  },
-  {
-    "class": "regulation",
-    "id": "5b+",
-    "content_html": "The competitor is not permitted to cause a puzzle defect intentionally, unless correcting a previous puzzle defect (see <a href=\"https://www.worldcubeassociation.org/regulations/#5b3b\">Regulation 5b3b</a> and <a href=\"https://www.worldcubeassociation.org/regulations/#5b3c\">Regulation 5b3c</a>). Examples of intentionally causing puzzle defects: removing an attached center cap, rotating a corner piece, peeling a sticker.",
-    "url": "/regulations/guidelines.html#5b+",
-    "guideline_label": "ADDITION"
   },
   {
     "class": "regulation",
@@ -3157,6 +3422,13 @@
   },
   {
     "class": "regulation",
+    "id": "5b5f++++",
+    "content_html": "If there are multiple pieces partially detached or not fully placed, their final position is assessed one at a time. The piece that is closest to an open position is assessed first, and is then considered to occupy that position. This process is repeated until all partially detached or not fully placed pieces have been assessed.",
+    "url": "/regulations/guidelines.html#5b5f++++",
+    "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
     "id": "5c+",
     "content_html": "If a competitor has a puzzle defect, this does not grant them the right to an extra attempt.",
     "url": "/regulations/guidelines.html#5c+",
@@ -3174,13 +3446,6 @@
     "id": "7h2+",
     "content_html": "Competitors in a Competitor Waiting Area who are waiting between attempts should not be able to see the puzzles of the competitors on stage.",
     "url": "/regulations/guidelines.html#7h2+",
-    "guideline_label": "ADDITION"
-  },
-  {
-    "class": "regulation",
-    "id": "9b+",
-    "content_html": "For an event with multiple rounds, every round after the first round (especially the final round) should be &quot;Average of 5&quot; or &quot;Mean of 3&quot; if one of these is a valid format.",
-    "url": "/regulations/guidelines.html#9b+",
     "guideline_label": "ADDITION"
   },
   {
@@ -3221,15 +3486,57 @@
   {
     "class": "regulation",
     "id": "9f5+",
-    "content_html": "The result of an attempt is DNS if the competitor was eligible for the attempt and did not start it (see <a href=\"https://www.worldcubeassociation.org/regulations/#A3b2\">Regulation A3b2</a>). If the competitor did not qualify for an attempt (e.g. in a Cutoff Round), they have no result for the attempt.",
+    "content_html": "If the competitor did not qualify for an attempt (e.g. in a Cutoff Round), they have no result for the attempt.",
     "url": "/regulations/guidelines.html#9f5+",
     "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
+    "id": "9l1+",
+    "content_html": "A DNF Result is generally considered a valid result. Extra attempts must not be given for using a non-permitted puzzle that is only found after the round is complete (see <a href=\"https://www.worldcubeassociation.org/regulations/#3k2a\">Regulation 3k2a</a>).",
+    "url": "/regulations/guidelines.html#9l1+",
+    "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
+    "id": "9l1++",
+    "content_html": "Examples of an invalid attempt: an attempt that was incorrectly scrambled, attempts where the results are no longer retrievable (e.g. a missing scorecard).",
+    "url": "/regulations/guidelines.html#9l1++",
+    "guideline_label": "EXAMPLE"
   },
   {
     "class": "regulation",
     "id": "9p2+",
     "content_html": "Result refers to the single or average that determines the ranking of the corresponding round.",
     "url": "/regulations/guidelines.html#9p2+",
+    "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
+    "id": "9p2b+",
+    "content_html": "If there are not enough competitors representing the relevant region to fill the reserved spaces, they are replaced with the best competitors representing any region.",
+    "url": "/regulations/guidelines.html#9p2b+",
+    "guideline_label": "ADDITION"
+  },
+  {
+    "class": "regulation",
+    "id": "9p2b++",
+    "content_html": "For a competition designated as both a World Championship and a Continental Championship and/or National Championship, this exception does not apply. For a competition designated as both a Continental Championship and a National Championship, spaces may only be reserved for competitors representing the relevant continent.",
+    "url": "/regulations/guidelines.html#9p2b++",
+    "guideline_label": "ADDITION"
+  },
+  {
+    "class": "regulation",
+    "id": "9p2b+++",
+    "content_html": "Any use of reserved spaces should be clearly announced before the competition.",
+    "url": "/regulations/guidelines.html#9p2b+++",
+    "guideline_label": "RECOMMENDATION"
+  },
+  {
+    "class": "regulation",
+    "id": "9p3+",
+    "content_html": "If a non-qualifying competitor would replace a qualifying competitor in this way, they may also withdraw, allowing the next best-ranked competitor to take their place.",
+    "url": "/regulations/guidelines.html#9p3+",
     "guideline_label": "CLARIFICATION"
   },
   {
@@ -3263,7 +3570,7 @@
   {
     "class": "regulation",
     "id": "9u+",
-    "content_html": "For competitions with multiple physical locations (e.g. &quot;3x3x3 Fewest Moves simultaneous competitions&quot;), all the requirements must be met in every location to consider the competition as ended.",
+    "content_html": "For competitions with multiple physical locations (i.e. &quot;3x3x3 Fewest Moves simultaneous competitions&quot;), all the requirements must be met in every location to consider the competition as ended.",
     "url": "/regulations/guidelines.html#9u+",
     "guideline_label": "ADDITION"
   },
@@ -3361,7 +3668,7 @@
   {
     "class": "regulation",
     "id": "11e1+",
-    "content_html": "The extra attempt must be scrambled using an unmodified scramble sequence generated by an official scramble program (see <a href=\"https://www.worldcubeassociation.org/regulations/#4f\">Regulation 4f</a>, <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#4f+\">Guideline 4f+</a>).",
+    "content_html": "The extra attempt must be scrambled using an unmodified scramble sequence generated by an official scramble program (see <a href=\"https://www.worldcubeassociation.org/regulations/#4b\">Regulation 4b</a>, <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#4b+\">Guideline 4b+</a>).",
     "url": "/regulations/guidelines.html#11e1+",
     "guideline_label": "REMINDER"
   },
@@ -3381,6 +3688,41 @@
   },
   {
     "class": "regulation",
+    "id": "11f1+",
+    "content_html": "The WCA Regulations Committee should be consulted if slow-motion or frame-by-frame analysis are required.",
+    "url": "/regulations/guidelines.html#11f1+",
+    "guideline_label": "RECOMMENDATION"
+  },
+  {
+    "class": "regulation",
+    "id": "11i1+",
+    "content_html": "Competitors expected to meet these criteria should have their scrambles checked by a second scrambler before being sent out (see <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#4g+\">Guideline 4g+</a>).",
+    "url": "/regulations/guidelines.html#11i1+",
+    "guideline_label": "RECOMMENDATION"
+  },
+  {
+    "class": "regulation",
+    "id": "11i2+",
+    "content_html": "If the WCA Delegate is unsure whether or not the incorrect scramble provided a significantly less fair outcome than the original scramble, a provisional extra attempt should be granted.",
+    "url": "/regulations/guidelines.html#11i2+",
+    "guideline_label": "RECOMMENDATION"
+  },
+  {
+    "class": "regulation",
+    "id": "11i2++",
+    "content_html": "Although individual results achieved on incorrectly scrambled puzzles may be allowed to stand, the WCA Delegate must ensure that incorrect scrambles do not become common.",
+    "url": "/regulations/guidelines.html#11i2++",
+    "guideline_label": "REMINDER"
+  },
+  {
+    "class": "regulation",
+    "id": "11j3+",
+    "content_html": "The scramble sequence used for the extra attempt must not be obtained from a previous group.",
+    "url": "/regulations/guidelines.html#11j3+",
+    "guideline_label": "REMINDER"
+  },
+  {
+    "class": "regulation",
     "id": "12a2+",
     "content_html": "For example, both Rw and 2Rw are valid notation for the same physical move for the 3x3x3 Cube. 1Rw is not valid notation for any NxNxN Cube, and 3Rw is not valid notation for the 2x2x2 Cube or the 3x3x3 Cube (but 3Rw is valid notation for the 4x4x4 Cube and larger NxNxN Cubes).",
     "url": "/regulations/guidelines.html#12a2+",
@@ -3388,9 +3730,9 @@
   },
   {
     "class": "regulation",
-    "id": "12g2+",
-    "content_html": "In the past, the penalty for changing state of the pins in inspection was a DNF. This is no longer the case.",
-    "url": "/regulations/guidelines.html#12g2+",
+    "id": "12g3+",
+    "content_html": "As clock scramble sequences end with an X+ or X- move, all pins are pushed down once the scramble sequence has been fully applied.",
+    "url": "/regulations/guidelines.html#12g3+",
     "guideline_label": "REMINDER"
   },
   {
@@ -3465,9 +3807,23 @@
   },
   {
     "class": "regulation",
+    "id": "A2a3+",
+    "content_html": "Competitors should not be permitted to view the scramble sequences for their own group even after having completed all their attempts, unless permission has been granted by the WCA Delegate (see <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#4b2+\">Guideline 4b2+</a>).",
+    "url": "/regulations/guidelines.html#A2a3+",
+    "guideline_label": "REMINDER"
+  },
+  {
+    "class": "regulation",
     "id": "A2c1+",
     "content_html": "In the past, score sheets have been used to cover puzzles while leaving some sides exposed. This is no longer permitted.",
     "url": "/regulations/guidelines.html#A2c1+",
+    "guideline_label": "REMINDER"
+  },
+  {
+    "class": "regulation",
+    "id": "A2c2+",
+    "content_html": "If the competitor accidentally views a scramble they have not yet received, the competitor must not receive that scramble for their own attempt and an extra attempt must be granted instead.",
+    "url": "/regulations/guidelines.html#A2c2+",
     "guideline_label": "REMINDER"
   },
   {
@@ -3480,7 +3836,7 @@
   {
     "class": "regulation",
     "id": "A2d1++",
-    "content_html": "An attempt must not be disqualified solely due to a missing scramble signature. If a scramble signature is missing after the beginning of an attempt, the judge must allow the attempt to continue (if it is still in progress) and the WCA Delegate should allow the result to be kept. However, the WCA Delegate may replace the attempt with an extra attempt if they have a reason (other than the missing signature) to suspect that the scramble was incorrect.",
+    "content_html": "An attempt must not be disqualified solely due to a missing scramble signature. If a scramble signature is missing after the beginning of an attempt, the judge must allow the attempt to continue (if it is still in progress) and the WCA Delegate should allow the result to be kept.",
     "url": "/regulations/guidelines.html#A2d1++",
     "guideline_label": "ADDITION"
   },
@@ -3490,6 +3846,13 @@
     "content_html": "Although the WCA Delegate may allow several individual attempts with missing scramble signatures to count, they should ensure that missing scramble signatures do not become common.",
     "url": "/regulations/guidelines.html#A2d1+++",
     "guideline_label": "REMINDER"
+  },
+  {
+    "class": "regulation",
+    "id": "A3c1+",
+    "content_html": "For Clock, the competitor may change the state of the pins during inspection (see <a href=\"https://www.worldcubeassociation.org/regulations/#12i1\">Regulation 12i1</a>).",
+    "url": "/regulations/guidelines.html#A3c1+",
+    "guideline_label": "CLARIFICATION"
   },
   {
     "class": "regulation",
@@ -3556,9 +3919,9 @@
   },
   {
     "class": "regulation",
-    "id": "A6b+",
+    "id": "A6b1+",
     "content_html": "The arbitrary value of 0.06 seconds was chosen to accommodate concerns about Stackmat timer malfunctions.",
-    "url": "/regulations/guidelines.html#A6b+",
+    "url": "/regulations/guidelines.html#A6b1+",
     "guideline_label": "EXPLANATION"
   },
   {
@@ -3570,9 +3933,44 @@
   },
   {
     "class": "regulation",
+    "id": "A6e++",
+    "content_html": "If <a href=\"https://www.worldcubeassociation.org/regulations/#A6c\">Regulation A6c</a> is used to penalize an attempt, the penalties in <a href=\"https://www.worldcubeassociation.org/regulations/#A6e\">Regulation A6e</a> should only be applied if the competitor releases the puzzle and touches it again before the judge inspects it.",
+    "url": "/regulations/guidelines.html#A6e++",
+    "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
     "id": "A7c+",
     "content_html": "If a result signed by a competitor is found to be incomplete or unreadable, it should be interpreted the worst reasonable way (e.g. &quot;1:05&quot; will be considered 1:05.99, &quot;25.X3&quot; will be considered 25.73 if X could be either a 1 or a 7). Given that the Stackmat timer displays a time of X:0Y.ss as X:Y.ss, a missing tens digit should be considered more likely than a missing ones digit (e.g. &quot;1:2.27&quot; will be considered 1:02.27). The judge who signed an ambiguous result may be requested to clarify it, at the discretion of the score taker.",
     "url": "/regulations/guidelines.html#A7c+",
+    "guideline_label": "ADDITION"
+  },
+  {
+    "class": "regulation",
+    "id": "A7c6+",
+    "content_html": "Examples of signatures that identify the competitor: Name, initials, WCA ID, competition registrant ID, a reasonable nickname.",
+    "url": "/regulations/guidelines.html#A7c6+",
+    "guideline_label": "EXAMPLE"
+  },
+  {
+    "class": "regulation",
+    "id": "A7c6++",
+    "content_html": "A competition registrant ID is an identifier (e.g. a number) assigned to a competitor for the competition. Some competitions use this to keep track of score sheets and enter results.",
+    "url": "/regulations/guidelines.html#A7c6++",
+    "guideline_label": "EXPLANATION"
+  },
+  {
+    "class": "regulation",
+    "id": "A7c6+++",
+    "content_html": "The organization team may request competitors to sign with one particular method of identification (e.g. competition registrant ID), but competitors should not be disqualified for using a different method when signing.",
+    "url": "/regulations/guidelines.html#A7c6+++",
+    "guideline_label": "RECOMMENDATION"
+  },
+  {
+    "class": "regulation",
+    "id": "A7c6++++",
+    "content_html": "Competitors should use the same signature when they are judging and/or scrambling at the competition.",
+    "url": "/regulations/guidelines.html#A7c6++++",
     "guideline_label": "ADDITION"
   },
   {
@@ -3606,7 +4004,7 @@
   {
     "class": "regulation",
     "id": "B1+",
-    "content_html": "The competitor must use a puzzle without logos (see <a href=\"https://www.worldcubeassociation.org/regulations/#3l\">Regulation 3l</a>), textures, markings, or other features that distinguish similar pieces (see <a href=\"https://www.worldcubeassociation.org/regulations/#3k\">Regulation 3k</a>). This should be given special attention for Blindfolded Solving.",
+    "content_html": "The competitor must use a puzzle without textures, markings, or other features that distinguish similar pieces (see <a href=\"https://www.worldcubeassociation.org/regulations/#3k\">Regulation 3k</a>). This should be given special attention for Blindfolded Solving. Exception: For 3x3x3 Blindfolded, the puzzle may have any logos permitted by <a href=\"https://www.worldcubeassociation.org/regulations/#3l\">Regulation 3l</a>.",
     "url": "/regulations/guidelines.html#B1+",
     "guideline_label": "REMINDER"
   },
@@ -3633,17 +4031,17 @@
   },
   {
     "class": "regulation",
-    "id": "B4c+",
-    "content_html": "If the judge forgot to put a sight blocker, or places it in a way that the competitor's view of the puzzle is not fully blocked, the WCA Delegate should grant an extra attempt.",
-    "url": "/regulations/guidelines.html#B4c+",
+    "id": "B4c++",
+    "content_html": "If the judge forgot to put a sight blocker and the WCA Delegate does not suspect that the competitor intentionally violated any WCA Regulations, the original attempt may stand.",
+    "url": "/regulations/guidelines.html#B4c++",
     "guideline_label": "ADDITION"
   },
   {
     "class": "regulation",
-    "id": "B4c++",
-    "content_html": "If the WCA Delegate does not suspect that the competitor intentionally violated any WCA Regulations, the original attempt may stand.",
-    "url": "/regulations/guidelines.html#B4c++",
-    "guideline_label": "ADDITION"
+    "id": "B4d+",
+    "content_html": "For 3x3x3 Blindfolded, competitors are permitted to determine the location of a permitted logo (see <a href=\"https://www.worldcubeassociation.org/regulations/#3l\">Regulation 3l</a>) by touch during the blindfolded phase. <br />\n",
+    "url": "/regulations/guidelines.html#B4d+",
+    "guideline_label": "CLARIFICATION"
   },
   {
     "class": "regulation",
@@ -3675,13 +4073,6 @@
   },
   {
     "class": "regulation",
-    "id": "E2b++",
-    "content_html": "A competitor may join a 3x3x3 Fewest Moves attempt that is already in progress, at the discretion of the WCA Delegate. In this case, their time limit is the time remaining (i.e. they must finish when other competitors reach their 60 minute time limit). Exception: a competitor must not be permitted to join a 3x3x3 Fewest Moves attempt if any competitor has finished their attempt already (see <a href=\"https://www.worldcubeassociation.org/regulations/guidelines.html#E2b+\">Guideline E2b+</a>), or if there is any other risk that information about the scramble may have become known to the competitor who wishes to join.",
-    "url": "/regulations/guidelines.html#E2b++",
-    "guideline_label": "ADDITION"
-  },
-  {
-    "class": "regulation",
     "id": "E2c+",
     "content_html": "Although the judge may provide a standard sheet for competitors to submit solutions, a competitor may submit a solution on a different piece of paper. (Note that the piece of paper must come from the judge, according to <a href=\"https://www.worldcubeassociation.org/regulations/#E3a\">Regulation E3a</a>.)",
     "url": "/regulations/guidelines.html#E2c+",
@@ -3689,31 +4080,10 @@
   },
   {
     "class": "regulation",
-    "id": "E2c1+",
-    "content_html": "A competition registrant ID is an identifier (e.g. a number) assigned to a competitor for the competition. Some competitions use this to keep track of score sheets and enter results.",
-    "url": "/regulations/guidelines.html#E2c1+",
-    "guideline_label": "EXPLANATION"
-  },
-  {
-    "class": "regulation",
-    "id": "E2c1++",
-    "content_html": "If the competitor forgot to write information to identify the attempt on their intended solution paper, they are permitted to add it in front of a judge after the time limit. In this case, the competitor must ask the judge while submitting their solution and then immediately write information to identify the attempt (without making other changes) under direct supervision of the judge. Once a competitor has finished submitting their solution (e.g. placing it in the judge's hands and allowing the judge to move on to the next competitor, placing it on the judge's table and walking away), they are not permitted to add any information. If the competitor writes anything after the time limit but before asking the judge, the attempt remains disqualified (DNF).",
-    "url": "/regulations/guidelines.html#E2c1++",
-    "guideline_label": "ADDITION"
-  },
-  {
-    "class": "regulation",
     "id": "E2c1+++",
     "content_html": "The competitor is not required to write the competition name, round, and/or attempt number on their submitted paper, but may wish to do so in order to help the organization team keep track of submitted solutions.",
     "url": "/regulations/guidelines.html#E2c1+++",
     "guideline_label": "EXPLANATION"
-  },
-  {
-    "class": "regulation",
-    "id": "E2c1++++",
-    "content_html": "If a judge finds a submitted solution without information to identify the attempt (e.g. while grading the attempt), they should find out the competitor who wrote the solution in order to assign them a DNF (rather than DNS). Note that the competitor must not be allowed to write information to identify the attempt at this point, so they must receive a DNF result.",
-    "url": "/regulations/guidelines.html#E2c1++++",
-    "guideline_label": "ADDITION"
   },
   {
     "class": "regulation",
@@ -3739,9 +4109,23 @@
   {
     "class": "regulation",
     "id": "E2c4+",
-    "content_html": "Examples of symbols or combinations of symbols that are not permitted in solutions for 3x3x3 Fewest Moves: M, e, r, Y (uppercase), T, U1, Ui, U3, U-, R++, R2', R'2, L'w, 1R, 2U, 2f, 2-3r, 1Rw, 3Rw, 2-3Rw, rw, Rr, *, \u2192, \u2b90, /, ., ?, [r], [r u], [F], &lt;f&gt;, [f]', [f]2, [x], (x), (L), 2(Rw), (U)2, (U)', (R U)', (R U R'), [R, U], [R: U].",
+    "content_html": "Examples of interpreting symbols or combinations of symbols that are not defined in <a href=\"https://www.worldcubeassociation.org/regulations/#12a\">Regulation 12a</a>: [x] should be interpreted as x. (R * U', * = F2) should be interpreted as R U' F2. (R U)' should be interpreted as R U'. R++ should be interpreted as R. R3' is not permitted.",
     "url": "/regulations/guidelines.html#E2c4+",
-    "guideline_label": "CLARIFICATION"
+    "guideline_label": "EXAMPLE"
+  },
+  {
+    "class": "regulation",
+    "id": "E2c4++",
+    "content_html": "Moves with both an apostrophe and a 2 should be interpreted as if there were no apostrophe (e.g. R2' should be interpreted as R2).",
+    "url": "/regulations/guidelines.html#E2c4++",
+    "guideline_label": "ADDITION"
+  },
+  {
+    "class": "regulation",
+    "id": "E2c6+",
+    "content_html": "Y should be interpreted as y. UW, uw, and uW should be interpreted as Uw. r should be interpreted as R, not Rw.",
+    "url": "/regulations/guidelines.html#E2c6+",
+    "guideline_label": "EXAMPLE"
   },
   {
     "class": "regulation",
@@ -3759,6 +4143,13 @@
   },
   {
     "class": "regulation",
+    "id": "E3b+",
+    "content_html": "Puzzles do not need to be solved at the start of the attempt.",
+    "url": "/regulations/guidelines.html#E3b+",
+    "guideline_label": "CLARIFICATION"
+  },
+  {
+    "class": "regulation",
     "id": "E3d+",
     "content_html": "Any stopwatch or watch used by a competitor must not have any functions that would help the competitor find a solution.",
     "url": "/regulations/guidelines.html#E3d+",
@@ -3770,13 +4161,6 @@
     "content_html": "Competitors should not consider a personal stopwatch or watch as the official time, and must submit their solution when the judge calls &quot;STOP&quot;.",
     "url": "/regulations/guidelines.html#E3d++",
     "guideline_label": "CLARIFICATION"
-  },
-  {
-    "class": "regulation",
-    "id": "F1+",
-    "content_html": "In the past, the competitor had to place the puzzle onto the mat in a standing position. This is no longer required.",
-    "url": "/regulations/guidelines.html#F1+",
-    "guideline_label": "REMINDER"
   },
   {
     "class": "regulation",
