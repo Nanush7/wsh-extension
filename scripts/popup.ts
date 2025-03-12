@@ -60,7 +60,8 @@ function setPopupInfo() {
     chrome.storage.local.get(["regulations_version"]).then((result) => {
         if (result !== undefined && result.regulations_version !== undefined) {
             const v = result.regulations_version.split("#");
-            regulations_version_p.textContent = `${v[0]} (${v[1]})`;
+            const revision = v.length > 1 ? ` (${v[1]})` : "";
+            regulations_version_p.textContent = `${v[0]}${revision}`;
         }
     });
 }
